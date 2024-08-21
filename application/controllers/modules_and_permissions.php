@@ -7,8 +7,8 @@ class modules_and_permissions extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // Your own constructor code
-        $this->load->model('permission_modules_model');
+        $this->load->model('modules_model');
+        $this->load->model('permissions_model');
     }
 
     public function modules()
@@ -22,7 +22,7 @@ class modules_and_permissions extends CI_Controller
             $this->form_validation->set_rules('prefix', translate('prefix'), 'required|callback_unique_prefix');
             if ($this->form_validation->run() == true) {
                 $post = $this->input->post();
-                $response = $this->permission_modules_model->save($post);
+                $response = $this->modules_model->save($post);
                 if ($response) {
                     set_alert('success', translate('information_has_been_saved_successfully'));
                 }
@@ -31,7 +31,7 @@ class modules_and_permissions extends CI_Controller
                 $this->data['validation_error'] = true;
             }
         }
-        $this->data['title'] = translate('Add Module');
+        $this->data['title'] = translate('Modules');
         $this->data['sub_page'] = 'modules_and_permissions/modules';
         $this->data['main_menu'] = 'settings';
         $this->load->view('layout/index', $this->data);
@@ -46,7 +46,7 @@ class modules_and_permissions extends CI_Controller
     }
     public function modules_edit($id = '')
     {
-        if (!get_permission('add_modules', 'is_view')) {
+        if (!get_permission('add_modules', 'is_edit')) {
             access_denied();
         }
 
@@ -55,7 +55,7 @@ class modules_and_permissions extends CI_Controller
             $this->form_validation->set_rules('prefix', translate('prefix'), 'required|callback_unique_prefix');
             if ($this->form_validation->run() == true) {
                 $post = $this->input->post();
-                $response = $this->permission_modules_model->save($post, $id);
+                $response = $this->modules_model->save($post, $id);
                 if ($response) {
                     set_alert('success', translate('information_has_been_saved_successfully'));
                 }
@@ -64,8 +64,8 @@ class modules_and_permissions extends CI_Controller
                 $this->data['validation_error'] = true;
             }
         }
-        $this->data['data'] = $this->permission_modules_model->getSingle('permission_modules', $id, true);
-        $this->data['title'] = translate('Add Module');
+        $this->data['data'] = $this->modules_model->getSingle('permission_modules', $id, true);
+        $this->data['title'] = translate('Edit Module');
         $this->data['sub_page'] = 'modules_and_permissions/modules_edit';
         $this->data['main_menu'] = 'settings';
         $this->load->view('layout/index', $this->data);
@@ -79,9 +79,75 @@ class modules_and_permissions extends CI_Controller
         );
     }
 
-    public function permissions()
+    public function permission()
     {
-        echo "Agya sukoon 😒😒😒😒";
+        if (!get_permission('add_permissions', 'is_view')) {
+            access_denied();
+        }
+
+        if ($this->input->post('submit') == 'save') {
+            $this->form_validation->set_rules('module_id', translate('module'), 'required');
+            $this->form_validation->set_rules('name', translate('name'), 'required');
+            $this->form_validation->set_rules('prefix', translate('prefix'), 'required');
+            if ($this->form_validation->run() == true) {
+                $post = $this->input->post();
+                $response = $this->permissions_model->save($post);
+                if ($response) {
+                    set_alert('success', translate('information_has_been_saved_successfully'));
+                }
+                redirect(base_url('modules_and_permissions/permission'));
+            } else {
+                $this->data['validation_error'] = true;
+            }
+        }
+        $this->data['title'] = translate('Permissions');
+        $this->data['sub_page'] = 'modules_and_permissions/permission';
+        $this->data['main_menu'] = 'settings';
+        $this->load->view('layout/index', $this->data);
+        $this->data['headerelements'] = array(
+            'css' => array(
+                'vendor/dropify/css/dropify.min.css',
+            ),
+            'js' => array(
+                'vendor/dropify/js/dropify.min.js',
+            ),
+        );
+    }
+
+    public function permission_edit($id = '')
+    {
+        if (!get_permission('add_permission', 'is_edit')) {
+            access_denied();
+        }
+
+        if ($this->input->post('submit') == 'save') {
+            $this->form_validation->set_rules('module_id', translate('module'), 'required');
+            $this->form_validation->set_rules('name', translate('name'), 'required');
+            $this->form_validation->set_rules('prefix', translate('prefix'), 'required');
+            if ($this->form_validation->run() == true) {
+                $post = $this->input->post();
+                $response = $this->permissions_model->save($post, $id);
+                if ($response) {
+                    set_alert('success', translate('information_has_been_saved_successfully'));
+                }
+                redirect(base_url('modules_and_permissions/permission'));
+            } else {
+                $this->data['validation_error'] = true;
+            }
+        }
+        $this->data['data'] = $this->permissions_model->getSingle('permission', $id, true);
+        $this->data['title'] = translate('Edit Permission');
+        $this->data['sub_page'] = 'modules_and_permissions/permission_edit';
+        $this->data['main_menu'] = 'settings';
+        $this->load->view('layout/index', $this->data);
+        $this->data['headerelements'] = array(
+            'css' => array(
+                'vendor/dropify/css/dropify.min.css',
+            ),
+            'js' => array(
+                'vendor/dropify/js/dropify.min.js',
+            ),
+        );
     }
 
     /* unique valid branch name verification is done here */

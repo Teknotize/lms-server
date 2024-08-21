@@ -1983,9 +1983,9 @@
                                     </li>
                                 <?php }
                                 if (get_permission('add_permissions', 'is_add')) { ?>
-                                    <li class="<?php if ($sub_page == 'modules_and_permissions/permissions') echo 'nav-active'; ?>">
-                                        <a href="<?= base_url('modules_and_permissions/permissions') ?>">
-                                            <span><i class="fas fa-caret-right" aria-hidden="true"></i><?= translate('add_permissions') ?></span>
+                                    <li class="<?php if ($sub_page == 'modules_and_permissions/permission') echo 'nav-active'; ?>">
+                                        <a href="<?= base_url('modules_and_permissions/permission') ?>">
+                                            <span><i class="fas fa-caret-right" aria-hidden="true"></i><?= translate('add_permission') ?></span>
                                         </a>
                                     </li>
                                 <?php } ?>

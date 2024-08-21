@@ -3,7 +3,7 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class permission_modules_model extends MY_Model
+class modules_model extends MY_Model
 {
 
     public function __construct()

@@ -593,168 +593,209 @@
 				</div>
 			<?php endif; ?>
 
-			<div class="panel panel-accordion">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#transfer_posting">
-							<i class="fas fa-dna"></i> <?= translate('transfer_posting') ?>
-						</a>
-					</h4>
-				</div>
-				<div id="transfer_posting" class="accordion-body collapse <?= ($this->session->flashdata('transfer_posting_tab') == 1 ? 'in' : ''); ?>">
-					<div class="panel-body">
-						<div class="text-right mb-sm">
-							<a href="javascript:void(0);" onclick="mfp_modal('#addTransferPosting')" class="btn btn-circle btn-default mb-sm">
-								<i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting') ?>
+			<?php
+			if (get_permission('transfer_posting', 'is_view')) {
+			?>
+				<div class="panel panel-accordion">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#transfer_posting">
+								<i class="fas fa-dna"></i> <?= translate('transfer_posting') ?>
 							</a>
-						</div>
-						<div class="table-responsive mb-sm mt-xs">
+						</h4>
+					</div>
+					<div id="transfer_posting" class="accordion-body collapse <?= ($this->session->flashdata('transfer_posting_tab') == 1 ? 'in' : ''); ?>">
+						<div class="panel-body">
+							<?php
+							if (get_permission('transfer_posting', 'is_add')) {
+							?>
+								<div class="text-right mb-sm">
+									<a href="javascript:void(0);" onclick="mfp_modal('#addTransferPosting')" class="btn btn-circle btn-default mb-sm">
+										<i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting') ?>
+									</a>
+								</div>
+							<?php
+							}
+							?>
 
-							<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th><?= translate('requested_role') ?></th>
-										<th><?= translate('requested_department') ?></th>
-										<th><?= translate('requested_institute') ?></th>
-										<th><?= translate('effective_from') ?></th>
-										<th><?= translate('status') ?></th>
-										<th><?= translate('requested_by') ?></th>
-										<th><?= translate('action_by') ?></th>
-										<th><?= translate('actions') ?></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php
-									$count = 1;
-									if (count($transfer_posting_requests) > 0) {
-										foreach ($transfer_posting_requests as $row):
-									?>
-											<tr>
-												<td><?= $count ?></td>
-												<td><?= ($row['designation_id'] === '0' || $row['designation_id'] === null) ? '---' : $row['designation'] ?></td>
-												<td><?= ($row['new_dep_id'] === '0' || $row['new_dep_id'] === null) ? '---' : $row['department'] ?></td>
-												<td><?= ($row['new_branch_id'] === '0' || $row['new_branch_id'] === null) ? '---' : $row['branch'] ?></td>
-												<td><?= $row['effective_from'] ?></td>
-												<td><?= $row['status'] ?></td>
-												<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : $row['created_by_name'] ?></td>
-												<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : $row['action_by_name'] ?></td>
-												<td class="min-w-c">
-													<a href="<?= base_url('transfer_posting/edit/' . $row['id']) ?>" class="btn btn-circle icon btn-default">
-														<i class="fas fa-pen-nib"></i>
-													</a>
-													<?php echo btn_delete('transfer_posting/delete/' . $row['id']); ?>
-												</td>
-											</tr>
+							<div class="table-responsive mb-sm mt-xs">
+
+								<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th><?= translate('requested_role') ?></th>
+											<th><?= translate('requested_department') ?></th>
+											<th><?= translate('requested_institute') ?></th>
+											<th><?= translate('effective_from') ?></th>
+											<th><?= translate('status') ?></th>
+											<th><?= translate('requested_by') ?></th>
+											<th><?= translate('action_by') ?></th>
+											<?php
+											if (get_permission('transfer_posting', 'is_edit') || $row['emp_id'] === get_loggedin_user_id()) {
+											?>
+												<th><?= translate('actions') ?></th>
+											<?php
+											}
+											?>
+										</tr>
+									</thead>
+									<tbody>
 										<?php
-											$count++;
-										endforeach;
+										$count = 1;
+										if (count($transfer_posting_requests) > 0) {
+											foreach ($transfer_posting_requests as $row):
 										?>
-									<?php
-									} else {
-										echo "<tr><td colspan='7'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
-									}
-									?>
-								</tbody>
-							</table>
+												<tr>
+													<td><?= $count ?></td>
+													<td><?= ($row['designation_id'] === '0' || $row['designation_id'] === null) ? '---' : $row['designation'] ?></td>
+													<td><?= ($row['new_dep_id'] === '0' || $row['new_dep_id'] === null) ? '---' : $row['department'] ?></td>
+													<td><?= ($row['new_branch_id'] === '0' || $row['new_branch_id'] === null) ? '---' : $row['branch'] ?></td>
+													<td><?= $row['effective_from'] ?></td>
+													<td><?= $row['status'] ?></td>
+													<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : $row['created_by_name'] ?></td>
+													<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : $row['action_by_name'] ?></td>
+													<td class="min-w-c">
+														<?php
+														if (get_permission('transfer_posting', 'is_edit')) {
+														?>
+															<a href="<?= base_url('transfer_posting/edit/' . $row['id']) ?>" class="btn btn-circle icon btn-default">
+																<i class="fas fa-pen-nib"></i>
+															</a>
+														<?php
+														}
+														if ($row['status'] === 'pending') {
+														?>
+															<button class='btn btn-success icon btn-circle' onclick="approve_reject_model('<?= base_url('transfer_posting/approve_reject/' . $row['id'] . '/approved') ?>','Are you sure?','Do you want to approve this request','Transfer Request Approved.')"><i class='fas fa-check'></i></button>
+															<button class='btn btn-danger icon btn-circle' onclick="approve_reject_model('<?= base_url('transfer_posting/approve_reject/' . $row['id'] . '/rejected') ?>','Are you sure?','Do you want to reject this request','Transfer Request Rejected.')"><i class='fas fa-times'></i></button>
+														<?php
+															if ($row['emp_id'] === get_loggedin_user_id()) {
+																echo btn_delete('transfer_posting/delete/' . $row['id']);
+															}
+														}
+														?>
+													</td>
+												</tr>
+											<?php
+												$count++;
+											endforeach;
+											?>
+										<?php
+										} else {
+											echo "<tr><td colspan='7'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
+										}
+										?>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			<?php
+			}
+			?>
 		</div>
 	</div>
 </div>
 
 
+<?php
+if (get_permission('transfer_posting', 'is_add')) {
+?>
 
-<!-- Transfer Posting Add Modal -->
-<div id="addTransferPosting" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
-	<script></script>
-	<section class="panel">
-		<div class="panel-heading">
-			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting'); ?></h4>
-		</div>
-		<?php echo form_open_multipart('transfer_posting/create', array('class' => 'form-horizontal frm-submit-data')); ?>
-		<div class="panel-body">
-			<!--  -->
-			<input type="hidden" name="emp_id" required value="<?= $staff['id'] ?>">
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('current_school') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<input type="hidden" name="current_branch_id" value="<?= $staff['branch_id'] ?>">
-					<?= form_dropdown("current_branch_id_disabled", $institutes, $staff['branch_id'], "class='form-control' id='tp_current_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
-					<span class="error"><?= form_error('current_branch_id') ?></span>
-				</div>
+	<!-- Transfer Posting Add Modal -->
+	<div id="addTransferPosting" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+		<script></script>
+		<section class="panel">
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting'); ?></h4>
 			</div>
+			<?php echo form_open_multipart('transfer_posting/create', array('class' => 'form-horizontal frm-submit-data')); ?>
+			<div class="panel-body">
+				<!--  -->
+				<input type="hidden" name="emp_id" required value="<?= $staff['id'] ?>">
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('new_school') ?></label>
-				<div class="col-md-9">
-					<?php
-					$new_institutes = $institutes;
-					unset($new_institutes[$staff['branch_id']]);
-					?>
-					<?= form_dropdown("new_branch_id", $new_institutes, null, "class='form-control' id='tp_new_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'") ?>
-					<span class="error"><?= form_error('new_branch_id') ?></span>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_school') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<input type="hidden" name="current_branch_id" value="<?= $staff['branch_id'] ?>">
+						<?= form_dropdown("current_branch_id_disabled", $institutes, $staff['branch_id'], "class='form-control' id='tp_current_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
+						<span class="error"><?= form_error('current_branch_id') ?></span>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('new_role') ?> </label>
-				<div class="col-md-9">
-					<?php
-					$designation_list = $this->app_lib->getDesignation($staff['branch_id']);
-					echo form_dropdown("designation_id", $designation_list, null, "class='form-control' id='tp_designation_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
-					?>
-					<span class="error"><?= form_error('designation_id') ?></span>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('new_school') ?></label>
+					<div class="col-md-9">
+						<?php
+						$new_institutes = $institutes;
+						unset($new_institutes[$staff['branch_id']]);
+						?>
+						<?= form_dropdown("new_branch_id", $new_institutes, null, "class='form-control' id='tp_new_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'") ?>
+						<span class="error"><?= form_error('new_branch_id') ?></span>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('current_department') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<input type="hidden" name="current_dep_id" value="<?= $staff['department'] ?>">
-					<?= form_dropdown("current_dep_id_disabled", $departments, $staff['department'], "class='form-control' id='current_dep_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
-					<span class="error"><?= form_error('current_dep_id') ?></span>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('new_role') ?> </label>
+					<div class="col-md-9">
+						<?php
+						$designation_list = $this->app_lib->getDesignation($staff['branch_id']);
+						echo form_dropdown("designation_id", $designation_list, null, "class='form-control' id='tp_designation_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
+						?>
+						<span class="error"><?= form_error('designation_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('new_department') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<?= form_dropdown("new_dep_id", $departments, null, "class='form-control' id='tp_department_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
-					<span class="error"><?= form_error('new_dep_id') ?></span>
+
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_department') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<input type="hidden" name="current_dep_id" value="<?= $staff['department'] ?>">
+						<?= form_dropdown("current_dep_id_disabled", $departments, $staff['department'], "class='form-control' id='current_dep_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
+						<span class="error"><?= form_error('current_dep_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('effective_from') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<?= form_input(['type' => 'date', 'name' => 'effective_from'], null, 'class="form-control" requried') ?>
-					<span class="error"><?= form_error('effective_from') ?></span>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('new_department') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_dropdown("new_dep_id", $departments, null, "class='form-control' id='tp_department_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
+						<span class="error"><?= form_error('new_dep_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('notes') ?></label>
-				<div class="col-md-9">
-					<?= form_textarea(['name' => 'notes'], null, 'class="form-control"') ?>
-					<span class="error"><?= form_error('notes') ?></span>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('effective_from') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'date', 'name' => 'effective_from'], null, 'class="form-control" requried') ?>
+						<span class="error"><?= form_error('effective_from') ?></span>
+					</div>
 				</div>
-			</div>
-			<!--  -->
-		</div>
-		<footer class="panel-footer">
-			<div class="row">
-				<div class="col-md-12 text-right">
-					<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
-						<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
-					</button>
-					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('notes') ?></label>
+					<div class="col-md-9">
+						<?= form_textarea(['name' => 'notes'], null, 'class="form-control"') ?>
+						<span class="error"><?= form_error('notes') ?></span>
+					</div>
 				</div>
+				<!--  -->
 			</div>
-		</footer>
-		<?php echo form_close(); ?>
-	</section>
-</div>
+			<footer class="panel-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+							<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+						</button>
+						<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+					</div>
+				</div>
+			</footer>
+			<?php echo form_close(); ?>
+		</section>
+	</div>
+
+<?php
+}
+?>
 
 <!-- Documents Details Add Modal -->
 <div id="addStaffDocuments" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">

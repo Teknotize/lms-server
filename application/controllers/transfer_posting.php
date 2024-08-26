@@ -28,9 +28,21 @@ class transfer_posting extends CI_Controller
 
     public function index()
     {
+        $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request();
+        // echo ('<pre>');
+        // print_r($this->data['requests']);
+        // echo ('</pre>');
+        // exit;
+
+
         $this->data['title'] = translate('transfer_posting');
         $this->data['sub_page'] = 'transfer_posting/index';
         $this->data['main_menu'] = 'award';
+        $this->data['headerelements'] = array(
+            'js' => array(
+                'js/transfer_posting.js',
+            ),
+        );
         $this->load->view('layout/index', $this->data);
     }
 
@@ -58,12 +70,6 @@ class transfer_posting extends CI_Controller
             access_denied();
         }
 
-        // if ($this->input->post('submit') == 'update') {
-        //     echo "Hello";
-        //     exit;
-        // }
-
-
         if ($this->input->post('submit') == 'update') {
 
             $this->custom_validation_rules();
@@ -79,16 +85,12 @@ class transfer_posting extends CI_Controller
         $this->data['institutes'] = $this->app_lib->getSelectList('branch');
         $this->data['req_user'] = $this->db->where('id', $this->data['request']['emp_id'])->get('staff')->result_array()[0];
 
-        $departments_query = $this->db->where('branch_id', $this->data['request']['current_branch_id'])->get('staff_department');
-        $departments_result = $departments_query->result_array();
-        $this->data['departments'] = array_column($departments_result, 'name', 'id');
-        array_unshift($this->data['departments'], translate('select'));
-        // echo ('<pre>');
-        // print_r($this->data['request']);
-        // print_r($this->data['institutes']);
-        // print_r($this->data['departments']);
-        // echo ('</pre>');
-        // exit;
+        $department_id = $this->data['request']['new_branch_id'] ? $this->data['request']['new_branch_id'] : $this->data['request']['current_branch_id'];
+        $this->data['departments'] = $this->app_lib->getDepartment($department_id);
+
+
+
+
         $this->data['title'] = translate('transfer_posting');
         $this->data['sub_page'] = 'transfer_posting/edit';
         $this->data['main_menu'] = 'award';
@@ -109,13 +111,17 @@ class transfer_posting extends CI_Controller
         $this->db->update('transfer_posting', ['deleted_at' => date("Y-m-d H:i:s")]);
     }
 
-    // public function check_value_greater_than_zero($str)
-    // {
-    //     if ($str <= 0) {
-    //         // Set the value to null
-    //         $this->form_validation->set_data(array_merge($this->form_validation->validation_data, [$this->form_validation->current_field => null]));
-    //         return true; // Do not throw an error
-    //     }
-    //     return true; // Value is greater than zero, no error
-    // }
+    public function approve_reject($id, $status)
+    {
+        $response = array('status' => 'failed');
+
+        if ($status === 'approved' || $status === 'rejected') {
+            $db_response = $this->transfer_posting_model->status_change($id, $status);
+            if ($db_response) $response['status'] = 'success';
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
 }

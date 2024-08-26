@@ -186,14 +186,12 @@ class Employee extends Admin_Controller
         $this->data['staff'] = $this->employee_model->getSingleStaff($id);
         $this->data['institutes'] = $this->app_lib->getSelectList('branch');
 
-        $departments_query = $this->db->where('branch_id', $this->data['staff']['branch_id'])->get('staff_department');
-        $departments_result = $departments_query->result_array();
-        $this->data['departments'] = array_column($departments_result, 'name', 'id');
-        array_unshift($this->data['departments'], translate('select'));
+        $this->data['departments'] = $this->app_lib->getDepartment($this->data['staff']['branch_id']);
 
         $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request($this->data['staff']['id']);
+
         // echo ('<pre>');
-        // print_r($this->data['transfer_posting_requests']);
+        // print_r($this->data['departments']);
         // echo ('</pre>');
         // exit;
 

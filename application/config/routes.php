@@ -101,45 +101,46 @@ $route['profile'] = 'profile/index';
 $route['sections'] = 'sections/index';
 // API ROUTES
 // the param that I am passing to handleUpsert function is the table name
-$route['api/dbSyncController/studentTable'] = 'api/dbSyncController/handleTableUpsert/student';
-$route['api/dbSyncController/classTable'] = 'api/dbSyncController/handleTableUpsert/class';
-$route['api/dbSyncController/sectionTable'] = 'api/dbSyncController/handleTableUpsert/section';
-$route['api/dbSyncController/parentsTable'] = 'api/dbSyncController/handleTableUpsert/parent';
-$route['api/dbSyncController/sectionsAllocationTable'] = 'api/dbSyncController/handleTableUpsert/sections_allocation';
-$route['api/dbSyncController/enrollTable'] = 'api/dbSyncController/handleTableUpsert/enroll';
-$route['api/dbSyncController/studentAttendanceTable'] = 'api/dbSyncController/handleTableUpsert/student_attendance';
-$route['api/dbSyncController/homeworkTable'] = 'api/dbSyncController/handleTableUpsert/homework';
-$route['api/dbSyncController/homeworkEvaluationTable'] = 'api/dbSyncController/handleTableUpsert/homework_evaluation';
-$route['api/dbSyncController/homeworkSubmitTable'] = 'api/dbSyncController/handleTableUpsert/homework_submit';
-$route['api/dbSyncController/subjectTable'] = 'api/dbSyncController/handleTableUpsert/subject';
-$route['api/dbSyncController/subjectAssignTable'] = 'api/dbSyncController/handleTableUpsert/subject_assign';
+$route['api/dbSyncController/studentTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/student/$1';
+$route['api/dbSyncController/classTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/class/$1';
+$route['api/dbSyncController/sectionTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/section/$1';
+$route['api/dbSyncController/parentsTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/parent/$1';
+$route['api/dbSyncController/sectionsAllocationTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/sections_allocation/$1';
+$route['api/dbSyncController/enrollTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/enroll/$1';
+$route['api/dbSyncController/studentAttendanceTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/student_attendance/$1';
+$route['api/dbSyncController/homeworkTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/homework/$1';
+$route['api/dbSyncController/homeworkEvaluationTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/homework_evaluation/$1';
+$route['api/dbSyncController/homeworkSubmitTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/homework_submit/$1';
+$route['api/dbSyncController/subjectTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/subject/$1';
+$route['api/dbSyncController/subjectAssignTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/subject_assign/$1';
 // Zeeshan is Working on Following
-$route['api/dbSyncController/examTable'] = 'api/dbSyncController/handleTableUpsert/exam';
-$route['api/dbSyncController/examAttendanceTable'] = 'api/dbSyncController/handleTableUpsert/exam_attendance';
-$route['api/dbSyncController/examHallTable'] = 'api/dbSyncController/handleTableUpsert/exam_hall';
-$route['api/dbSyncController/examMarkDistributionTable'] = 'api/dbSyncController/handleTableUpsert/exam_mark_distribution';
-$route['api/dbSyncController/examTermTable'] = 'api/dbSyncController/handleTableUpsert/exam_term';
-$route['api/dbSyncController/timetableClassTable'] = 'api/dbSyncController/handleTableUpsert/timetable_class';
-$route['api/dbSyncController/timetableExamTable'] = 'api/dbSyncController/handleTableUpsert/timetable_exam';
-$route['api/dbSyncController/staffTable'] = 'api/dbSyncController/handleTableUpsert/staff';
-$route['api/dbSyncController/staffAttendanceTable'] = 'api/dbSyncController/handleTableUpsert/staff_attendance';
-$route['api/dbSyncController/staffBankAccountTable'] = 'api/dbSyncController/handleTableUpsert/staff_bank_account';
-$route['api/dbSyncController/staffDepartmentTable'] = 'api/dbSyncController/handleTableUpsert/staff_department';
-$route['api/dbSyncController/staffDesignationTable'] = 'api/dbSyncController/handleTableUpsert/staff_designation';
-$route['api/dbSyncController/staffDocumentsTable'] = 'api/dbSyncController/handleTableUpsert/staff_documents';
-$route['api/dbSyncController/staffPrivilegesTable'] = 'api/dbSyncController/handleTableUpsert/staff_privileges';
-$route['api/dbSyncController/teacherAllocationTable'] = 'api/dbSyncController/handleTableUpsert/teacher_allocation';
-$route['api/dbSyncController/teacherNoteTable'] = 'api/dbSyncController/handleTableUpsert/teacher_note';
-$route['api/dbSyncController/salaryTemplateTable'] = 'api/dbSyncController/handleTableUpsert/salary_template';
+$route['api/dbSyncController/examTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/exam/$1';
+$route['api/dbSyncController/examAttendanceTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/exam_attendance/$1';
+$route['api/dbSyncController/examHallTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/exam_hall/$1';
+$route['api/dbSyncController/examMarkDistributionTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/exam_mark_distribution/$1';
+$route['api/dbSyncController/examTermTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/exam_term/$1';
+$route['api/dbSyncController/timetableClassTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/timetable_class/$1';
+$route['api/dbSyncController/timetableExamTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/timetable_exam/$1';
+$route['api/dbSyncController/staffTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff/$1';
+$route['api/dbSyncController/staffAttendanceTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff_attendance/$1';
+$route['api/dbSyncController/staffBankAccountTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff_bank_account/$1';
+$route['api/dbSyncController/staffDepartmentTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff_department/$1';
+$route['api/dbSyncController/staffDesignationTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff_designation/$1';
+$route['api/dbSyncController/staffDocumentsTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff_documents/$1';
+$route['api/dbSyncController/staffPrivilegesTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/staff_privileges/$1';
+$route['api/dbSyncController/teacherAllocationTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/teacher_allocation/$1';
+$route['api/dbSyncController/teacherNoteTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/teacher_note/$1';
+$route['api/dbSyncController/salaryTemplateTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/salary_template/$1';
 // Upcoming
-$route['api/dbSyncController/attachmentsTable'] = 'api/dbSyncController/handleTableUpsert/attachments';
-$route['api/dbSyncController/attachmentsTypeTable'] = 'api/dbSyncController/handleTableUpsert/attachments_type';
-$route['api/dbSyncController/schoolYearTable'] = 'api/dbSyncController/handleTableUpsert/schoolyear';
-$route['api/dbSyncController/lmsGradesTable'] = 'api/dbSyncController/handleTableUpsert/lms_grades';
-$route['api/dbSyncController/lmsSubjectsTable'] = 'api/dbSyncController/handleTableUpsert/lms_subjects';
-$route['api/dbSyncController/leaveApplicationTable'] = 'api/dbSyncController/handleTableUpsert/leave_application';
-$route['api/dbSyncController/leaveCategoryTable'] = 'api/dbSyncController/handleTableUpsert/leave_category';
-$route['api/dbSyncController/loginCredentialsTable'] = 'api/dbSyncController/handleTableUpsert/login_credential';
+$route['api/dbSyncController/attachmentsTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/attachments/$1';
+$route['api/dbSyncController/attachmentsTypeTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/attachments_type/$1';
+$route['api/dbSyncController/schoolYearTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/schoolyear/$1';
+$route['api/dbSyncController/lmsGradesTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/lms_grades/$1';
+$route['api/dbSyncController/lmsSubjectsTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/lms_subjects/$1';
+$route['api/dbSyncController/leaveApplicationTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/leave_application/$1';
+$route['api/dbSyncController/leaveCategoryTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/leave_category/$1';
+$route['api/dbSyncController/loginCredentialsTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/login_credential/$1';
+
 
 
 

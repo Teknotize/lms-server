@@ -11,6 +11,17 @@ class Branch_model extends MY_Model
         parent::__construct();
     }
 
+
+    public function getBranch($id = null)
+    {
+        if ($id != null) {
+            $this->db->where('id', $id);
+        }
+        $query = $this->db->get('branch');
+        return $query->result();
+    }
+
+
     public function save($data)
     {
         $arrayBranch = array(

@@ -21,6 +21,8 @@ class Employee extends Admin_Controller
         $this->load->model('employee_model');
         $this->load->model('email_model');
         $this->load->model('crud_model');
+        $this->load->model('branch_model');
+        $this->load->model('transfer_posting_model');
     }
 
     public function index()
@@ -182,6 +184,21 @@ class Employee extends Admin_Controller
         }
         $this->data['categorylist'] = $this->app_lib->get_document_category();
         $this->data['staff'] = $this->employee_model->getSingleStaff($id);
+        $this->data['institutes'] = $this->app_lib->getSelectList('branch');
+
+        $departments_query = $this->db->where('branch_id', $this->data['staff']['branch_id'])->get('staff_department');
+        $departments_result = $departments_query->result_array();
+        $this->data['departments'] = array_column($departments_result, 'name', 'id');
+        array_unshift($this->data['departments'], translate('select'));
+
+        $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request($this->data['staff']['id']);
+        // echo ('<pre>');
+        // print_r($this->data['transfer_posting_requests']);
+        // echo ('</pre>');
+        // exit;
+
+
+
         $this->data['title'] = translate('employee_profile');
         $this->data['sub_page'] = 'employee/profile';
         $this->data['main_menu'] = 'employee';
@@ -191,6 +208,7 @@ class Employee extends Admin_Controller
             ),
             'js' => array(
                 'js/employee.js',
+                'js/transfer_posting.js',
                 'vendor/dropify/js/dropify.min.js',
             ),
         );

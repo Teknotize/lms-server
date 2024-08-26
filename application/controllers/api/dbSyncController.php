@@ -9,7 +9,7 @@ class dbSyncController extends CI_Controller
         parent::__construct();
     }
 
-    public function insertUpdateData($table_name, $data)
+    public function insertUpdateData($table_name, $data, $branch_id)
     {
         $response = array();
         foreach ($data as $object) {
@@ -17,6 +17,9 @@ class dbSyncController extends CI_Controller
 
             if ($object->master_id)
                 $toUpdate = True;
+
+            if ($object->branch_id)
+                $object->branch_id = $branch_id;
 
             $id = $object->id;
             $master_id = $object->master_id ? $object->master_id : null;
@@ -88,13 +91,15 @@ class dbSyncController extends CI_Controller
         }
     }
 
-    public function handleTableUpsert($table_name)
+    public function handleTableUpsert($table_name, $id = null)
     {
+        // $this->output
+        //     ->set_content_type('application/json')
+        //     ->set_status_header(200)
+        //     ->set_output(json_encode($table_name . " - " . $id));
         if ($this->checkPostRequest()) {
-            // echo $table_name;
-            // exit();
             $data = $this->checkJsonData($this->input->raw_input_stream);
-            $response = $this->insertUpdateData($table_name, $data);
+            $response = $this->insertUpdateData($table_name, $data, $id);
             $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)

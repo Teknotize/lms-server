@@ -801,6 +801,14 @@
                                             </a>
                                         </li>
                                     <?php } ?>
+                                    <?php if (get_permission('transfer_posting', 'is_view')) { ?>
+                                        <li class="<?php if ($sub_page == 'transfer_posting/index' || $sub_page == 'transfer_posting/add' || $sub_page == 'transfer_posting/edit') echo 'nav-active'; ?>">
+                                            <a href="<?= base_url('transfer_posting/index') ?>">
+                                                <i class="fas fa-crown"></i>
+                                                <span><?= translate('transfer_posting') ?></span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
                                 </ul>
                             </li>
                     <?php }

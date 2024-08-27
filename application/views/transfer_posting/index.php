@@ -34,7 +34,15 @@
                                         <td><?= ($row['new_dep_id'] === '0' || $row['new_dep_id'] === null) ? '---' : $row['department'] ?></td>
                                         <td><?= ($row['new_branch_id'] === '0' || $row['new_branch_id'] === null) ? '---' : $row['branch'] ?></td>
                                         <td><?= $row['effective_from'] ?></td>
-                                        <td><?= $row['status'] ?></td>
+                                        <td>
+                                            <?php if ($row['status'] == 'approved'): ?>
+                                                <span class="badge badge-success"><?= translate($row['status']) ?></span>
+                                            <?php elseif ($row['status'] == 'rejected'): ?>
+                                                <span class="badge badge-danger"><?= translate($row['status']) ?></span>
+                                            <?php else: ?>
+                                                <span class="badge badge-warning"><?= translate($row['status']) ?></span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : $row['created_by_name'] ?></td>
                                         <td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : $row['action_by_name'] ?></td>
                                         <td class="min-w-c">

@@ -76,6 +76,7 @@ class transfer_posting_model extends CI_Model
             $this->db->where('tp.emp_id', $id);
         }
         $this->db->where('tp.deleted_at', null);
+        $this->db->order_by('FIELD(tp.status, "pending", "approved", "rejected")', '', false);
         $query = $this->db->get();
         return $query->result_array();
     }

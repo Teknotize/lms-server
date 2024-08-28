@@ -67,5 +67,54 @@
                 "null":true
             }  
         }
+    },
+    
+    {
+        "table_name":"staff_education",
+        "primary_key":"id",
+        "fields":{
+            "id":{
+                "type":"INT",
+                "unsigned":true,
+                "auto_increment":true,
+                "null":false
+            },
+            "staff_id":{
+                "type":"INT",
+                "null":false
+            },
+            "institute_name":{
+                "type":"TEXT",
+                "null":true
+            },
+            "degree":{
+                "type":"TEXT",
+                "null":true
+            },
+            "study_field":{
+                "type":"TEXT",
+                "null":true
+            },
+            "location":{
+                "type":"TEXT",
+                "null":true
+            },   
+            "start_date":{
+                "type":"DATE",
+                "null":false
+            },  
+            "end_date":{
+                "type":"DATE",
+                "null":false
+            },  
+            "created_at":{
+                "type":"TIMESTAMP",
+                "null":false
+            },
+            "updated_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            } 
+        }
     }
 ]

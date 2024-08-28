@@ -61,6 +61,7 @@ ini_set('post_max_size', '5000M');
 ini_set('upload_max_filesize', '5000M');
 
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
 //echo ENVIRONMENT;exit;
 

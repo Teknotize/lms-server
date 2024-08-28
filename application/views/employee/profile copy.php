@@ -411,7 +411,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#staff_education">
-							<i class="fas fa-university"></i> <?= translate('education') ?>
+							<i class="fas fa-university"></i> <?= translate('staff_education') ?>
 						</a>
 					</h4>
 				</div>
@@ -419,7 +419,7 @@
 					<div class="panel-body">
 						<div class="text-right mb-sm">
 							<a href="javascript:void(0);" onclick="mfp_modal('#addStaffEducationModal')" class="btn btn-circle btn-default mb-sm">
-								<i class="fas fa-plus-circle"></i> <?= translate('education') ?>
+								<i class="fas fa-plus-circle"></i> <?= translate('staff_education') ?>
 							</a>
 						</div>
 						<div class="table-responsive mb-md">
@@ -442,21 +442,21 @@
 									$this->db->where('staff_id', $staff['id']);
 									$educationResult = $this->db->get('staff_education')->result_array();
 									if (count($educationResult)) {
-										foreach ($educationResult as $education):
+										foreach ($educationResult as $):
 									?>
 											<tr>
 												<td><?php echo $count++ ?></td>
-												<td><?php echo $education['institute_name']; ?></td>
-												<td><?php echo $education['degree']; ?></td>
-												<td><?php echo $education['study_field']; ?></td>
-												<td><?php echo $education['location']; ?></td>
-												<td><?php echo $education['start_date']; ?></td>
-												<td><?php echo $education['end_date']; ?></td>
+												<td><?php echo $bank['institute_name']; ?></td>
+												<td><?php echo $bank['degree']; ?></td>
+												<td><?php echo $bank['study_field']; ?></td>
+												<td><?php echo $bank['location']; ?></td>
+												<td><?php echo $bank['start_date']; ?></td>
+												<td><?php echo $bank['end_date']; ?></td>
 												<td class="min-w-c">
-													<a href="javascript:void(0);" onclick="editStaffEducation('<?= $education['id'] ?>')" class="btn btn-circle icon btn-default">
+													<a href="javascript:void(0);" onclick="editStaffEducation('<?= $bank['id'] ?>')" class="btn btn-circle icon btn-default">
 														<i class="fas fa-pen-nib"></i>
 													</a>
-													<?php echo btn_delete('employee/staff_education_delete/' . $education['id']); ?>
+													<?php echo btn_delete('employee/staff_education_delete/' . $bank['id']); ?>
 												</td>
 											</tr>
 									<?php

@@ -158,6 +158,25 @@ class Employee_model extends MY_Model
         }
     }
 
+    public function educationSave($data)
+    {
+        $inser_data = array(
+            'staff_id' => $data['staff_id'],
+            'institute_name' => $data['institute_name'],
+            'degree' => $data['degree'],
+            'study_field' => $data['study_field'],
+            'location' => $data['location'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
+        );
+        if (isset($data['staff_education_id'])) {
+            $this->db->where('id', $data['staff_education_id']);
+            $this->db->update('staff_education', $inser_data);
+        } else {
+            $this->db->insert('staff_education', $inser_data);
+        }
+    }
+
     public function csvImport($row, $branchID, $userRole, $designationID, $departmentID)
     {
         $inser_data1 = array(

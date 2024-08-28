@@ -693,6 +693,26 @@ function editStaffBank(id) {
     });
 }
 
+// staff education account edit modal show
+function editStaffEducation(id) {
+    $.ajax({
+        url: base_url + "employee/education_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#estaff_education_id').val(res.id);
+            $('#einstitute_name').val(res.institute_name);
+            $('#edegree').val(res.degree);
+            $('#estudy_field').val(res.study_field);
+            $('#elocation').val(res.location);
+            $('#estart_date').val(res.start_date);
+            $('#eend_date').val(res.end_date);
+            mfp_modal('#editStaffEducationModal');
+        }
+    });
+}
+
 // print function
 function fn_printElem(elem, html = false)
 {

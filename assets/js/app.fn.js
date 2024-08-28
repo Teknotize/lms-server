@@ -713,6 +713,43 @@ function editStaffEducation(id) {
     });
 }
 
+// staff experience  edit modal show
+function editExperience(id) {
+    $.ajax({
+        url: base_url + "employee/experience_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#eestaff_experience_id').val(res.id);
+            $('#eeinstitute_name').val(res.institute_name);
+            $('#eetitle').val(res.title);
+            $('#eetype').val(res.type);
+            $('#eelocation').val(res.location);
+            $('#eestart_date').val(res.start_date);
+            $('#eeend_date').val(res.end_date);
+            mfp_modal('#editStaffExperienceModal');
+        }
+    });
+}
+// staff spouse  edit modal show
+function editspouse(id) {
+    $.ajax({
+        url: base_url + "employee/spouse_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#estaff_spouse_id').val(res.id);
+            $('#ename').val(res.name);
+            $('#eoccupation').val(res.occupation);
+            $('#etotal_child').val(res.total_child);
+            $('#edependent_child').val(res.dependent_child); 
+            mfp_modal('#editStaffSpouseModal');
+        }
+    });
+}
+
 // print function
 function fn_printElem(elem, html = false)
 {

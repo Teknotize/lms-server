@@ -116,5 +116,93 @@
                 "null":true
             } 
         }
+    },
+    {
+        "table_name":"staff_experience",
+        "primary_key":"id",
+        "fields":{
+            "id":{
+                "type":"INT",
+                "unsigned":true,
+                "auto_increment":true,
+                "null":false
+            },
+            "staff_id":{
+                "type":"INT",
+                "null":false
+            },
+            "title": {
+                "type": "CHAR(255)",
+                "null": true
+            },
+            "type": {
+                "type": "CHAR(255)",
+                "null": true
+            },
+            "institute_name": {
+                "type": "CHAR(255)",
+                "null": true
+            },
+            "location": {
+                "type": "CHAR(255)",
+                "null": true
+            },   
+            "start_date":{
+                "type":"DATE",
+                "null":false
+            },  
+            "end_date":{
+                "type":"DATE",
+                "null":false
+            },  
+            "created_at":{
+                "type":"TIMESTAMP",
+                "null":false
+            },
+            "updated_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            } 
+        }
+    },
+    {
+        "table_name":"staff_spouse",
+        "primary_key":"id",
+        "fields":{
+            "id":{
+                "type":"INT",
+                "unsigned":true,
+                "auto_increment":true,
+                "null":false
+            },
+            "staff_id":{
+                "type":"INT",
+                "null":false
+            },
+            "name": {
+                "type": "CHAR(255)",
+                "null": true
+            },
+            "occupation": {
+                "type": "CHAR(255)",
+                "null": true
+            },
+            "total_child": {
+                "type": "CHAR(255)",
+                "null": true
+            },
+            "dependent_child": {
+                "type": "CHAR(255)",
+                "null": true
+            },    
+            "created_at":{
+                "type":"TIMESTAMP",
+                "null":false
+            },
+            "updated_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            } 
+        }
     }
 ]

@@ -702,6 +702,118 @@
 			<?php
 			}
 			?>
+
+			<?php
+			if (get_permission('promotions', 'is_view')) {
+			?>
+				<div class="panel panel-accordion">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#promotions">
+								<i class="fas fa-dna"></i> <?= translate('promotions') ?>
+							</a>
+						</h4>
+					</div>
+					<div id="promotions" class="accordion-body collapse <?= ($this->session->flashdata('promotions_tab') == 1 ? 'in' : ''); ?>">
+						<div class="panel-body">
+							<?php
+							if (get_permission('promotions', 'is_add')) {
+							?>
+								<div class="text-right mb-sm">
+									<a href="javascript:void(0);" onclick="mfp_modal('#addPromotions')" class="btn btn-circle btn-default mb-sm">
+										<i class="fas fa-plus-circle"></i> <?= translate('add_promotions') ?>
+									</a>
+								</div>
+							<?php
+							}
+							?>
+
+							<div class="table-responsive mb-sm mt-xs">
+
+								<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th><?= translate('staff_id') ?></th>
+											<th><?= translate('requested_department') ?></th>
+											<th><?= translate('requested_scale') ?></th>
+											<th><?= translate('rating') ?></th>
+											<th><?= translate('effective_from') ?></th>
+											<th><?= translate('status') ?></th>
+											<th><?= translate('requested_by') ?></th>
+											<th><?= translate('action_by') ?></th>
+											<?php
+											if (get_permission('promotions', 'is_edit')) {
+											?>
+												<th><?= translate('actions') ?></th>
+											<?php
+											}
+											?>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										$count = 1;
+										if (count($staff_promotions) > 0) {
+											foreach ($staff_promotions as $row):
+										?>
+												<tr>
+													<td><?= $count ?></td>
+													<td><?= $row['staff_id'] ?></td>
+													<td><?= ($row['dep_id'] === '0') ? '---' : translate($row['department']) ?></td>
+													<td><?= ($row['scale_id'] === '0') ? '---' : translate($row['scale']) ?></td>
+													<td><?= ($row['rating'] === '0') ? '---' : translate($row['rating'] . "_star") ?></td>
+													<td><?= $row['effective_from'] ?></td>
+													<td>
+														<?php if ($row['status'] == 'approved'): ?>
+															<span class="badge badge-success"><?= translate($row['status']) ?></span>
+														<?php elseif ($row['status'] == 'rejected'): ?>
+															<span class="badge badge-danger"><?= translate($row['status']) ?></span>
+														<?php else: ?>
+															<span class="badge badge-warning"><?= translate($row['status']) ?></span>
+														<?php endif; ?>
+													</td>
+													<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : translate($row['created_by_name']) ?></td>
+													<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : translate($row['action_by_name']) ?></td>
+													<td class="min-w-c">
+														<?php
+														if (get_permission('promotions', 'is_edit')) {
+														?>
+															<a href="<?= base_url('promotions/edit/' . $row['id']) ?>" class="btn btn-circle icon btn-default">
+																<i class="fas fa-pen-nib"></i>
+															</a>
+														<?php
+														}
+														if ($row['status'] === 'pending') {
+														?>
+															<button class='btn btn-success icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/approved') ?>','Are you sure?','Do you want to approve this request','Promotion Request Approved.')"><i class='fas fa-check'></i></button>
+															<button class='btn btn-danger icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/rejected') ?>','Are you sure?','Do you want to reject this request','Promotion Request Rejected.')"><i class='fas fa-times'></i></button>
+														<?php
+															// if ($row['emp_id'] === get_loggedin_user_id()) {
+															// 	echo btn_delete('promotion/delete/' . $row['id']);
+															// }
+														}
+														?>
+													</td>
+												</tr>
+											<?php
+												$count++;
+											endforeach;
+											?>
+										<?php
+										} else {
+											echo "<tr><td colspan='11'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
+										}
+										?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php
+			}
+			?>
 		</div>
 	</div>
 </div>
@@ -792,6 +904,119 @@ if (get_permission('transfer_posting', 'is_add')) {
 					<div class="col-md-12 text-right">
 						<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
 							<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+						</button>
+						<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+					</div>
+				</div>
+			</footer>
+			<?php echo form_close(); ?>
+		</section>
+	</div>
+
+<?php
+}
+?>
+
+
+<?php
+if (get_permission('promotions', 'is_add')) {
+?>
+
+
+	<!-- Transfer Posting Add Modal -->
+	<div id="addPromotions" class="zoom-anim-dialog modal-block modal-lg modal-block-primary mfp-hide">
+		<script></script>
+		<section class="panel">
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?= translate('add_promotions'); ?></h4>
+			</div>
+			<?php echo form_open_multipart('promotions/create', array('class' => 'form-horizontal frm-submit-data')); ?>
+			<div class="panel-body">
+				<!--  -->
+				<input type="hidden" name="emp_id" required value="<?= $staff['id'] ?>">
+
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('employee_id') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'employee_id'], $staff['staff_id'], 'class="form-control" disabled') ?>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('phone') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'phone_number'], $staff['mobileno'], 'class="form-control" disabled') ?>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_department') ?></label>
+					<div class="col-md-9">
+						<?= form_dropdown("current_dep_id_disabled", $departments, $staff['department'], "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
+						<span class="error"><?= form_error('current_dep_id') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('assign_department_(Optional)') ?> </label>
+					<div class="col-md-9">
+						<?= form_dropdown("new_dep_id", $departments, null, "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'") ?>
+						<span class="error"><?= form_error('new_dep_id') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_scale') ?> </label>
+					<div class="col-md-9">
+						<?= form_dropdown("current_scale", $payscales, $promotions['payscale'], "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' disabled") ?>
+						<span class="error"><?= form_error('current_scale') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('promotion_scale') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_dropdown("promotion_scale", $payscales, null, "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
+						<span class="error"><?= form_error('promotion_scale') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('qualification') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'qualification'], $staff['qualification'], 'class="form-control" disabled') ?>
+						<span class="error"><?= form_error('qualification') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('years_of_experience') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'years_of_experience'], null, 'class="form-control" disabled') ?>
+						<span class="error"><?= form_error('years_of_experience') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('ratings') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_dropdown("ratings", $ratings, null, "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
+						<span class="error"><?= form_error('ratings') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('effective_from') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'date', 'name' => 'effective_from'], null, 'class="form-control" requried') ?>
+						<span class="error"><?= form_error('effective_from') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('notes') ?></label>
+					<div class="col-md-9">
+						<?= form_textarea(['name' => 'notes'], null, 'class="form-control"') ?>
+						<span class="error"><?= form_error('notes') ?></span>
+					</div>
+				</div>
+				<!--  -->
+			</div>
+			<footer class="panel-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+							<i class="fas fa-plus-circle"></i> <?php echo translate('request'); ?>
 						</button>
 						<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
 					</div>

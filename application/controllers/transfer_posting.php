@@ -40,7 +40,7 @@ class transfer_posting extends CI_Controller
     {
         $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request();
         // echo ('<pre>');
-        // print_r($this->data['requests']);
+        // print_r($this->data['transfer_posting_requests']);
         // echo ('</pre>');
         // exit;
 

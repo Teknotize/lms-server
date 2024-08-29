@@ -23,6 +23,7 @@ class Employee extends Admin_Controller
         $this->load->model('crud_model');
         $this->load->model('branch_model');
         $this->load->model('transfer_posting_model');
+        $this->load->model('staff_promotions_model');
     }
 
     public function index()
@@ -190,10 +191,22 @@ class Employee extends Admin_Controller
 
         $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request($this->data['staff']['id']);
 
+        $this->data['staff_promotions'] = $this->staff_promotions_model->get_data($this->data['staff']['id']);
+
         // echo ('<pre>');
-        // print_r($this->data['departments']);
+        // print_r($this->data['staff_promotions']);
         // echo ('</pre>');
         // exit;
+        $this->data['payscales'] = $this->app_lib->getSelectList('salary_template');
+
+        $this->data['ratings'] = array(
+            null => translate('select_rating'),
+            1 => translate('1_star'),
+            2 => translate('2_star'),
+            3 => translate('3_star'),
+            4 => translate('4_star'),
+            5 => translate('5_star'),
+        );
 
 
 

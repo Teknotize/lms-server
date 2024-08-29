@@ -67,5 +67,67 @@
                 "null":true
             }  
         }
+    },
+    {
+        "table_name":"staff_promotions",
+        "primary_key":"id",
+        "fields":{
+            "id":{
+                "type":"INT",
+                "unsigned":true,
+                "auto_increment":true,
+                "null":false
+            },
+            "emp_id":{
+                "type":"INT",
+                "null":false
+            },
+            "dep_id":{
+                "type":"INT",
+                "null":true
+            },
+            "scale_id":{
+                "type":"INT",
+                "null":false
+            },
+            "rating":{
+                "type":"ENUM",
+                "constraint":["1","2","3","4","5"],
+                "null":false
+            },
+            "effective_from":{
+                "type":"DATE",
+                "null":false
+            },
+            "notes":{
+                "type":"TEXT",
+                "null":true
+            },
+            "created_by":{
+                "type":"INT",
+                "null":true
+            },
+            "action_by":{
+                "type":"INT",
+                "null":true
+            },
+            "status":{
+                "type":"ENUM",
+                "constraint":["pending","approved","rejected"],
+                "null":false
+            },
+            "created_at":{
+                "type":"TIMESTAMP",
+                "null":false
+            },
+            "updated_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            },
+            "deleted_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            }
+        }
     }
 ]

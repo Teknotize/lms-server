@@ -3,6 +3,9 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
+
+
+
 // return translation
 function translate($word = '')
 {

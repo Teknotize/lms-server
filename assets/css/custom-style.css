@@ -8229,6 +8229,10 @@ html.dark .label-primary {
 	position: relative;
 }
 
+.modal-lg{
+	max-width: 900px !important;
+}
+
 .modal-block.modal-block-xs {
 	max-width: 200px;
 }

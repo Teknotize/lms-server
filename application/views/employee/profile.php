@@ -410,12 +410,280 @@
 			<div class="panel panel-accordion">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#bank_account">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#staff_education">
+							<i class="fas fa-university"></i> <?= translate('education') ?>
+						</a>
+					</h4>
+				</div>
+				<div id="staff_education" class="accordion-body collapse <?= ($this->session->flashdata('staff_education_tab') == 1 ? 'in' : ''); ?>">
+					<div class="panel-body">
+						<div class="text-right mb-sm">
+							<a href="javascript:void(0);" onclick="mfp_modal('#addStaffEducationModal')" class="btn btn-circle btn-default mb-sm">
+								<i class="fas fa-plus-circle"></i> <?= translate('education') ?>
+							</a>
+						</div>
+						<div class="table-responsive mb-md">
+							<table class="table table-bordered table-hover table-condensed mb-none">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= translate('school') ?></th> 
+										<th><?= translate('degree') ?></th>
+										<th><?= translate('field_of_study') ?></th>
+										<th><?= translate('location') ?></th>
+										<th><?= translate('start_date') ?></th>
+										<th><?= translate('end_date') ?></th>
+										<th><?= translate('actions') ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$count = 1;
+									$this->db->where('staff_id', $staff['id']);
+									$educationResult = $this->db->get('staff_education')->result_array();
+									if (count($educationResult)) {
+										foreach ($educationResult as $education):
+									?>
+											<tr>
+												<td><?php echo $count++ ?></td>
+												<td><?php echo $education['institute_name']; ?></td>
+												<td><?php echo $education['degree']; ?></td>
+												<td><?php echo $education['study_field']; ?></td>
+												<td><?php echo $education['location']; ?></td>
+												<td><?php echo $education['start_date']; ?></td>
+												<td><?php echo $education['end_date']; ?></td>
+												<td class="min-w-c">
+													<a href="javascript:void(0);" onclick="editStaffEducation('<?= $education['id'] ?>')" class="btn btn-circle icon btn-default">
+														<i class="fas fa-pen-nib"></i>
+													</a>
+													<?php echo btn_delete('employee/staff_education_delete/' . $education['id']); ?>
+												</td>
+											</tr>
+									<?php
+										endforeach;
+									} else {
+										echo '<tr> <td colspan="8"> <h5 class="text-danger text-center">' . translate('no_information_available') . '</h5> </td></tr>';
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-accordion">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#staff_experience">
+							<i class="fas fa-university"></i> <?= translate('experience') ?>
+						</a>
+					</h4>
+				</div>
+				<div id="staff_experience" class="accordion-body collapse <?= ($this->session->flashdata('experience_tab') == 1 ? 'in' : ''); ?>">
+					<div class="panel-body">
+						<div class="text-right mb-sm">
+							<a href="javascript:void(0);" onclick="mfp_modal('#addStaffExperienceModal')" class="btn btn-circle btn-default mb-sm">
+								<i class="fas fa-plus-circle"></i> <?= translate('experience') ?>
+							</a>
+						</div>
+						<div class="table-responsive mb-md">
+							<table class="table table-bordered table-hover table-condensed mb-none">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= translate('title') ?></th> 
+										<th><?= translate('type') ?></th>
+										<th><?= translate('institute_name') ?></th>
+										<th><?= translate('location') ?></th>
+										<th><?= translate('start_date') ?></th>
+										<th><?= translate('end_date') ?></th>
+										<th><?= translate('actions') ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$count = 1;
+									$this->db->where('staff_id', $staff['id']);
+									$educationResult = $this->db->get('staff_experience')->result_array();
+									if (count($educationResult)) {
+										foreach ($educationResult as $education):
+									?>
+											<tr>
+												<td><?php echo $count++ ?></td>
+												<td><?php echo $education['title']; ?></td>
+												<td><?php echo $education['type']; ?></td>
+												<td><?php echo $education['institute_name']; ?></td>
+												<td><?php echo $education['location']; ?></td>
+												<td><?php echo $education['start_date']; ?></td>
+												<td><?php echo $education['end_date']; ?></td>
+												<td class="min-w-c">
+													<a href="javascript:void(0);" onclick="editExperience('<?= $education['id'] ?>')" class="btn btn-circle icon btn-default">
+														<i class="fas fa-pen-nib"></i>
+													</a>
+													<?php echo btn_delete('employee/experience_delete/' . $education['id']); ?>
+												</td>
+											</tr>
+									<?php
+										endforeach;
+									} else {
+										echo '<tr> <td colspan="8"> <h5 class="text-danger text-center">' . translate('no_information_available') . '</h5> </td></tr>';
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-accordion">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#staff_spouse">
+							<i class="fas fa-university"></i> <?= translate('spouse') ?>
+						</a>
+					</h4>
+				</div>
+				<div id="staff_spouse" class="accordion-body collapse <?= ($this->session->flashdata('spouse_tab') == 1 ? 'in' : ''); ?>">
+					<div class="panel-body">
+						<div class="text-right mb-sm">
+							<a href="javascript:void(0);" onclick="mfp_modal('#addStaffSpouseModal')" class="btn btn-circle btn-default mb-sm">
+								<i class="fas fa-plus-circle"></i> <?= translate('spouse') ?>
+							</a>
+						</div>
+						<div class="table-responsive mb-md">
+							<table class="table table-bordered table-hover table-condensed mb-none">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= translate('name') ?></th> 
+										<th><?= translate('occupation') ?></th>
+										<th><?= translate('No of child') ?></th>
+										<th><?= translate('dependent child') ?></th> 
+										<th><?= translate('actions') ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$count = 1;
+									$this->db->where('staff_id', $staff['id']);
+									$educationResult = $this->db->get('staff_spouse')->result_array();
+									if (count($educationResult)) {
+										foreach ($educationResult as $education):
+									?>
+											<tr>
+												<td><?php echo $count++ ?></td>
+												<td><?php echo $education['name']; ?></td>
+												<td><?php echo $education['occupation']; ?></td>
+												<td><?php echo $education['total_child']; ?></td>
+												<td><?php echo $education['dependent_child']; ?></td> 
+												<td class="min-w-c">
+													<a href="javascript:void(0);" onclick="editspouse('<?= $education['id'] ?>')" class="btn btn-circle icon btn-default">
+														<i class="fas fa-pen-nib"></i>
+													</a>
+													<?php echo btn_delete('employee/spouse_delete/' . $education['id']); ?>
+												</td>
+											</tr>
+									<?php
+										endforeach;
+									} else {
+										echo '<tr> <td colspan="8"> <h5 class="text-danger text-center">' . translate('no_information_available') . '</h5> </td></tr>';
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-accordion">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#job_status">
+							<i class="fas fa-university"></i> <?= translate('job_status') ?>
+						</a>
+					</h4>
+				</div>
+				<div id="job_status" class="accordion-body collapse <?= ($this->session->flashdata('job_status_tab') == 1 ? 'in' : ''); ?>">
+					<div class="panel-body">
+						<div class="text-right mb-sm">
+							<a href="javascript:void(0);" onclick="mfp_modal('#addStaffJobStatusModal')" class="btn btn-circle btn-default mb-sm">
+								<i class="fas fa-plus-circle"></i> <?= translate('job_status') ?>
+							</a>
+						</div>
+						<div class="table-responsive mb-md">
+							<table class="table table-bordered table-hover table-condensed mb-none">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= translate('name') ?></th> 
+										<th><?= translate('employee_id') ?></th>
+										<th><?= translate('role') ?></th>
+										<th><?= translate('assigned School') ?></th> 
+										<th><?= translate('date_of_joing') ?></th> 
+										<th><?= translate('date_of_happening') ?></th> 
+										<th><?= translate('comments') ?></th> 
+										<th><?= translate('actions') ?></th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php 
+									$CI =& get_instance(); 
+									$CI->load->model('Employee_model'); // Load the model getSingleStaff($id = '')
+									
+									$count = 1;
+									$this->db->where('staff_id', $staff['id']);
+									$jobstatusResult = $this->db->get('staff_job_status')->result_array();
+									if (count($jobstatusResult)) {
+										foreach ($jobstatusResult as $jobs):
+											 
+									?>
+											<tr>
+												<td><?php echo $count++ ?></td>
+												<?php 
+													$staff_id   = $jobs['staff_id']; // Assuming each job has a staff_id
+													$staff_data = $CI->Employee_model->getSingleStaff($staff_id); 
+													$getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); 
+													// print_r($getBranch); exit;
+												?>
+												<td><?php echo $staff_data['name']; ?></td> 
+												<td><?php echo $staff_data['staff_id']; ?></td> 
+												<td><?php echo $staff_data['role']; ?></td> 
+												<td><?php echo $getBranch['name']; ?></td> 
+												<td><?php echo $jobs['type']; ?></td>
+												<td><?php echo $staff_data['joining_date']; ?></td> 
+												<td><?php echo $jobs['status_date']; ?></td>
+												<td><?php echo $jobs['comment']; ?></td>
+												<td class="min-w-c">
+													<a href="javascript:void(0);" onclick="editJobStatusg('<?= $jobs['id'] ?>')" class="btn btn-circle icon btn-default">
+														<i class="fas fa-pen-nib"></i>
+													</a>
+													<?php echo btn_delete('employee/job_status_delete/' . $jobs['id']); ?>
+												</td>
+											</tr>
+									<?php
+										endforeach;
+									} else {
+										echo '<tr> <td colspan="8"> <h5 class="text-danger text-center">' . translate('no_information_available') . '</h5> </td></tr>';
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="panel panel-accordion">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#sttaf_education">
 							<i class="fas fa-university"></i> <?= translate('bank_account') ?>
 						</a>
 					</h4>
 				</div>
-				<div id="bank_account" class="accordion-body collapse <?= ($this->session->flashdata('bank_tab') == 1 ? 'in' : ''); ?>">
+				<div id="sttaf_education" class="accordion-body collapse <?= ($this->session->flashdata('sttaf_education_tab') == 1 ? 'in' : ''); ?>">
 					<div class="panel-body">
 						<div class="text-right mb-sm">
 							<a href="javascript:void(0);" onclick="mfp_modal('#addBankModal')" class="btn btn-circle btn-default mb-sm">
@@ -1202,8 +1470,7 @@ if (get_permission('promotions', 'is_add')) {
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div>
-
+</div> 
 <!-- Bank Details Edit Modal -->
 <div id="editBankModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1271,7 +1538,567 @@ if (get_permission('promotions', 'is_add')) {
 	</section>
 </div>
 
+<!-- Staff Education Details Add Modal -->
+<div id="addStaffEducationModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<div class="panel-heading">
+			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?php echo translate('add') . " " . translate('Education'); ?></h4>
+		</div>
+		<?php echo form_open('employee/staff_education_create', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('institute') . " " . translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="institute_name" id="ainstitute_name" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('degree'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="degree" id="adegree" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('study_field'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="study_field" id="astudy_field" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('location'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="location" id="alocation" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('start_date'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="start_date" id="astart_date" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mb-md">
+				<label class="col-md-3 control-label"><?php echo translate('end_date'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="end_date" id="end_date" />
+					<span class="error"></span>
+				</div>
+			</div>
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffeducationaddbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
+<!-- Staff Education Details Edit Modal -->
+<div id="editStaffEducationModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<header class="panel-heading">
+			<h4 class="panel-title"><i class="far fa-edit"></i> <?php echo translate('edit') . " " . translate('education'); ?></h4>
+		</header>
+		<?php echo form_open('employee/staff_education_update', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_education_id" id="estaff_education_id" value="">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('institute') . " " . translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="institute_name" id="einstitute_name" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('degree'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="degree" id="edegree" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('study_field'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="study_field" id="estudy_field" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('location'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="location" id="elocation" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('start_date'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="start_date" id="estart_date" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mb-md">
+				<label class="col-md-3 control-label"><?php echo translate('end_date'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="end_date" id="eend_date" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffeducationeditbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<?php echo translate('update'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
 
+<!-- Staff Education Details Add Modal -->
+<div id="addStaffExperienceModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<div class="panel-heading">
+			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?php echo translate('add') . " " . translate('Experience'); ?></h4>
+		</div>
+		<?php echo form_open('employee/experience_create', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			
+			
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('title'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="title" id="atitle" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('type'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="type" id="atype" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('institute') . " " . translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="institute_name" id="ainstitute_name" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('location'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="location" id="alocation" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('start_date'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="start_date" id="astart_date" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mb-md">
+				<label class="col-md-3 control-label"><?php echo translate('end_date'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="end_date" id="end_date" />
+					<span class="error"></span>
+				</div>
+			</div>
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffeducationaddbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
+<!-- Staff Education Details Edit Modal -->
+<div id="editStaffExperienceModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<header class="panel-heading">
+			<h4 class="panel-title"><i class="far fa-edit"></i> <?php echo translate('edit') . " " . translate('experience'); ?></h4>
+		</header>
+		<?php echo form_open('employee/experience_update', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_experience_id" id="eestaff_experience_id" value="">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+		
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('title'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="title" id="eetitle" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('type'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="type" id="eetype" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('institute') . " " . translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="institute_name" id="eeinstitute_name" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('location'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="location" id="eelocation" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('start_date'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="start_date" id="eestart_date" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mb-md">
+				<label class="col-md-3 control-label"><?php echo translate('end_date'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="end_date" id="eeend_date" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffexperienceeditbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<?php echo translate('update'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
+
+<!-- Staff Education Details Add Modal -->
+<div id="addStaffSpouseModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<div class="panel-heading">
+			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?php echo translate('add') . " " . translate('spouse'); ?></h4>
+		</div>
+		<?php echo form_open('employee/spouse_create', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			
+			
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="name" id="aname" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('occupation'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="occupation" id="aoccupation" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('No Of') . " " . translate('child'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="number" class="form-control" name="total_child" id="atotal_child" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('No Of dependent'); ?></label>
+				<div class="col-md-9">
+					<input type="number" class="form-control" name="dependent_child" id="adependent_child" />
+					<span class="error"></span>
+				</div>
+			</div>  
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffspouseaddbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
+<!-- Staff Education Details Edit Modal -->
+<div id="editStaffSpouseModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<header class="panel-heading">
+			<h4 class="panel-title"><i class="far fa-edit"></i> <?php echo translate('edit') . " " . translate('spouse'); ?></h4>
+		</header>
+		<?php echo form_open('employee/spouse_update', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_spouse_id" id="estaff_spouse_id" value="">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+		
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="name" id="ename" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('occupation'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="occupation" id="eoccupation" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('No of child'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="total_child" id="etotal_child" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('No of Dependent'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="dependent_child" id="edependent_child" value="" />
+					<span class="error"></span>
+				</div>
+			</div> 
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffspouseeditbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<?php echo translate('update'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
+
+<!-- Staff job status Details Add Modal -->
+<div id="addStaffJobStatusModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<div class="panel-heading">
+			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?php echo translate('add') . " " . translate('job_status'); ?></h4>
+		</div>
+		<?php echo form_open('employee/job_status_create', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			
+			
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" value="<?=  $staff['name']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('employee_id'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control"  value="<?=  $staff['staff_id']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('Role') . " /" . translate('Designation'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control"  value="<?=  $staff['role']; ?>" readonly/>
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('Assigned School'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control"  value="<?=  $staff['name']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div> 
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('date_of_joining'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control"  value="<?=  $staff['joining_date']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div> 
+			 
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('type'); ?></label>
+				<div class="col-md-9">
+				<?php 
+					$array = array(
+						""                 => translate('select'),
+						"In service death" => translate('In service death'),
+						"Mark Retired"     => translate('Mark Retired'),
+						"Employee Resigned " => translate('Employee Resigned'),
+						"Mark Terminate"   => translate('Mark Terminate')
+					);
+					echo form_dropdown("type", $array, set_value('type'), "class='form-control' data-plugin-selectTwo
+							data-width='100%' data-minimum-results-for-search='Infinity'");
+					?>
+					<span class="error"></span>
+				</div>
+			</div> 
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('status_date'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="status_date" id="astatus_date" />
+					<span class="error"></span>
+				</div>
+			</div>  
+			<div class="form-group mb-md">
+				<label class="col-md-3 control-label"><?php echo translate('Comments'); ?></label>
+				<div class="col-md-9">
+					<textarea class="form-control valid" rows="5" name="comment"></textarea>
+				</div>
+			</div> 
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffjobstatusaddbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
+<!-- Staff job status Details Edit Modal -->
+<div id="editStaffJobStatusModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+	<section class="panel">
+		<header class="panel-heading">
+			<h4 class="panel-title"><i class="far fa-edit"></i> <?php echo translate('edit') . " " . translate('job_status'); ?></h4>
+		</header>
+		<?php echo form_open('employee/job_status_update', array('class' => 'form-horizontal frm-submit')); ?>
+		<div class="panel-body">
+			<input type="hidden" name="staff_job_status_id" id="estaff_job_status_id" value="">
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+		
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" value="<?=  $staff['name']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('employee_id'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control"  value="<?=  $staff['staff_id']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('Role') . " /" . translate('Designation'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control"  value="<?=  $staff['role']; ?>" readonly/>
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('Assigned School'); ?></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control"  value="<?=  $staff['name']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div> 
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('date_of_joining'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control"  value="<?=  $staff['joining_date']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div> 
+			 
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('type'); ?></label>
+				<div class="col-md-9">
+				<?php 
+					$array = array(
+						""                 => translate('select'),
+						"In service death" => translate('In service death'),
+						"Mark Retired"     => translate('Mark Retired'),
+						"Employee Resigned " => translate('Employee Resigned'),
+						"Mark Terminate"   => translate('Mark Terminate')
+					);
+					
+					echo form_dropdown(
+						"type", // Name attribute
+						$array, // Options array
+						'', // No default selected value for now
+						"id='jetype' class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'" // Additional attributes
+					);
+					?>
+					<span class="error"></span>
+				</div>
+			</div> 
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('status_date'); ?></label>
+				<div class="col-md-9">
+					<input type="date" class="form-control" name="status_date" id="estatus_date" />
+					<span class="error"></span>
+				</div>
+			</div>  
+			<div class="form-group mb-md">
+				<label class="col-md-3 control-label"><?php echo translate('Comments'); ?></label>
+				<div class="col-md-9">
+					<textarea class="form-control valid" rows="5" name="comment" id="ecomment"></textarea>
+				</div>
+			</div> 
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" id="staffspouseeditbtn" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+						<?php echo translate('update'); ?>
+					</button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
+</div>
 <!-- login authentication and account inactive modal -->
 <div id="authentication_modal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">

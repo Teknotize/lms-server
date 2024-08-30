@@ -17,8 +17,9 @@ class db_table_create extends CI_Controller
         $tables = json_decode($json, true);
         foreach ($tables as $item) {
             $this->create_table($item['table_name'], $item['fields'], $item['primary_key']);
-            echo "<br><br>";
+            echo "<br><br>".$item['table_name'];
         }
+        
         exit;
     }
 

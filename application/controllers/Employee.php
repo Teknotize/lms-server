@@ -124,6 +124,13 @@ class Employee extends Admin_Controller
         $this->form_validation->set_rules('total_child', translate('total_child'), 'trim|required');
         $this->form_validation->set_rules('dependent_child',  translate('dependent_child'), 'trim|required');
     }
+     /* job status form validation rules */
+     protected function job_status_validation()
+     {
+         $this->form_validation->set_rules('type', translate('type'), 'trim|required');
+         $this->form_validation->set_rules('status_date', translate('occupation'), 'trim|required');
+         $this->form_validation->set_rules('comment', translate('total_child'), 'trim|required'); 
+     }
 
     /* employees all information are prepared and stored in the database here */
     public function add()
@@ -511,6 +518,61 @@ class Employee extends Admin_Controller
             $this->db->where('id', $id);
             $this->db->delete('staff_spouse');
             $this->session->set_flashdata('spouse_tab', 1);
+        }
+    }
+
+    // employee job status details are create here / ajax
+    public function job_status_create()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->job_status_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->jobStatusSave($post);
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $this->session->set_flashdata('job_status_tab', 1);
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    } 
+    // employee job status details are update here / ajax
+    public function job_status_update()
+    {
+        // print_r($this->input->post()); exit;
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->job_status_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->jobStatusSave($post);
+            $this->session->set_flashdata('job_status_tab', 1);
+            set_alert('success', translate('information_has_been_updated_successfully'));
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+    public function job_status_details()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $query = $this->db->get('staff_job_status');
+        $result = $query->row_array();
+        echo json_encode($result);
+    }
+    // employee job status details are delete here
+    public function job_status_delete($id)
+    {
+        if (get_permission('employee', 'is_edit')) {
+            $this->db->where('id', $id);
+            $this->db->delete('staff_job_status');
+            $this->session->set_flashdata('job_status_tab', 1);
         }
     }
 

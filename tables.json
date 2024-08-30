@@ -204,5 +204,45 @@
                 "null":true
             } 
         }
+    },
+    {
+        "table_name":"staff_job_status",
+        "primary_key":"id",
+        "fields":{
+            "id":{
+                "type":"INT",
+                "unsigned":true,
+                "auto_increment":true,
+                "null":false
+            },
+            "staff_id":{
+                "type":"INT",
+                "null":false
+            },
+            "type": {
+                "type": "CHAR(255)",
+                "null": true
+            }, 
+            "comment":{
+                "type":"TEXT",
+                "null":true
+            },
+            "created_by":{
+                "type":"INT",
+                "null":true
+            }, 
+            "status_date":{
+                "type":"DATE",
+                "null":false
+            },    
+            "created_at":{
+                "type":"TIMESTAMP",
+                "null":false
+            },
+            "updated_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            } 
+        }
     }
 ]

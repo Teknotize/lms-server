@@ -213,6 +213,22 @@ class Employee_model extends MY_Model
         }
     }
 
+    public function jobStatusSave($data)
+    {
+        $inser_data = array( 
+            'staff_id'        => $data['staff_id'],
+            'type'            => $data['type'],
+            'comment'         => $data['comment'],
+            'status_date'     => $data['status_date'], 
+        );
+        if (isset($data['staff_job_status_id'])) {
+            $this->db->where('id', $data['staff_job_status_id']);
+            $this->db->update('staff_job_status', $inser_data);
+        } else {
+            $this->db->insert('staff_job_status', $inser_data);
+        }
+    }
+
     public function csvImport($row, $branchID, $userRole, $designationID, $departmentID)
     {
         $inser_data1 = array(
@@ -250,5 +266,13 @@ class Employee_model extends MY_Model
         $inser_data2['password'] = $this->app_lib->pass_hashed($row["Password"]);
         $this->db->insert('login_credential', $inser_data2);
         return true;
+    }
+
+    public function getBranch($id)
+    {
+        
+        $this->db->where('id', $id); 
+        $query = $this->db->get('branch');
+        return $query->row_array();
     }
 }

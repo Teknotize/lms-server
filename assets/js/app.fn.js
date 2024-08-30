@@ -750,6 +750,24 @@ function editspouse(id) {
     });
 }
 
+// staff job status  edit modal show
+function editJobStatusg(id) {
+    $.ajax({
+        url: base_url + "employee/job_status_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#estaff_job_status_id').val(res.id); 
+            $('#jetype').val(res.type).trigger('change'); // Set the dropdown value and trigger change event
+
+            $('#ecomment').val(res.comment); 
+            $('#estatus_date').val(res.status_date); 
+            mfp_modal('#editStaffJobStatusModal');
+        }
+    });
+}
+
 // print function
 function fn_printElem(elem, html = false)
 {

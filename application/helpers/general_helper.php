@@ -484,3 +484,22 @@ function delete_dir($dirPath)
     }
     return false;
 }
+
+function get_contract_type()
+{
+    $contracts = array(
+        null => translate('select_contract_type'),
+        'full_time' => translate('full_time'),
+        'part_time' => translate('part_time'),
+        'contract' => translate('contract'),
+    );
+    return $contracts;
+}
+
+function dd($data)
+{
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+    die();
+}

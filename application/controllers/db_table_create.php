@@ -17,9 +17,7 @@ class db_table_create extends CI_Controller
         $tables = json_decode($json, true);
         foreach ($tables as $item) {
             $this->create_table($item['table_name'], $item['fields'], $item['primary_key']);
-            echo "<br><br>".$item['table_name'];
         }
-        
         exit;
     }
 
@@ -28,7 +26,7 @@ class db_table_create extends CI_Controller
     {
         // Check if the table already exists
         if ($this->db->table_exists($table_name)) {
-            echo "Table '" . $table_name . "' already exists.";
+            echo ("Table '" . $table_name . "' already exists.<br><br>");
             return;
         }
 

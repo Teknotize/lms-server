@@ -68,7 +68,6 @@
             }  
         }
     },
-    
     {
         "table_name":"staff_education",
         "primary_key":"id",
@@ -291,6 +290,80 @@
             "status":{
                 "type":"ENUM",
                 "constraint":["pending","approved","rejected"],
+                "null":false
+            },
+            "created_at":{
+                "type":"TIMESTAMP",
+                "null":false
+            },
+            "updated_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            },
+            "deleted_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            }
+        }
+    },
+    {
+        "table_name":"job_postings",
+        "primary_key":"id",
+        "fields":{
+            "id":{
+                "type":"INT",
+                "unsigned":true,
+                "auto_increment":true,
+                "null":false
+            },
+            "title":{
+                "type":"VARCHAR(255)",
+                "null":false
+            },
+            "qualification":{
+                "type":"VARCHAR(255)",
+                "null":false
+            },
+            "experience":{
+                "type":"VARCHAR(255)",
+                "null":false
+            },
+            "contract_type":{
+                "type":"ENUM",
+                "constraint":["full_time","part_time","contract"],
+                "null":"false"
+            },
+            "location":{
+                "type":"VARCHAR(255)",
+                "null":false
+            },
+            "branch_id":{
+                "type":"INT",
+                "null":true
+            },
+            "no_of_posts":{
+                "type":"INT",
+                "null":false
+            },
+            "due_date":{
+                "type":"DATE",
+                "null":false
+            },
+            "description":{
+                "type":"TEXT",
+                "null":true
+            },
+            "created_by":{
+                "type":"INT",
+                "null":true
+            },
+            "action_by":{
+                "type":"INT",
+                "null":true
+            },
+            "status":{
+                "type":"ENUM",
+                "constraint":["vacant","filled"],
                 "null":false
             },
             "created_at":{

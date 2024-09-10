@@ -51,20 +51,23 @@ class transfer_posting_model extends CI_Model
     public function get_transfer_request($id = null)
     {
         $this->db->select('
-        tp.id,
-        tp.designation_id,
-        des.name AS designation,
-        tp.new_dep_id,
-        dep.name AS department,
-        tp.new_branch_id,
-        ins.name AS branch,
-        tp.effective_from,
-        tp.notes,
-        tp.created_by,
-        st.name AS created_by_name,
-        tp.action_by,
-        st1.name AS action_by_name,
-        tp.status
+            tp.id,
+            tp.designation_id,
+            des.name AS designation,
+            tp.new_dep_id,
+            dep.name AS department,
+            tp.new_branch_id,
+            ins.name AS branch,
+            tp.effective_from,
+            tp.notes,
+            tp.created_by,
+            st.name AS created_by_name,
+            tp.action_by,
+            st1.name AS action_by_name,
+            st2.name AS emp_name,
+            st2.staff_id AS staff_id,
+            tp.status,
+            tp.emp_id
         ');
         $this->db->from('transfer_posting tp');
         $this->db->join('staff_designation des', 'tp.designation_id = des.id', 'left');
@@ -72,11 +75,17 @@ class transfer_posting_model extends CI_Model
         $this->db->join('branch ins', 'tp.new_branch_id = ins.id', 'left');
         $this->db->join('staff st', 'tp.created_by = st.id', 'left');
         $this->db->join('staff st1', 'tp.action_by = st1.id', 'left');
+        $this->db->join('staff st2', 'tp.emp_id = st2.id', 'left');
         if ($id) {
             $this->db->where('tp.emp_id', $id);
         }
         $this->db->where('tp.deleted_at', null);
+        $this->db->order_by('FIELD(tp.status, "pending", "approved", "rejected")', '', false);
         $query = $this->db->get();
+        // echo ('<pre>');
+        // print_r($query->result_array());
+        // echo ('</pre>');
+        // exit;
         return $query->result_array();
     }
 
@@ -85,10 +94,13 @@ class transfer_posting_model extends CI_Model
         if (!empty($id) && ($status === 'approved' || $status === 'rejected')) {
             $transfer_request = $this->db->where('id', $id)->get('transfer_posting')->result_array()[0];
             if ($transfer_request['status'] === 'pending') {
-                // $this->transfer_employee($emp['id'], $transfer_request['id']);
                 $this->db->where('id', $id);
                 $this->db->update('transfer_posting', ['status' => $status, 'action_by' => get_loggedin_user_id(), 'updated_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time()))]);
                 if ($this->db->affected_rows() > 0) {
+                    if ($status === 'approved') {
+                        $response = $this->transfer_employee($transfer_request['id']);
+                        return $response;
+                    }
                     return true;
                 }
             }
@@ -97,10 +109,10 @@ class transfer_posting_model extends CI_Model
         return false;
     }
 
-    public function transfer_employee($emp_id, $request_id)
+    public function transfer_employee($request_id)
     {
         $request = $this->db->where('id', $request_id)->get('transfer_posting')->result_array()[0];
-        $emp = $this->db->where('id', $emp_id)->get('staff')->result_array()[0];
+        // $emp = $this->db->where('id', $emp_id)->get('staff')->result_array()[0];
         $changes = array();
         if ($request['designation_id']) {
             $changes['designation'] = $request['designation_id'];
@@ -112,7 +124,7 @@ class transfer_posting_model extends CI_Model
             $changes['branch_id'] = $request['new_branch_id'];
         }
         if (count($changes) > 0) {
-            $this->db->where('id', $emp_id);
+            $this->db->where('id', $request['emp_id']);
             $this->db->update('staff', $changes);
             if ($this->db->affected_rows() > 0) {
                 return true;

@@ -21,8 +21,18 @@ class transfer_posting extends CI_Controller
         $this->form_validation->set_rules('designation_id', translate('designation_id'), 'trim|numeric|greater_than[0]');
         $this->form_validation->set_rules('current_dep_id', translate('current_dep_id'), 'trim|required|numeric|greater_than[0]');
         $this->form_validation->set_rules('new_dep_id', translate('new_dep_id'), 'trim|required|numeric|greater_than[0]');
-        $this->form_validation->set_rules('effective_from', translate('effective_from'), 'trim|required|date');
+        $this->form_validation->set_rules('effective_from', translate('effective_from'), 'trim|required|date|callback_date_greater_than_today');
         $this->form_validation->set_rules('notes', translate('notes'), 'trim|max_length[500]');
+    }
+
+    public function date_greater_than_today($date)
+    {
+        $today = date('Y-m-d');
+        if ($date <= $today) {
+            $this->form_validation->set_message('date_greater_than_today', 'The Effective From date must be a date greater than today.');
+            return false;
+        }
+        return true;
     }
 
 
@@ -30,7 +40,7 @@ class transfer_posting extends CI_Controller
     {
         $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request();
         // echo ('<pre>');
-        // print_r($this->data['requests']);
+        // print_r($this->data['transfer_posting_requests']);
         // echo ('</pre>');
         // exit;
 

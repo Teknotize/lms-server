@@ -693,6 +693,81 @@ function editStaffBank(id) {
     });
 }
 
+// staff education account edit modal show
+function editStaffEducation(id) {
+    $.ajax({
+        url: base_url + "employee/education_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#estaff_education_id').val(res.id);
+            $('#einstitute_name').val(res.institute_name);
+            $('#edegree').val(res.degree);
+            $('#estudy_field').val(res.study_field);
+            $('#elocation').val(res.location);
+            $('#estart_date').val(res.start_date);
+            $('#eend_date').val(res.end_date);
+            mfp_modal('#editStaffEducationModal');
+        }
+    });
+}
+
+// staff experience  edit modal show
+function editExperience(id) {
+    $.ajax({
+        url: base_url + "employee/experience_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#eestaff_experience_id').val(res.id);
+            $('#eeinstitute_name').val(res.institute_name);
+            $('#eetitle').val(res.title);
+            $('#eetype').val(res.type);
+            $('#eelocation').val(res.location);
+            $('#eestart_date').val(res.start_date);
+            $('#eeend_date').val(res.end_date);
+            mfp_modal('#editStaffExperienceModal');
+        }
+    });
+}
+// staff spouse  edit modal show
+function editspouse(id) {
+    $.ajax({
+        url: base_url + "employee/spouse_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#estaff_spouse_id').val(res.id);
+            $('#ename').val(res.name);
+            $('#eoccupation').val(res.occupation);
+            $('#etotal_child').val(res.total_child);
+            $('#edependent_child').val(res.dependent_child); 
+            mfp_modal('#editStaffSpouseModal');
+        }
+    });
+}
+
+// staff job status  edit modal show
+function editJobStatusg(id) {
+    $.ajax({
+        url: base_url + "employee/job_status_details",
+        type: 'POST',
+        data: {'id' : id},
+        dataType: 'json',
+        success: function (res) {
+            $('#estaff_job_status_id').val(res.id); 
+            $('#jetype').val(res.type).trigger('change'); // Set the dropdown value and trigger change event
+
+            $('#ecomment').val(res.comment); 
+            $('#estatus_date').val(res.status_date); 
+            mfp_modal('#editStaffJobStatusModal');
+        }
+    });
+}
+
 // print function
 function fn_printElem(elem, html = false)
 {

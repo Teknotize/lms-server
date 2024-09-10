@@ -23,6 +23,7 @@ class Employee extends Admin_Controller
         $this->load->model('crud_model');
         $this->load->model('branch_model');
         $this->load->model('transfer_posting_model');
+        $this->load->model('staff_promotions_model');
     }
 
     public function index()
@@ -93,6 +94,44 @@ class Employee extends Admin_Controller
         $this->form_validation->set_rules('bank_branch', translate('bank_branch'), 'trim|required');
         $this->form_validation->set_rules('account_no',  translate('account_no'), 'trim|required');
     }
+
+    /* education form validation rules */
+    protected function education_validation()
+    {
+        $this->form_validation->set_rules('institute_name', translate('institute_name'), 'trim|required');
+        $this->form_validation->set_rules('degree', translate('degree'), 'trim|required');
+        $this->form_validation->set_rules('study_field', translate('study_field'), 'trim|required');
+        $this->form_validation->set_rules('location',  translate('location'), 'trim|required');
+        $this->form_validation->set_rules('start_date',  translate('start_date'), 'trim|required');
+        $this->form_validation->set_rules('end_date',  translate('end_date'), 'trim|required');
+    }
+
+    /* experience form validation rules */
+    protected function experience_validation()
+    {
+        $this->form_validation->set_rules('institute_name', translate('institute_name'), 'trim|required');
+        $this->form_validation->set_rules('title', translate('title'), 'trim|required');
+        $this->form_validation->set_rules('type', translate('type'), 'trim|required');
+        $this->form_validation->set_rules('location',  translate('location'), 'trim|required');
+        $this->form_validation->set_rules('start_date',  translate('start_date'), 'trim|required');
+        $this->form_validation->set_rules('end_date',  translate('end_date'), 'trim|required');
+    }
+
+    /* experience form validation rules */
+    protected function spouse_validation()
+    {
+        $this->form_validation->set_rules('name', translate('name'), 'trim|required');
+        $this->form_validation->set_rules('occupation', translate('occupation'), 'trim|required');
+        $this->form_validation->set_rules('total_child', translate('total_child'), 'trim|required');
+        $this->form_validation->set_rules('dependent_child',  translate('dependent_child'), 'trim|required');
+    }
+     /* job status form validation rules */
+     protected function job_status_validation()
+     {
+         $this->form_validation->set_rules('type', translate('type'), 'trim|required');
+         $this->form_validation->set_rules('status_date', translate('occupation'), 'trim|required');
+         $this->form_validation->set_rules('comment', translate('total_child'), 'trim|required'); 
+     }
 
     /* employees all information are prepared and stored in the database here */
     public function add()
@@ -190,10 +229,22 @@ class Employee extends Admin_Controller
 
         $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request($this->data['staff']['id']);
 
+        $this->data['staff_promotions'] = $this->staff_promotions_model->get_data($this->data['staff']['id']);
+
         // echo ('<pre>');
-        // print_r($this->data['departments']);
+        // print_r($this->data['staff_promotions']);
         // echo ('</pre>');
         // exit;
+        $this->data['payscales'] = $this->app_lib->getSelectList('salary_template');
+
+        $this->data['ratings'] = array(
+            null => translate('select_rating'),
+            1 => translate('1_star'),
+            2 => translate('2_star'),
+            3 => translate('3_star'),
+            4 => translate('4_star'),
+            5 => translate('5_star'),
+        );
 
 
 
@@ -313,6 +364,229 @@ class Employee extends Admin_Controller
         }
         echo json_encode($array);
     }
+
+
+    // employee education details are create here / ajax
+    public function staff_education_create()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->education_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->educationSave($post);
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $this->session->set_flashdata('staff_education_tab', 1);
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+
+    // employee education details are update here / ajax
+    public function staff_education_update()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->education_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->educationSave($post);
+            $this->session->set_flashdata('staff_education_tab', 1);
+            set_alert('success', translate('information_has_been_updated_successfully'));
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+    public function education_details()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $query = $this->db->get('staff_education');
+        $result = $query->row_array();
+        echo json_encode($result);
+    }
+    // employee education details are delete here
+    public function staff_education_delete($id)
+    {
+        if (get_permission('employee', 'is_edit')) {
+            $this->db->where('id', $id);
+            $this->db->delete('staff_education');
+            $this->session->set_flashdata('staff_education_tab', 1);
+        }
+    }
+
+    // employee experience details are create here / ajax
+    public function experience_create()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->experience_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->experienceSave($post);
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $this->session->set_flashdata('experience_tab', 1);
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+
+    // employee experience details are update here / ajax
+    public function experience_update()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->experience_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->experienceSave($post);
+            $this->session->set_flashdata('experience_tab', 1);
+            set_alert('success', translate('information_has_been_updated_successfully'));
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+    public function experience_details()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $query = $this->db->get('staff_experience');
+        $result = $query->row_array();
+        echo json_encode($result);
+    }
+    // employee experience details are delete here
+    public function experience_delete($id)
+    {
+        if (get_permission('employee', 'is_edit')) {
+            $this->db->where('id', $id);
+            $this->db->delete('staff_experience');
+            $this->session->set_flashdata('experience_tab', 1);
+        }
+    }
+
+    // employee spouse details are create here / ajax
+    public function spouse_create()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->spouse_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->spouseSave($post);
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $this->session->set_flashdata('spouse_tab', 1);
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+
+    // employee spouse details are update here / ajax
+    public function spouse_update()
+    {
+        // print_r($this->input->post()); exit;
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->spouse_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->spouseSave($post);
+            $this->session->set_flashdata('spouse_tab', 1);
+            set_alert('success', translate('information_has_been_updated_successfully'));
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+    public function spouse_details()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $query = $this->db->get('staff_spouse');
+        $result = $query->row_array();
+        echo json_encode($result);
+    }
+    // employee spouse details are delete here
+    public function spouse_delete($id)
+    {
+        if (get_permission('employee', 'is_edit')) {
+            $this->db->where('id', $id);
+            $this->db->delete('staff_spouse');
+            $this->session->set_flashdata('spouse_tab', 1);
+        }
+    }
+
+    // employee job status details are create here / ajax
+    public function job_status_create()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->job_status_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->jobStatusSave($post);
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $this->session->set_flashdata('job_status_tab', 1);
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    } 
+    // employee job status details are update here / ajax
+    public function job_status_update()
+    {
+        // print_r($this->input->post()); exit;
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->job_status_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->jobStatusSave($post);
+            $this->session->set_flashdata('job_status_tab', 1);
+            set_alert('success', translate('information_has_been_updated_successfully'));
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+    public function job_status_details()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $query = $this->db->get('staff_job_status');
+        $result = $query->row_array();
+        echo json_encode($result);
+    }
+    // employee job status details are delete here
+    public function job_status_delete($id)
+    {
+        if (get_permission('employee', 'is_edit')) {
+            $this->db->where('id', $id);
+            $this->db->delete('staff_job_status');
+            $this->session->set_flashdata('job_status_tab', 1);
+        }
+    }
+
 
     // employee bank details are create here / ajax
     public function bank_account_create()

@@ -158,6 +158,77 @@ class Employee_model extends MY_Model
         }
     }
 
+    public function educationSave($data)
+    {
+        $inser_data = array(
+            'staff_id' => $data['staff_id'],
+            'institute_name' => $data['institute_name'],
+            'degree' => $data['degree'],
+            'study_field' => $data['study_field'],
+            'location' => $data['location'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
+        );
+        if (isset($data['staff_education_id'])) {
+            $this->db->where('id', $data['staff_education_id']);
+            $this->db->update('staff_education', $inser_data);
+        } else {
+            $this->db->insert('staff_education', $inser_data);
+        }
+    }
+
+    public function experienceSave($data)
+    {
+        $inser_data = array( 
+            'staff_id'       => $data['staff_id'],
+            'title'          => $data['title'],
+            'type'           => $data['type'],
+            'institute_name' => $data['institute_name'],
+            'location'       => $data['location'],
+            'start_date'     => $data['start_date'],
+            'end_date'       => $data['end_date'],
+        );
+        if (isset($data['staff_experience_id'])) {
+            $this->db->where('id', $data['staff_experience_id']);
+            $this->db->update('staff_experience', $inser_data);
+        } else {
+            $this->db->insert('staff_experience', $inser_data);
+        }
+    }
+
+    public function spouseSave($data)
+    {
+        $inser_data = array( 
+            'staff_id'       => $data['staff_id'],
+            'name'          => $data['name'],
+            'occupation'     => $data['occupation'],
+            'total_child'     => $data['total_child'],
+            'dependent_child' => $data['dependent_child'], 
+        );
+        if (isset($data['staff_spouse_id'])) {
+            $this->db->where('id', $data['staff_spouse_id']);
+            $this->db->update('staff_spouse', $inser_data);
+        } else {
+            $this->db->insert('staff_spouse', $inser_data);
+        }
+    }
+
+    public function jobStatusSave($data)
+    {
+        $inser_data = array( 
+            'staff_id'        => $data['staff_id'],
+            'type'            => $data['type'],
+            'comment'         => $data['comment'],
+            'status_date'     => $data['status_date'], 
+        );
+        if (isset($data['staff_job_status_id'])) {
+            $this->db->where('id', $data['staff_job_status_id']);
+            $this->db->update('staff_job_status', $inser_data);
+        } else {
+            $this->db->insert('staff_job_status', $inser_data);
+        }
+    }
+
     public function csvImport($row, $branchID, $userRole, $designationID, $departmentID)
     {
         $inser_data1 = array(
@@ -195,5 +266,13 @@ class Employee_model extends MY_Model
         $inser_data2['password'] = $this->app_lib->pass_hashed($row["Password"]);
         $this->db->insert('login_credential', $inser_data2);
         return true;
+    }
+
+    public function getBranch($id)
+    {
+        
+        $this->db->where('id', $id); 
+        $query = $this->db->get('branch');
+        return $query->row_array();
     }
 }

@@ -676,11 +676,14 @@
                             get_permission('leave_category', 'is_add') ||
                             get_permission('leave_request', 'is_view') ||
                             get_permission('leave_manage', 'is_view') ||
-                            get_permission('award', 'is_view')
+                            get_permission('award', 'is_view') ||
+                            get_permission('transfer_posting', 'is_view') ||
+                            get_permission('promotions', 'is_view') ||
+                            get_permission('job_posting', 'is_view')
                         ) {
                     ?>
                             <!-- human resource -->
-                            <li class="nav-parent <?php if ($main_menu == 'payroll' || $main_menu == 'advance_salary' || $main_menu == 'leave' || $main_menu == 'award') echo 'nav-expanded nav-active'; ?>">
+                            <li class="nav-parent <?php if ($main_menu == 'payroll' || $main_menu == 'advance_salary' || $main_menu == 'leave' || $main_menu == 'award' || $main_menu == 'promotions' || $main_menu == 'transfer_posting' || $main_menu == 'job_posting') echo 'nav-expanded nav-active'; ?>">
                                 <a>
                                     <i class="icons icon-loop"></i><span><?= translate('hrm') ?></span>
                                 </a>
@@ -806,6 +809,22 @@
                                             <a href="<?= base_url('transfer_posting/index') ?>">
                                                 <i class="fas fa-crown"></i>
                                                 <span><?= translate('transfer_posting') ?></span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                    <?php if (get_permission('promotions', 'is_view')) { ?>
+                                        <li class="<?php if ($sub_page == 'promotions/index' || $sub_page == 'promotions/add' || $sub_page == 'promotions/edit') echo 'nav-active'; ?>">
+                                            <a href="<?= base_url('promotions/index') ?>">
+                                                <i class="fas fa-crown"></i>
+                                                <span><?= translate('promotions') ?></span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                    <?php if (get_permission('job_posting', 'is_view')) { ?>
+                                        <li class="<?php if ($sub_page == 'job_posting/index' || $sub_page == 'job_posting/add' || $sub_page == 'job_posting/edit' || $sub_page == 'job_posting/vacant_filled') echo 'nav-active'; ?>">
+                                            <a href="<?= base_url('job_posting/index') ?>">
+                                                <i class="fas fa-crown"></i>
+                                                <span><?= translate('job_postings') ?></span>
                                             </a>
                                         </li>
                                     <?php } ?>

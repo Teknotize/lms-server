@@ -8229,6 +8229,10 @@ html.dark .label-primary {
 	position: relative;
 }
 
+.modal-lg{
+	max-width: 900px !important;
+}
+
 .modal-block.modal-block-xs {
 	max-width: 200px;
 }
@@ -13302,4 +13306,14 @@ html.sidebar-light:not(.dark) .page-header h2 {
     color: #fff;
     padding: 10px;
     text-align: center;
+}
+
+.badge-success {
+	background-color: #28a745;
+}
+.badge-danger {
+	background-color: #dc3545;
+}
+.badge-warning {
+	background-color: #ffc107;
 }

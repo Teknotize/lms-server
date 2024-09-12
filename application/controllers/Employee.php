@@ -132,6 +132,11 @@ class Employee extends Admin_Controller
          $this->form_validation->set_rules('comment', translate('total_child'), 'trim|required'); 
      }
 
+     /* job status form validation rules */
+     protected function performance_validation()
+     { 
+         $this->form_validation->set_rules('year_id', translate('year_id'), 'trim|required'); 
+     }
     /* employees all information are prepared and stored in the database here */
     public function add()
     {
@@ -573,6 +578,62 @@ class Employee extends Admin_Controller
             $this->db->where('id', $id);
             $this->db->delete('staff_job_status');
             $this->session->set_flashdata('job_status_tab', 1);
+        }
+    }
+
+    // employee job status details are create here / ajax
+    public function performance_create()
+    {
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->performance_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->performanceSave($post);
+            exit;
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $this->session->set_flashdata('performance_tab', 1);
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    } 
+    // employee performance details are update here / ajax
+    public function performance_update()
+    {
+        // print_r($this->input->post()); exit;
+        if (!get_permission('employee', 'is_edit')) {
+            ajax_access_denied();
+        }
+        $this->performance_validation();
+        if ($this->form_validation->run() !== false) {
+            $post = $this->input->post();
+            $this->employee_model->performanceSave($post);
+            $this->session->set_flashdata('performance_tab', 1);
+            set_alert('success', translate('information_has_been_updated_successfully'));
+            echo json_encode(array('status' => 'success'));
+        } else {
+            $error = $this->form_validation->error_array();
+            echo json_encode(array('status' => 'fail', 'error' => $error));
+        }
+    }
+    public function performance_details()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $query = $this->db->get('staff_performance');
+        $result = $query->row_array();
+        echo json_encode($result);
+    }
+    // employee job status details are delete here
+    public function performance_delete($id)
+    {
+        if (get_permission('employee', 'is_edit')) {
+            $this->db->where('id', $id);
+            $this->db->delete('staff_performance');
+            $this->session->set_flashdata('performance_tab', 1);
         }
     }
 

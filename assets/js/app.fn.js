@@ -783,8 +783,8 @@ function editPerformance(id) {
                 
                 $modal.find('#estaff_performance_id').val(res.id); 
                 $modal.find('#peacademic_year_id').val(res.year_id).trigger('change'); // Set dropdown value and trigger change event 
-                $modal.find('#ecomment').val(res.comment); 
-                $modal.find('#estatus').val(res.status);
+                $modal.find('#epstatus').val(res.status).trigger('change'); // Set dropdown value and trigger change event 
+              
  
                 var academic_achievement = res.academic_achievement;  
                 if (academic_achievement) { 

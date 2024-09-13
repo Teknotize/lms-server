@@ -268,7 +268,11 @@
                 "null":true
             }, 
             "evaluation_date":{
-                "type":"TIMESTAMP",
+                "type":"DATE",
+                "null":true
+            }, 
+            "approved_date":{
+                "type":"DATE",
                 "null":true
             },
             "verification_date":{

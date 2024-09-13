@@ -40,8 +40,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>
-
+	</div> 
 	<div class="col-md-12">
 		<div class="panel-group" id="accordion">
 			<div class="panel panel-accordion">
@@ -621,6 +620,7 @@
 										<th><?= translate('employee_id') ?></th>
 										<th><?= translate('role') ?></th>
 										<th><?= translate('assigned School') ?></th> 
+										<th><?= translate('Status Type') ?></th> 
 										<th><?= translate('date_of_joing') ?></th> 
 										<th><?= translate('date_of_happening') ?></th> 
 										<th><?= translate('comments') ?></th> 
@@ -787,9 +787,35 @@
 													?>
 												</td> 
 												<td><?php echo $rp."%"; ?></td> 
-												<td><?php echo $performance['evaluation_date']; ?></td>
-												<td><?php echo "ADmin" ?></td>
-												<td><?php echo "null" ?></td>
+												<?php 
+													$date_string    = $performance['evaluation_date'];  // Your input date string
+													$formatted_date = date('d M Y', strtotime($date_string));  // Format date to "12 Sep 2024"
+													
+												?>
+												<td><?php echo $formatted_date; ?></td>
+												<td>
+													<?php 
+													if($performance['action_by']){
+													    $staff_data = $CI->Employee_model->getSingleStaff($performance['action_by']);  
+													    echo $staff_data['name'];   echo "<br/>";
+													    echo $staff_data['role']; 
+													}else{
+														echo "Null";
+													}
+													?>
+											    </td>
+												<td>
+												<?php 
+													if($performance['verification_date']!=NULL){
+														$date_string    = $performance['verification_date'];  // Your input date string
+														$formatted_date = date('d M Y', strtotime($date_string));  // Format date to "12 Sep 2024"
+														echo $formatted_date; 
+													}else{
+														echo "Null";
+													}
+													
+												 ?>
+												 </td>
 												<td><?php echo $performance['status']; ?></td>
 												<td class="min-w-c">
 													<a href="javascript:void(0);" onclick="editPerformance('<?= $performance['id'] ?>')" class="btn btn-circle icon btn-default">
@@ -1068,11 +1094,7 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
-
+</div> 
 <!-- Transfer Posting Add Modal -->
 <div id="addTransferPosting" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<script></script>
@@ -1160,8 +1182,7 @@
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div>
-
+</div> 
 <!-- Documents Details Add Modal -->
 <div id="addStaffDocuments" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1214,8 +1235,7 @@
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div>
-
+</div> 
 <!-- Documents Details Edit Modal -->
 <div id="editDocModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1268,8 +1288,7 @@
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div>
-
+</div> 
 <!-- Bank Details Add Modal -->
 <div id="addBankModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1811,7 +1830,8 @@
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('Assigned School'); ?></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control"  value="<?=  $staff['name']; ?>" readonly />
+				<?php $getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); ?>
+					<input type="text" class="form-control"  value="<?=  $getBranch['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div> 
@@ -1901,8 +1921,9 @@
 			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('Assigned School'); ?></label>
+				<?php $getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); ?>
 				<div class="col-md-9">
-					<input type="text" class="form-control"  value="<?=  $staff['name']; ?>" readonly />
+					<input type="text" class="form-control"  value="<?=  $getBranch['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div> 
@@ -1973,6 +1994,11 @@
         <?php echo form_open('employee/performance_create', array('class' => 'form-horizontal frm-submit')); ?>
         <div class="panel-body">
             <input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			<?php $user_id = get_loggedin_user_id(); $current_datetime = date('Y-m-d H:i:s'); ?>
+			<input type="hidden" name="created_by" value="<?php echo $user_id ; ?>"> 
+			<input type="hidden" name="evaluation_date" value="<?php echo $current_datetime ; ?>"> 
+
+			
 
             <div class="form-group mt-sm">
                 <label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
@@ -2122,9 +2148,11 @@
 		</header>
 		<?php echo form_open('employee/performance_update', array('class' => 'form-horizontal frm-submit')); ?>
 		<div class="panel-body">
-			<input type="hidden" name="staff_performance_id" id="estaff_performance_id" value="">
-			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-
+			<input type="hidden" name="staff_performance_id" id="estaff_performance_id" value=""> 
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>"> 
+			<?php $user_id  = get_loggedin_user_id();  $current_datetime = date('Y-m-d H:i:s'); ?>
+			<input type="hidden" name="action_by" value="<?php echo $user_id ; ?>"> 
+			<input type="hidden" name="verification_date" value="<?php echo $current_datetime ; ?>"> 
 			<!-- Staff Name -->
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
@@ -2163,6 +2191,29 @@
 							$arrayYear[$year->id] = $year->school_year;
 						}
 						echo form_dropdown("year_id", $arrayYear, set_value('year_id', $academic_year), "class='form-control' id='peacademic_year_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
+					?>
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('status'); ?></label>
+				<div class="col-md-9">
+					<?php
+						// Define the options for the status dropdown
+						$statusOptions = array(
+							"" => translate('select'),  // Default 'select' option
+							"pending" => translate('pending'),
+							"approved" => translate('approved'),
+							"rejected" => translate('rejected')
+						);
+
+						// Use form_dropdown to generate the select field
+						echo form_dropdown(
+							"status",                    // Name attribute
+							$statusOptions,              // Options array
+							set_value('status', $status), // Preselected value
+							"class='form-control' id='epstatus' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'"
+						);
 					?>
 					<span class="error"></span>
 				</div>

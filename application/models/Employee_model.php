@@ -229,6 +229,35 @@ class Employee_model extends MY_Model
         }
     }
 
+    public function performanceSave($data)
+    {
+        $inser_data = array( 
+            'staff_id'              => $data['staff_id'],
+            'year_id'               => $data['year_id'],
+            'role'                  => $data['role'],
+            'comment'               => isset($data['comment'])?$data['comment']:NULL,
+            'verification_date'     => isset($data['verification_date'])?$data['verification_date']:'', 
+            'academic_achievement'  => isset($data['academic_achievement'])?$data['academic_achievement']:NULL, 
+            'attendance'            => isset($data['attendance'])?$data['attendance']:NULL, 
+            'lesson_planning'       => isset($data['lesson_planning'])?$data['lesson_planning']:NULL, 
+            'personality'           => isset($data['personality'])?$data['personality']:NULL, 
+            'school_contribution'   => isset($data['school_contribution'])?$data['school_contribution']:NULL, 
+            'documentation'         => isset($data['documentation'])?$data['documentation']:NULL, 
+            'created_by'            => isset($data['created_by'])?$data['created_by']:NULL, 
+            'action_by'             => isset($data['action_by'])?$data['action_by']:NULL, 
+            'evaluation_date'       => date('Y-m-d H:i:s'),  
+            'status'                => isset($data['status'])?$data['status']:'pending', 
+        );
+        // print_r($inser_data);exit;
+        if (isset($data['staff_performance_id'])) {
+            $this->db->where('id', $data['staff_performance_id']);
+            $this->db->update('staff_performance', $inser_data);
+        } else {
+            $this->db->insert('staff_performance', $inser_data);
+        }
+        
+    }
+
     public function csvImport($row, $branchID, $userRole, $designationID, $departmentID)
     {
         $inser_data1 = array(

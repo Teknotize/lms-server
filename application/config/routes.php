@@ -102,6 +102,7 @@ $route['sections'] = 'sections/index';
 // API ROUTES
 // the param that I am passing to handleUpsert function is the table name
 $route['api/dbSyncController/studentTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/student/$1';
+$route['api/dbSyncController/studentCategoryTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/student_category/$1';
 $route['api/dbSyncController/classTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/class/$1';
 $route['api/dbSyncController/sectionTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/section/$1';
 $route['api/dbSyncController/parentsTable/(:num)'] = 'api/dbSyncController/handleTableUpsert/parent/$1';

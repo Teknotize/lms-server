@@ -1,4 +1,3 @@
-
 <?php $widget = (is_superadmin_loggedin() ? '4' : '6'); ?>
 <div class="row appear-animation" data-appear-animation="<?= $global_config['animations'] ?>">
 	<div class="col-md-12 mb-lg">
@@ -427,7 +426,7 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th><?= translate('school') ?></th> 
+										<th><?= translate('school') ?></th>
 										<th><?= translate('degree') ?></th>
 										<th><?= translate('field_of_study') ?></th>
 										<th><?= translate('location') ?></th>
@@ -492,7 +491,7 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th><?= translate('title') ?></th> 
+										<th><?= translate('title') ?></th>
 										<th><?= translate('type') ?></th>
 										<th><?= translate('institute_name') ?></th>
 										<th><?= translate('location') ?></th>
@@ -556,10 +555,10 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th><?= translate('name') ?></th> 
+										<th><?= translate('name') ?></th>
 										<th><?= translate('occupation') ?></th>
 										<th><?= translate('No of child') ?></th>
-										<th><?= translate('dependent child') ?></th> 
+										<th><?= translate('dependent child') ?></th>
 										<th><?= translate('actions') ?></th>
 									</tr>
 								</thead>
@@ -576,7 +575,7 @@
 												<td><?php echo $education['name']; ?></td>
 												<td><?php echo $education['occupation']; ?></td>
 												<td><?php echo $education['total_child']; ?></td>
-												<td><?php echo $education['dependent_child']; ?></td> 
+												<td><?php echo $education['dependent_child']; ?></td>
 												<td class="min-w-c">
 													<a href="javascript:void(0);" onclick="editspouse('<?= $education['id'] ?>')" class="btn btn-circle icon btn-default">
 														<i class="fas fa-pen-nib"></i>
@@ -616,7 +615,7 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th><?= translate('name') ?></th> 
+										<th><?= translate('name') ?></th>
 										<th><?= translate('employee_id') ?></th>
 										<th><?= translate('role') ?></th>
 										<th><?= translate('assigned School') ?></th> 
@@ -628,31 +627,31 @@
 									</tr>
 								</thead>
 								<tbody>
-								<?php 
-									$CI =& get_instance(); 
+									<?php
+									$CI = &get_instance();
 									$CI->load->model('Employee_model'); // Load the model getSingleStaff($id = '')
-									
+
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
 									$jobstatusResult = $this->db->get('staff_job_status')->result_array();
 									if (count($jobstatusResult)) {
 										foreach ($jobstatusResult as $jobs):
-											 
+
 									?>
 											<tr>
 												<td><?php echo $count++ ?></td>
-												<?php 
-													$staff_id   = $jobs['staff_id']; // Assuming each job has a staff_id
-													$staff_data = $CI->Employee_model->getSingleStaff($staff_id); 
-													$getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); 
-													// print_r($getBranch); exit;
+												<?php
+												$staff_id   = $jobs['staff_id']; // Assuming each job has a staff_id
+												$staff_data = $CI->Employee_model->getSingleStaff($staff_id);
+												$getBranch  = $CI->Employee_model->getBranch($staff['branch_id']);
+												// print_r($getBranch); exit;
 												?>
-												<td><?php echo $staff_data['name']; ?></td> 
-												<td><?php echo $staff_data['staff_id']; ?></td> 
-												<td><?php echo $staff_data['role']; ?></td> 
-												<td><?php echo $getBranch['name']; ?></td> 
+												<td><?php echo $staff_data['name']; ?></td>
+												<td><?php echo $staff_data['staff_id']; ?></td>
+												<td><?php echo $staff_data['role']; ?></td>
+												<td><?php echo $getBranch['name']; ?></td>
 												<td><?php echo $jobs['type']; ?></td>
-												<td><?php echo $staff_data['joining_date']; ?></td> 
+												<td><?php echo $staff_data['joining_date']; ?></td>
 												<td><?php echo $jobs['status_date']; ?></td>
 												<td><?php echo $jobs['comment']; ?></td>
 												<td class="min-w-c">
@@ -673,32 +672,37 @@
 						</div>
 					</div>
 				</div>
-			</div> 
+			</div>
 			<style>
 				.star-rating {
 					direction: rtl;
 					display: inline-block;
 				}
+
 				.star-rating input[type="radio"] {
 					display: none;
 				}
+
 				.star-rating label {
 					font-size: 24px;
 					color: #ddd;
 					cursor: pointer;
 					transition: color 0.3s;
 				}
-				.star-rating input[type="radio"]:checked ~ label {
+
+				.star-rating input[type="radio"]:checked~label {
 					color: #ffd700;
 				}
+
 				.star-rating label:hover,
-				.star-rating label:hover ~ label {
+				.star-rating label:hover~label {
 					color: #ffd700;
 				}
-				.star_color{
+
+				.star_color {
 					color: darkorange;
 				}
-				</style>
+			</style>
 			<div class="panel panel-accordion">
 				<div class="panel-heading">
 					<h4 class="panel-title">
@@ -720,70 +724,70 @@
 									<tr>
 										<th>#</th>
 										<th><?= translate('employee_id') ?></th>
-										<th><?= translate('employee_name') ?></th> 
+										<th><?= translate('employee_name') ?></th>
 										<th><?= translate('Session') ?>/<?= translate('year') ?></th>
-										<th><?= translate('rating_scale') ?></th> 
-										<th><?= translate('scored') ?></th> 
-										<th><?= translate('evaluation_date') ?></th> 
-										<th><?= translate('Approved_by') ?></th> 
-										<th><?= translate('verification_date') ?></th> 
-										<th><?= translate('status') ?></th> 
+										<th><?= translate('rating_scale') ?></th>
+										<th><?= translate('scored') ?></th>
+										<th><?= translate('evaluation_date') ?></th>
+										<th><?= translate('Approved_by') ?></th>
+										<th><?= translate('verification_date') ?></th>
+										<th><?= translate('status') ?></th>
 										<th><?= translate('actions') ?></th>
 									</tr>
 								</thead>
 								<tbody>
-								<?php 
-									$CI =& get_instance(); 
+									<?php
+									$CI = &get_instance();
 									$CI->load->model('Employee_model'); // Load the model getSingleStaff($id = '')
-									
+
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
 									$performanceResult = $this->db->get('staff_performance')->result_array();
 									if (count($performanceResult)) {
-										$total_star =0;
+										$total_star = 0;
 										foreach ($performanceResult as $performance):
-											 
+
 									?>
 											<tr>
 												<td><?php echo $count++ ?></td>
-												<?php 
-													$staff_id   = $performance['staff_id']; // Assuming each job has a staff_id
-													$staff_data = $CI->Employee_model->getSingleStaff($staff_id); 
-													 
-												            	 $this->db->where('id', $performance['year_id']);
-													$year      = $this->db->get('schoolyear')->row_array();
-													$getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); 
+												<?php
+												$staff_id   = $performance['staff_id']; // Assuming each job has a staff_id
+												$staff_data = $CI->Employee_model->getSingleStaff($staff_id);
 
-													$total_star = $performance['academic_achievement']+$performance['attendance']+$performance['lesson_planning']+$performance['personality']+$performance['school_contribution']+$performance['documentation'];
-													  // Example value, replace with your actual value
-													$p_star = ($total_star / 30) * 100; 
-													$rp = round($p_star);
-													//   echo"yes"; print_r($p_star); exit;
+												$this->db->where('id', $performance['year_id']);
+												$year      = $this->db->get('schoolyear')->row_array();
+												$getBranch  = $CI->Employee_model->getBranch($staff['branch_id']);
+
+												$total_star = $performance['academic_achievement'] + $performance['attendance'] + $performance['lesson_planning'] + $performance['personality'] + $performance['school_contribution'] + $performance['documentation'];
+												// Example value, replace with your actual value
+												$p_star = ($total_star / 30) * 100;
+												$rp = round($p_star);
+												//   echo"yes"; print_r($p_star); exit;
 												?>
-												<td><?php echo $staff_data['staff_id']; ?></td> 
+												<td><?php echo $staff_data['staff_id']; ?></td>
 												<td>
-													<?php echo $staff_data['name']; ?> <br/>
+													<?php echo $staff_data['name']; ?> <br />
 													<?php echo $staff_data['role']; ?>
-											    </td> 
-												<td><?php echo $year['school_year']; ?></td>  
-												
+												</td>
+												<td><?php echo $year['school_year']; ?></td>
+
 												<td>
-													<?php $flg =round(($total_star/6)); ?>
+													<?php $flg = round(($total_star / 6)); ?>
 													<?php for ($i = $flg; $i >= 1; $i--): ?>
 														<i class="fas fa-star star_color"></i>
-													<?php endfor; ?>  
+													<?php endfor; ?>
 
-													<?php 
-                                                       if($rp>90){
-														echo "Excellent"; 
-													   }elseif($rp>60){
-														echo "Good"; 
-													   }elseif($rp>49){
-														echo "satisfactory"; 
-													   }elseif($rp>10){
-														echo "Avg"; 
-													   }
-													   
+													<?php
+													if ($rp > 90) {
+														echo "Excellent";
+													} elseif ($rp > 60) {
+														echo "Good";
+													} elseif ($rp > 49) {
+														echo "satisfactory";
+													} elseif ($rp > 10) {
+														echo "Avg";
+													}
+
 													?>
 												</td> 
 												<td><?php echo $rp."%"; ?></td> 
@@ -835,7 +839,7 @@
 						</div>
 					</div>
 				</div>
-			</div> 
+			</div>
 
 
 			<div class="panel panel-accordion">
@@ -1024,165 +1028,442 @@
 				</div>
 			<?php endif; ?>
 
-			<div class="panel panel-accordion">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#transfer_posting">
-							<i class="fas fa-dna"></i> <?= translate('transfer_posting') ?>
-						</a>
-					</h4>
-				</div>
-				<div id="transfer_posting" class="accordion-body collapse <?= ($this->session->flashdata('transfer_posting_tab') == 1 ? 'in' : ''); ?>">
-					<div class="panel-body">
-						<div class="text-right mb-sm">
-							<a href="javascript:void(0);" onclick="mfp_modal('#addTransferPosting')" class="btn btn-circle btn-default mb-sm">
-								<i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting') ?>
+			<?php
+			if (get_permission('transfer_posting', 'is_view')) {
+			?>
+				<div class="panel panel-accordion">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#transfer_posting">
+								<i class="fas fa-dna"></i> <?= translate('transfer_posting') ?>
 							</a>
-						</div>
-						<div class="table-responsive mb-sm mt-xs">
+						</h4>
+					</div>
+					<div id="transfer_posting" class="accordion-body collapse <?= ($this->session->flashdata('transfer_posting_tab') == 1 ? 'in' : ''); ?>">
+						<div class="panel-body">
+							<?php
+							if (get_permission('transfer_posting', 'is_add')) {
+							?>
+								<div class="text-right mb-sm">
+									<a href="javascript:void(0);" onclick="mfp_modal('#addTransferPosting')" class="btn btn-circle btn-default mb-sm">
+										<i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting') ?>
+									</a>
+								</div>
+							<?php
+							}
+							?>
 
-							<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th><?= translate('requested_role') ?></th>
-										<th><?= translate('requested_department') ?></th>
-										<th><?= translate('requested_institute') ?></th>
-										<th><?= translate('effective_from') ?></th>
-										<th><?= translate('status') ?></th>
-										<th><?= translate('requested_by') ?></th>
-										<th><?= translate('action_by') ?></th>
-										<th><?= translate('actions') ?></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php
-									$count = 1;
-									if (count($transfer_posting_requests) > 0) {
-										foreach ($transfer_posting_requests as $row):
-									?>
-											<tr>
-												<td><?= $count ?></td>
-												<td><?= ($row['designation_id'] === '0' || $row['designation_id'] === null) ? '---' : $row['designation'] ?></td>
-												<td><?= ($row['new_dep_id'] === '0' || $row['new_dep_id'] === null) ? '---' : $row['department'] ?></td>
-												<td><?= ($row['new_branch_id'] === '0' || $row['new_branch_id'] === null) ? '---' : $row['branch'] ?></td>
-												<td><?= $row['effective_from'] ?></td>
-												<td><?= $row['status'] ?></td>
-												<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : $row['created_by_name'] ?></td>
-												<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : $row['action_by_name'] ?></td>
-												<td class="min-w-c">
-													<a href="<?= base_url('transfer_posting/edit/' . $row['id']) ?>" class="btn btn-circle icon btn-default">
-														<i class="fas fa-pen-nib"></i>
-													</a>
-													<?php echo btn_delete('transfer_posting/delete/' . $row['id']); ?>
-												</td>
-											</tr>
+							<div class="table-responsive mb-sm mt-xs">
+
+								<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th><?= translate('requested_role') ?></th>
+											<th><?= translate('requested_department') ?></th>
+											<th><?= translate('requested_institute') ?></th>
+											<th><?= translate('effective_from') ?></th>
+											<th><?= translate('status') ?></th>
+											<th><?= translate('requested_by') ?></th>
+											<th><?= translate('action_by') ?></th>
+											<?php
+											if (get_permission('transfer_posting', 'is_edit') || $row['emp_id'] === get_loggedin_user_id()) {
+											?>
+												<th><?= translate('actions') ?></th>
+											<?php
+											}
+											?>
+										</tr>
+									</thead>
+									<tbody>
 										<?php
-											$count++;
-										endforeach;
+										$count = 1;
+										if (count($transfer_posting_requests) > 0) {
+											foreach ($transfer_posting_requests as $row):
 										?>
-									<?php
-									} else {
-										echo "<tr><td colspan='7'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
-									}
-									?>
-								</tbody>
-							</table>
+												<tr>
+													<td><?= $count ?></td>
+													<td><?= ($row['designation_id'] === '0' || $row['designation_id'] === null) ? '---' : $row['designation'] ?></td>
+													<td><?= ($row['new_dep_id'] === '0' || $row['new_dep_id'] === null) ? '---' : $row['department'] ?></td>
+													<td><?= ($row['new_branch_id'] === '0' || $row['new_branch_id'] === null) ? '---' : $row['branch'] ?></td>
+													<td><?= $row['effective_from'] ?></td>
+													<td>
+														<?php if ($row['status'] == 'approved'): ?>
+															<span class="badge badge-success"><?= translate($row['status']) ?></span>
+														<?php elseif ($row['status'] == 'rejected'): ?>
+															<span class="badge badge-danger"><?= translate($row['status']) ?></span>
+														<?php else: ?>
+															<span class="badge badge-warning"><?= translate($row['status']) ?></span>
+														<?php endif; ?>
+													</td>
+													<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : $row['created_by_name'] ?></td>
+													<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : $row['action_by_name'] ?></td>
+													<td class="min-w-c">
+														<?php
+														if (get_permission('transfer_posting', 'is_edit')) {
+														?>
+															<a href="<?= base_url('transfer_posting/edit/' . $row['id']) ?>" class="btn btn-circle icon btn-default">
+																<i class="fas fa-pen-nib"></i>
+															</a>
+														<?php
+														}
+														if ($row['status'] === 'pending') {
+														?>
+															<button class='btn btn-success icon btn-circle' onclick="approve_reject_model('<?= base_url('transfer_posting/approve_reject/' . $row['id'] . '/approved') ?>','Are you sure?','Do you want to approve this request','Transfer Request Approved.')"><i class='fas fa-check'></i></button>
+															<button class='btn btn-danger icon btn-circle' onclick="approve_reject_model('<?= base_url('transfer_posting/approve_reject/' . $row['id'] . '/rejected') ?>','Are you sure?','Do you want to reject this request','Transfer Request Rejected.')"><i class='fas fa-times'></i></button>
+														<?php
+															if ($row['emp_id'] === get_loggedin_user_id()) {
+																echo btn_delete('transfer_posting/delete/' . $row['id']);
+															}
+														}
+														?>
+													</td>
+												</tr>
+											<?php
+												$count++;
+											endforeach;
+											?>
+										<?php
+										} else {
+											echo "<tr><td colspan='7'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
+										}
+										?>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			<?php
+			}
+			?>
+
+			<?php
+			if (get_permission('promotions', 'is_view')) {
+			?>
+				<div class="panel panel-accordion">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#promotions">
+								<i class="fas fa-dna"></i> <?= translate('promotions') ?>
+							</a>
+						</h4>
+					</div>
+					<div id="promotions" class="accordion-body collapse <?= ($this->session->flashdata('promotions_tab') == 1 ? 'in' : ''); ?>">
+						<div class="panel-body">
+							<?php
+							if (get_permission('promotions', 'is_add')) {
+							?>
+								<div class="text-right mb-sm">
+									<a href="javascript:void(0);" onclick="mfp_modal('#addPromotions')" class="btn btn-circle btn-default mb-sm">
+										<i class="fas fa-plus-circle"></i> <?= translate('add_promotions') ?>
+									</a>
+								</div>
+							<?php
+							}
+							?>
+
+							<div class="table-responsive mb-sm mt-xs">
+
+								<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th><?= translate('staff_id') ?></th>
+											<th><?= translate('requested_department') ?></th>
+											<th><?= translate('requested_scale') ?></th>
+											<th><?= translate('rating') ?></th>
+											<th><?= translate('effective_from') ?></th>
+											<th><?= translate('status') ?></th>
+											<th><?= translate('requested_by') ?></th>
+											<th><?= translate('action_by') ?></th>
+											<?php
+											if (get_permission('promotions', 'is_edit')) {
+											?>
+												<th><?= translate('actions') ?></th>
+											<?php
+											}
+											?>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										$count = 1;
+										if (count($staff_promotions) > 0) {
+											foreach ($staff_promotions as $row):
+										?>
+												<tr>
+													<td><?= $count ?></td>
+													<td><?= $row['staff_id'] ?></td>
+													<td><?= ($row['dep_id'] === '0') ? '---' : translate($row['department']) ?></td>
+													<td><?= ($row['scale_id'] === '0') ? '---' : translate($row['scale']) ?></td>
+													<td><?= ($row['rating'] === '0') ? '---' : translate($row['rating'] . "_star") ?></td>
+													<td><?= $row['effective_from'] ?></td>
+													<td>
+														<?php if ($row['status'] == 'approved'): ?>
+															<span class="badge badge-success"><?= translate($row['status']) ?></span>
+														<?php elseif ($row['status'] == 'rejected'): ?>
+															<span class="badge badge-danger"><?= translate($row['status']) ?></span>
+														<?php else: ?>
+															<span class="badge badge-warning"><?= translate($row['status']) ?></span>
+														<?php endif; ?>
+													</td>
+													<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : translate($row['created_by_name']) ?></td>
+													<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : translate($row['action_by_name']) ?></td>
+													<td class="min-w-c">
+														<?php
+														if (get_permission('promotions', 'is_edit')) {
+														?>
+															<a href="<?= base_url('promotions/edit/' . $row['id']) ?>" class="btn btn-circle icon btn-default">
+																<i class="fas fa-pen-nib"></i>
+															</a>
+														<?php
+														}
+														if ($row['status'] === 'pending') {
+														?>
+															<button class='btn btn-success icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/approved') ?>','Are you sure?','Do you want to approve this request','Promotion Request Approved.')"><i class='fas fa-check'></i></button>
+															<button class='btn btn-danger icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/rejected') ?>','Are you sure?','Do you want to reject this request','Promotion Request Rejected.')"><i class='fas fa-times'></i></button>
+														<?php
+															// if ($row['emp_id'] === get_loggedin_user_id()) {
+															// 	echo btn_delete('promotion/delete/' . $row['id']);
+															// }
+														}
+														?>
+													</td>
+												</tr>
+											<?php
+												$count++;
+											endforeach;
+											?>
+										<?php
+										} else {
+											echo "<tr><td colspan='11'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
+										}
+										?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php
+			}
+			?>
 		</div>
 	</div>
-</div> 
-<!-- Transfer Posting Add Modal -->
-<div id="addTransferPosting" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
-	<script></script>
-	<section class="panel">
-		<div class="panel-heading">
-			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting'); ?></h4>
-		</div>
-		<?php echo form_open_multipart('transfer_posting/create', array('class' => 'form-horizontal frm-submit-data')); ?>
-		<div class="panel-body">
-			<!--  -->
-			<input type="hidden" name="emp_id" required value="<?= $staff['id'] ?>">
+</div>
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('current_school') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<input type="hidden" name="current_branch_id" value="<?= $staff['branch_id'] ?>">
-					<?= form_dropdown("current_branch_id_disabled", $institutes, $staff['branch_id'], "class='form-control' id='tp_current_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
-					<span class="error"><?= form_error('current_branch_id') ?></span>
-				</div>
-			</div>
+<?php
+if (get_permission('transfer_posting', 'is_add')) {
+?>
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('new_school') ?></label>
-				<div class="col-md-9">
-					<?php
-					$new_institutes = $institutes;
-					unset($new_institutes[$staff['branch_id']]);
-					?>
-					<?= form_dropdown("new_branch_id", $new_institutes, null, "class='form-control' id='tp_new_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'") ?>
-					<span class="error"><?= form_error('new_branch_id') ?></span>
-				</div>
-			</div>
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('new_role') ?> </label>
-				<div class="col-md-9">
-					<?php
-					$designation_list = $this->app_lib->getDesignation($staff['branch_id']);
-					echo form_dropdown("designation_id", $designation_list, null, "class='form-control' id='tp_designation_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
-					?>
-					<span class="error"><?= form_error('designation_id') ?></span>
-				</div>
+	<!-- Transfer Posting Add Modal -->
+	<div id="addTransferPosting" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
+		<script></script>
+		<section class="panel">
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?= translate('add_transfer_posting'); ?></h4>
 			</div>
+			<?php echo form_open_multipart('transfer_posting/create', array('class' => 'form-horizontal frm-submit-data')); ?>
+			<div class="panel-body">
+				<!--  -->
+				<input type="hidden" name="emp_id" required value="<?= $staff['id'] ?>">
 
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('current_department') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<input type="hidden" name="current_dep_id" value="<?= $staff['department'] ?>">
-					<?= form_dropdown("current_dep_id_disabled", $departments, $staff['department'], "class='form-control' id='current_dep_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
-					<span class="error"><?= form_error('current_dep_id') ?></span>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_school') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<input type="hidden" name="current_branch_id" value="<?= $staff['branch_id'] ?>">
+						<?= form_dropdown("current_branch_id_disabled", $institutes, $staff['branch_id'], "class='form-control' id='tp_current_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
+						<span class="error"><?= form_error('current_branch_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('new_department') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<?= form_dropdown("new_dep_id", $departments, null, "class='form-control' id='tp_department_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
-					<span class="error"><?= form_error('new_dep_id') ?></span>
+
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('new_school') ?></label>
+					<div class="col-md-9">
+						<?php
+						$new_institutes = $institutes;
+						unset($new_institutes[$staff['branch_id']]);
+						?>
+						<?= form_dropdown("new_branch_id", $new_institutes, null, "class='form-control' id='tp_new_branch_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'") ?>
+						<span class="error"><?= form_error('new_branch_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('effective_from') ?> <span class="required">*</span></label>
-				<div class="col-md-9">
-					<?= form_input(['type' => 'date', 'name' => 'effective_from'], null, 'class="form-control" requried') ?>
-					<span class="error"><?= form_error('effective_from') ?></span>
+
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('new_role') ?> </label>
+					<div class="col-md-9">
+						<?php
+						$designation_list = $this->app_lib->getDesignation($staff['branch_id']);
+						echo form_dropdown("designation_id", $designation_list, null, "class='form-control' id='tp_designation_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
+						?>
+						<span class="error"><?= form_error('designation_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<div class="form-group mt-md">
-				<label class="col-md-3 control-label"><?= translate('notes') ?></label>
-				<div class="col-md-9">
-					<?= form_textarea(['name' => 'notes'], null, 'class="form-control"') ?>
-					<span class="error"><?= form_error('notes') ?></span>
+
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_department') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<input type="hidden" name="current_dep_id" value="<?= $staff['department'] ?>">
+						<?= form_dropdown("current_dep_id_disabled", $departments, $staff['department'], "class='form-control' id='current_dep_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
+						<span class="error"><?= form_error('current_dep_id') ?></span>
+					</div>
 				</div>
-			</div>
-			<!--  -->
-		</div>
-		<footer class="panel-footer">
-			<div class="row">
-				<div class="col-md-12 text-right">
-					<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
-						<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
-					</button>
-					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('new_department') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_dropdown("new_dep_id", $departments, null, "class='form-control' id='tp_department_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
+						<span class="error"><?= form_error('new_dep_id') ?></span>
+					</div>
 				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('effective_from') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'date', 'name' => 'effective_from'], null, 'class="form-control" requried') ?>
+						<span class="error"><?= form_error('effective_from') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('notes') ?></label>
+					<div class="col-md-9">
+						<?= form_textarea(['name' => 'notes'], null, 'class="form-control"') ?>
+						<span class="error"><?= form_error('notes') ?></span>
+					</div>
+				</div>
+				<!--  -->
 			</div>
-		</footer>
-		<?php echo form_close(); ?>
-	</section>
-</div> 
+			<footer class="panel-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+							<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+						</button>
+						<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+					</div>
+				</div>
+			</footer>
+			<?php echo form_close(); ?>
+		</section>
+	</div>
+
+<?php
+}
+?>
+
+
+<?php
+if (get_permission('promotions', 'is_add')) {
+?>
+
+
+	<!-- Transfer Posting Add Modal -->
+	<div id="addPromotions" class="zoom-anim-dialog modal-block modal-lg modal-block-primary mfp-hide">
+		<script></script>
+		<section class="panel">
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?= translate('add_promotions'); ?></h4>
+			</div>
+			<?php echo form_open_multipart('promotions/create', array('class' => 'form-horizontal frm-submit-data')); ?>
+			<div class="panel-body">
+				<!--  -->
+				<input type="hidden" name="emp_id" required value="<?= $staff['id'] ?>">
+
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('employee_id') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'employee_id'], $staff['staff_id'], 'class="form-control" disabled') ?>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('phone') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'phone_number'], $staff['mobileno'], 'class="form-control" disabled') ?>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_department') ?></label>
+					<div class="col-md-9">
+						<?= form_dropdown("current_dep_id_disabled", $departments, $staff['department'], "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required disabled") ?>
+						<span class="error"><?= form_error('current_dep_id') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('assign_department_(Optional)') ?> </label>
+					<div class="col-md-9">
+						<?= form_dropdown("new_dep_id", $departments, null, "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'") ?>
+						<span class="error"><?= form_error('new_dep_id') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('current_scale') ?> </label>
+					<div class="col-md-9">
+						<?= form_dropdown("current_scale", $payscales, $promotions['payscale'], "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' disabled") ?>
+						<span class="error"><?= form_error('current_scale') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('promotion_scale') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_dropdown("promotion_scale", $payscales, null, "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
+						<span class="error"><?= form_error('promotion_scale') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('qualification') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'qualification'], $staff['qualification'], 'class="form-control" disabled') ?>
+						<span class="error"><?= form_error('qualification') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('years_of_experience') ?></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'text', 'name' => 'years_of_experience'], null, 'class="form-control" disabled') ?>
+						<span class="error"><?= form_error('years_of_experience') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('ratings') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_dropdown("ratings", $ratings, null, "class='form-control' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' required") ?>
+						<span class="error"><?= form_error('ratings') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('effective_from') ?> <span class="required">*</span></label>
+					<div class="col-md-9">
+						<?= form_input(['type' => 'date', 'name' => 'effective_from'], null, 'class="form-control" requried') ?>
+						<span class="error"><?= form_error('effective_from') ?></span>
+					</div>
+				</div>
+				<div class="form-group mt-md">
+					<label class="col-md-3 control-label"><?= translate('notes') ?></label>
+					<div class="col-md-9">
+						<?= form_textarea(['name' => 'notes'], null, 'class="form-control"') ?>
+						<span class="error"><?= form_error('notes') ?></span>
+					</div>
+				</div>
+				<!--  -->
+			</div>
+			<footer class="panel-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button type="submit" id="" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+							<i class="fas fa-plus-circle"></i> <?php echo translate('request'); ?>
+						</button>
+						<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+					</div>
+				</div>
+			</footer>
+			<?php echo form_close(); ?>
+		</section>
+	</div>
+
+<?php
+}
+?>
+
 <!-- Documents Details Add Modal -->
 <div id="addStaffDocuments" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1353,7 +1634,7 @@
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div> 
+</div>
 <!-- Bank Details Edit Modal -->
 <div id="editBankModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1562,8 +1843,8 @@
 		<?php echo form_open('employee/experience_create', array('class' => 'form-horizontal frm-submit')); ?>
 		<div class="panel-body">
 			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-			
-			
+
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('title'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
@@ -1630,7 +1911,7 @@
 		<div class="panel-body">
 			<input type="hidden" name="staff_experience_id" id="eestaff_experience_id" value="">
 			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-		
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('title'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
@@ -1697,8 +1978,8 @@
 		<?php echo form_open('employee/spouse_create', array('class' => 'form-horizontal frm-submit')); ?>
 		<div class="panel-body">
 			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-			
-			
+
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
@@ -1726,7 +2007,7 @@
 					<input type="number" class="form-control" name="dependent_child" id="adependent_child" />
 					<span class="error"></span>
 				</div>
-			</div>  
+			</div>
 		</div>
 		<footer class="panel-footer">
 			<div class="row">
@@ -1751,7 +2032,7 @@
 		<div class="panel-body">
 			<input type="hidden" name="staff_spouse_id" id="estaff_spouse_id" value="">
 			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-		
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
@@ -1779,7 +2060,7 @@
 					<input type="text" class="form-control" name="dependent_child" id="edependent_child" value="" />
 					<span class="error"></span>
 				</div>
-			</div> 
+			</div>
 		</div>
 		<footer class="panel-footer">
 			<div class="row">
@@ -1804,26 +2085,26 @@
 		<?php echo form_open('employee/job_status_create', array('class' => 'form-horizontal frm-submit')); ?>
 		<div class="panel-body">
 			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-			
-			
+
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control" value="<?=  $staff['name']; ?>" readonly />
+					<input type="text" class="form-control" value="<?= $staff['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('employee_id'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control"  value="<?=  $staff['staff_id']; ?>" readonly />
+					<input type="text" class="form-control" value="<?= $staff['staff_id']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('Role') . " /" . translate('Designation'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control"  value="<?=  $staff['role']; ?>" readonly/>
+					<input type="text" class="form-control" value="<?= $staff['role']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
@@ -1834,19 +2115,19 @@
 					<input type="text" class="form-control"  value="<?=  $getBranch['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
-			</div> 
+			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('date_of_joining'); ?></label>
 				<div class="col-md-9">
-					<input type="date" class="form-control"  value="<?=  $staff['joining_date']; ?>" readonly />
+					<input type="date" class="form-control" value="<?= $staff['joining_date']; ?>" readonly />
 					<span class="error"></span>
 				</div>
-			</div> 
-			 
+			</div>
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('type'); ?></label>
 				<div class="col-md-9">
-				<?php 
+					<?php
 					$array = array(
 						""                 => translate('select'),
 						"In service death" => translate('In service death'),
@@ -1859,20 +2140,20 @@
 					?>
 					<span class="error"></span>
 				</div>
-			</div> 
+			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('status_date'); ?></label>
 				<div class="col-md-9">
 					<input type="date" class="form-control" name="status_date" id="astatus_date" />
 					<span class="error"></span>
 				</div>
-			</div>  
+			</div>
 			<div class="form-group mb-md">
 				<label class="col-md-3 control-label"><?php echo translate('Comments'); ?></label>
 				<div class="col-md-9">
 					<textarea class="form-control valid" rows="5" name="comment"></textarea>
 				</div>
-			</div> 
+			</div>
 		</div>
 		<footer class="panel-footer">
 			<div class="row">
@@ -1897,25 +2178,25 @@
 		<div class="panel-body">
 			<input type="hidden" name="staff_job_status_id" id="estaff_job_status_id" value="">
 			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-		
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control" value="<?=  $staff['name']; ?>" readonly />
+					<input type="text" class="form-control" value="<?= $staff['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('employee_id'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control"  value="<?=  $staff['staff_id']; ?>" readonly />
+					<input type="text" class="form-control" value="<?= $staff['staff_id']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('Role') . " /" . translate('Designation'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control"  value="<?=  $staff['role']; ?>" readonly/>
+					<input type="text" class="form-control" value="<?= $staff['role']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
@@ -1926,19 +2207,19 @@
 					<input type="text" class="form-control"  value="<?=  $getBranch['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
-			</div> 
+			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('date_of_joining'); ?></label>
 				<div class="col-md-9">
-					<input type="date" class="form-control"  value="<?=  $staff['joining_date']; ?>" readonly />
+					<input type="date" class="form-control" value="<?= $staff['joining_date']; ?>" readonly />
 					<span class="error"></span>
 				</div>
-			</div> 
-			 
+			</div>
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('type'); ?></label>
 				<div class="col-md-9">
-				<?php 
+					<?php
 					$array = array(
 						""                 => translate('select'),
 						"In service death" => translate('In service death'),
@@ -1946,7 +2227,7 @@
 						"Employee Resigned " => translate('Employee Resigned'),
 						"Mark Terminate"   => translate('Mark Terminate')
 					);
-					
+
 					echo form_dropdown(
 						"type", // Name attribute
 						$array, // Options array
@@ -1956,20 +2237,20 @@
 					?>
 					<span class="error"></span>
 				</div>
-			</div> 
+			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('status_date'); ?></label>
 				<div class="col-md-9">
 					<input type="date" class="form-control" name="status_date" id="estatus_date" />
 					<span class="error"></span>
 				</div>
-			</div>  
+			</div>
 			<div class="form-group mb-md">
 				<label class="col-md-3 control-label"><?php echo translate('Comments'); ?></label>
 				<div class="col-md-9">
 					<textarea class="form-control valid" rows="5" name="comment" id="ecomment"></textarea>
 				</div>
-			</div> 
+			</div>
 		</div>
 		<footer class="panel-footer">
 			<div class="row">
@@ -2000,146 +2281,146 @@
 
 			
 
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" value="<?= $staff['name']; ?>" readonly />
-                    <span class="error"></span>
-                </div>
-            </div>
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('employee_id'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" value="<?= $staff['staff_id']; ?>" readonly />
-                    <span class="error"></span>
-                </div>
-            </div>
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('Role') . " /" . translate('Designation'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <input type="text" name="role" class="form-control" value="<?= $staff['role']; ?>" readonly />
-                    <span class="error"></span>
-                </div>
-            </div>
 			<div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('session') . " /" . translate('year'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-				   <?php
-						$arrayYear = array("" => translate('select'));
-						$years = $this->db->get('schoolyear')->result();
-						foreach ($years as $year){
-							$arrayYear[$year->id] = $year->school_year;
-						}
-						echo form_dropdown("year_id", $arrayYear, set_value('year_id', $academic_year), "class='form-control' id='academic_year_id'
+				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" value="<?= $staff['name']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('employee_id'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" value="<?= $staff['staff_id']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('Role') . " /" . translate('Designation'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" name="role" class="form-control" value="<?= $staff['role']; ?>" readonly />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('session') . " /" . translate('year'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<?php
+					$arrayYear = array("" => translate('select'));
+					$years = $this->db->get('schoolyear')->result();
+					foreach ($years as $year) {
+						$arrayYear[$year->id] = $year->school_year;
+					}
+					echo form_dropdown("year_id", $arrayYear, set_value('year_id', $academic_year), "class='form-control' id='academic_year_id'
 						data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
 					?>
-                    <span class="error"></span>
-                </div>
-            </div> 
-            <!-- Academic Achievement -->
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('academic_achievement'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <div class="star-rating">
-                        <input type="radio" id="academic_star5" name="academic_achievement" value="5" /><label for="academic_star5" title="5 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="academic_star4" name="academic_achievement" value="4" /><label for="academic_star4" title="4 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="academic_star3" name="academic_achievement" value="3" /><label for="academic_star3" title="3 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="academic_star2" name="academic_achievement" value="2" /><label for="academic_star2" title="2 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="academic_star1" name="academic_achievement" value="1" /><label for="academic_star1" title="1 star"><i class="fas fa-star"></i></label>
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
+					<span class="error"></span>
+				</div>
+			</div>
+			<!-- Academic Achievement -->
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('academic_achievement'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<div class="star-rating">
+						<input type="radio" id="academic_star5" name="academic_achievement" value="5" /><label for="academic_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="academic_star4" name="academic_achievement" value="4" /><label for="academic_star4" title="4 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="academic_star3" name="academic_achievement" value="3" /><label for="academic_star3" title="3 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="academic_star2" name="academic_achievement" value="2" /><label for="academic_star2" title="2 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="academic_star1" name="academic_achievement" value="1" /><label for="academic_star1" title="1 star"><i class="fas fa-star"></i></label>
+					</div>
+					<span class="error"></span>
+				</div>
+			</div>
 
-            <!-- Attendance -->
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('attendance'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <div class="star-rating">
-                        <input type="radio" id="attendance_star5" name="attendance" value="5" /><label for="attendance_star5" title="5 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="attendance_star4" name="attendance" value="4" /><label for="attendance_star4" title="4 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="attendance_star3" name="attendance" value="3" /><label for="attendance_star3" title="3 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="attendance_star2" name="attendance" value="2" /><label for="attendance_star2" title="2 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="attendance_star1" name="attendance" value="1" /><label for="attendance_star1" title="1 star"><i class="fas fa-star"></i></label>
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
+			<!-- Attendance -->
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('attendance'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<div class="star-rating">
+						<input type="radio" id="attendance_star5" name="attendance" value="5" /><label for="attendance_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="attendance_star4" name="attendance" value="4" /><label for="attendance_star4" title="4 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="attendance_star3" name="attendance" value="3" /><label for="attendance_star3" title="3 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="attendance_star2" name="attendance" value="2" /><label for="attendance_star2" title="2 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="attendance_star1" name="attendance" value="1" /><label for="attendance_star1" title="1 star"><i class="fas fa-star"></i></label>
+					</div>
+					<span class="error"></span>
+				</div>
+			</div>
 
-            <!-- Lesson Planning -->
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('lesson_planning'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <div class="star-rating">
-                        <input type="radio" id="lesson_star5" name="lesson_planning" value="5" /><label for="lesson_star5" title="5 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="lesson_star4" name="lesson_planning" value="4" /><label for="lesson_star4" title="4 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="lesson_star3" name="lesson_planning" value="3" /><label for="lesson_star3" title="3 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="lesson_star2" name="lesson_planning" value="2" /><label for="lesson_star2" title="2 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="lesson_star1" name="lesson_planning" value="1" /><label for="lesson_star1" title="1 star"><i class="fas fa-star"></i></label>
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
+			<!-- Lesson Planning -->
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('lesson_planning'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<div class="star-rating">
+						<input type="radio" id="lesson_star5" name="lesson_planning" value="5" /><label for="lesson_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="lesson_star4" name="lesson_planning" value="4" /><label for="lesson_star4" title="4 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="lesson_star3" name="lesson_planning" value="3" /><label for="lesson_star3" title="3 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="lesson_star2" name="lesson_planning" value="2" /><label for="lesson_star2" title="2 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="lesson_star1" name="lesson_planning" value="1" /><label for="lesson_star1" title="1 star"><i class="fas fa-star"></i></label>
+					</div>
+					<span class="error"></span>
+				</div>
+			</div>
 
-            <!-- Personality -->
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('personality'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <div class="star-rating">
-                        <input type="radio" id="personality_star5" name="personality" value="5" /><label for="personality_star5" title="5 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="personality_star4" name="personality" value="4" /><label for="personality_star4" title="4 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="personality_star3" name="personality" value="3" /><label for="personality_star3" title="3 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="personality_star2" name="personality" value="2" /><label for="personality_star2" title="2 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="personality_star1" name="personality" value="1" /><label for="personality_star1" title="1 star"><i class="fas fa-star"></i></label>
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
+			<!-- Personality -->
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('personality'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<div class="star-rating">
+						<input type="radio" id="personality_star5" name="personality" value="5" /><label for="personality_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="personality_star4" name="personality" value="4" /><label for="personality_star4" title="4 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="personality_star3" name="personality" value="3" /><label for="personality_star3" title="3 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="personality_star2" name="personality" value="2" /><label for="personality_star2" title="2 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="personality_star1" name="personality" value="1" /><label for="personality_star1" title="1 star"><i class="fas fa-star"></i></label>
+					</div>
+					<span class="error"></span>
+				</div>
+			</div>
 
-            <!-- School Contribution -->
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('school_contribution'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <div class="star-rating">
-                        <input type="radio" id="contribution_star5" name="school_contribution" value="5" /><label for="contribution_star5" title="5 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="contribution_star4" name="school_contribution" value="4" /><label for="contribution_star4" title="4 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="contribution_star3" name="school_contribution" value="3" /><label for="contribution_star3" title="3 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="contribution_star2" name="school_contribution" value="2" /><label for="contribution_star2" title="2 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="contribution_star1" name="school_contribution" value="1" /><label for="contribution_star1" title="1 star"><i class="fas fa-star"></i></label>
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
+			<!-- School Contribution -->
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('school_contribution'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<div class="star-rating">
+						<input type="radio" id="contribution_star5" name="school_contribution" value="5" /><label for="contribution_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="contribution_star4" name="school_contribution" value="4" /><label for="contribution_star4" title="4 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="contribution_star3" name="school_contribution" value="3" /><label for="contribution_star3" title="3 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="contribution_star2" name="school_contribution" value="2" /><label for="contribution_star2" title="2 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="contribution_star1" name="school_contribution" value="1" /><label for="contribution_star1" title="1 star"><i class="fas fa-star"></i></label>
+					</div>
+					<span class="error"></span>
+				</div>
+			</div>
 
-            <!-- Documentation -->
-            <div class="form-group mt-sm">
-                <label class="col-md-3 control-label"><?php echo translate('documentation'); ?> <span class="required">*</span></label>
-                <div class="col-md-9">
-                    <div class="star-rating">
-                        <input type="radio" id="documentation_star5" name="rating_documentation" value="5" /><label for="documentation_star5" title="5 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="documentation_star4" name="rating_documentation" value="4" /><label for="documentation_star4" title="4 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="documentation_star3" name="rating_documentation" value="3" /><label for="documentation_star3" title="3 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="documentation_star2" name="rating_documentation" value="2" /><label for="documentation_star2" title="2 stars"><i class="fas fa-star"></i></label>
-                        <input type="radio" id="documentation_star1" name="rating_documentation" value="1" /><label for="documentation_star1" title="1 star"><i class="fas fa-star"></i></label>
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
+			<!-- Documentation -->
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('documentation'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<div class="star-rating">
+						<input type="radio" id="documentation_star5" name="rating_documentation" value="5" /><label for="documentation_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="documentation_star4" name="rating_documentation" value="4" /><label for="documentation_star4" title="4 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="documentation_star3" name="rating_documentation" value="3" /><label for="documentation_star3" title="3 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="documentation_star2" name="rating_documentation" value="2" /><label for="documentation_star2" title="2 stars"><i class="fas fa-star"></i></label>
+						<input type="radio" id="documentation_star1" name="rating_documentation" value="1" /><label for="documentation_star1" title="1 star"><i class="fas fa-star"></i></label>
+					</div>
+					<span class="error"></span>
+				</div>
+			</div>
 
-        </div>
-        <footer class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <button type="submit" class="btn btn-primary"><?php echo translate('save'); ?></button>
-                    <button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
-                </div>
-            </div>
-        </footer>
-        <?php echo form_close(); ?>
-    </section>
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-primary"><?php echo translate('save'); ?></button>
+					<button class="btn btn-default modal-dismiss"><?php echo translate('cancel'); ?></button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close(); ?>
+	</section>
 </div>
 
-<!-- Staff performance Details Edit Modal --> 
+<!-- Staff performance Details Edit Modal -->
 
 <div id="editPerformanceModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -2185,12 +2466,12 @@
 				<label class="col-md-3 control-label"><?php echo translate('session') . " /" . translate('year'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<?php
-						$arrayYear = array("" => translate('select'));
-						$years = $this->db->get('schoolyear')->result();
-						foreach ($years as $year) {
-							$arrayYear[$year->id] = $year->school_year;
-						}
-						echo form_dropdown("year_id", $arrayYear, set_value('year_id', $academic_year), "class='form-control' id='peacademic_year_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
+					$arrayYear = array("" => translate('select'));
+					$years = $this->db->get('schoolyear')->result();
+					foreach ($years as $year) {
+						$arrayYear[$year->id] = $year->school_year;
+					}
+					echo form_dropdown("year_id", $arrayYear, set_value('year_id', $academic_year), "class='form-control' id='peacademic_year_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
 					?>
 					<span class="error"></span>
 				</div>

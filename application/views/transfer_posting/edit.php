@@ -2,7 +2,7 @@
     <div class="tabs-custom">
         <ul class="nav nav-tabs">
             <li>
-                <a href="<?= base_url('transfer_posting/edit') ?>"><i class="fas fa-list-ul"></i> <?= translate('transfer_posting') ?></a>
+                <a href="<?= base_url('transfer_posting/index') ?>"><i class="fas fa-list-ul"></i> <?= translate('transfer_posting') ?></a>
             </li>
             <li class="active">
                 <a href="#edit" data-toggle="tab"><i class="far fa-edit"></i> <?= translate('edit_transfer_posting') ?></a>
@@ -46,7 +46,8 @@
                     <label class="col-md-3 control-label"><?= translate('new_role') ?> </label>
                     <div class="col-md-6">
                         <?php
-                        $designation_list = $this->app_lib->getDesignation($request['current_branch_id']);
+                        $branch_id = $request['new_branch_id'] ? $request['new_branch_id'] : $request['current_branch_id'];
+                        $designation_list = $this->app_lib->getDesignation($branch_id);
                         echo form_dropdown("designation_id", $designation_list, $request['designation_id'], "class='form-control' id='tp_designation_id' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
                         ?>
                         <span class="error"><?= form_error('designation_id') ?></span>

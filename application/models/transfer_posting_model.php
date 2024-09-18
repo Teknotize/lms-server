@@ -97,10 +97,11 @@ class transfer_posting_model extends CI_Model
                 $this->db->where('id', $id);
                 $this->db->update('transfer_posting', ['status' => $status, 'action_by' => get_loggedin_user_id(), 'updated_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time()))]);
                 if ($this->db->affected_rows() > 0) {
-                    if ($status === 'approved') {
-                        $response = $this->transfer_employee($transfer_request['id']);
-                        return $response;
-                    }
+                    // Uncomment this if you want to transfer the employee the moment request is approved
+                    // if ($status === 'approved') {
+                    //     $response = $this->transfer_employee($transfer_request['id']);
+                    //     return $response;
+                    // }
                     return true;
                 }
             }

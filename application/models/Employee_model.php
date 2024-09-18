@@ -179,7 +179,7 @@ class Employee_model extends MY_Model
 
     public function experienceSave($data)
     {
-        $inser_data = array( 
+        $inser_data = array(
             'staff_id'       => $data['staff_id'],
             'title'          => $data['title'],
             'type'           => $data['type'],
@@ -198,12 +198,12 @@ class Employee_model extends MY_Model
 
     public function spouseSave($data)
     {
-        $inser_data = array( 
+        $inser_data = array(
             'staff_id'       => $data['staff_id'],
             'name'          => $data['name'],
             'occupation'     => $data['occupation'],
             'total_child'     => $data['total_child'],
-            'dependent_child' => $data['dependent_child'], 
+            'dependent_child' => $data['dependent_child'],
         );
         if (isset($data['staff_spouse_id'])) {
             $this->db->where('id', $data['staff_spouse_id']);
@@ -215,11 +215,11 @@ class Employee_model extends MY_Model
 
     public function jobStatusSave($data)
     {
-        $inser_data = array( 
+        $inser_data = array(
             'staff_id'        => $data['staff_id'],
             'type'            => $data['type'],
             'comment'         => $data['comment'],
-            'status_date'     => $data['status_date'], 
+            'status_date'     => $data['status_date'],
         );
         if (isset($data['staff_job_status_id'])) {
             $this->db->where('id', $data['staff_job_status_id']);
@@ -299,9 +299,99 @@ class Employee_model extends MY_Model
 
     public function getBranch($id)
     {
-        
-        $this->db->where('id', $id); 
+
+        $this->db->where('id', $id);
         $query = $this->db->get('branch');
         return $query->row_array();
+    }
+
+    public function tenure($interval)
+    {
+        $tenure = '';
+        if ($interval->y) {
+            $tenure .= $interval->y . ' years ';
+        }
+        if ($interval->m) {
+            $tenure .= $interval->m . ' months ';
+        }
+        if ($interval->d) {
+            $tenure .= $interval->d . ' days';
+        }
+        $tenure = trim($tenure); // Remove any trailing spaces
+        if ($tenure == '') {
+            $tenure = '0 days';
+        }
+        return $tenure;
+    }
+
+    public function get_emp_tenure($id)
+    {
+        // dd(array(
+        //     // $this->db->where('emp_id', $id)->order_by('updated_at', 'DESC')->get('staff_promotions')->result(),
+        //     // $this->db->select('transfer_posting.*, staff_promotions.*')
+        //     // $this->db->select('
+        //     //     transfer_posting.id as tp_id,
+        //     //     transfer_posting.emp_id as emp_id, 
+        //     //     transfer_posting.effective_from as tp_effective_from, 
+        //     //     transfer_posting.updated_at as tp_updated_at, 
+        //     //     staff_promotions.id as sp_id, 
+        //     //     staff_promotions.created_at as sp_created_at, 
+        //     //     staff_promotions.updated_at as sp_updated_at
+        //     // ')
+        //     //     ->from('transfer_posting')
+        //     //     ->join('staff_promotions', 'staff_promotions.created_at < transfer_posting.effective_from AND staff_promotions.emp_id = transfer_posting.emp_id')
+        //     //     ->where('transfer_posting.emp_id', $id)
+        //     //     ->order_by('transfer_posting.updated_at', 'DESC')
+        //     //     ->get()
+        //     //     ->result_array(),
+        // ));
+        // $temp = $this->db->where('emp_id', $id)->order_by('updated_at', 'DESC')->get('transfer_posting')->result_array();
+        $this->db->select('
+            tp.id,
+            tp.designation_id,
+            des.name AS designation,
+            tp.new_dep_id,
+            dep.name AS department,
+            tp.new_branch_id,
+            ins.name AS branch,
+            tp.effective_from,
+            tp.notes,
+            tp.created_by,
+            st.name AS created_by_name,
+            tp.action_by,
+            st1.name AS action_by_name,
+            st2.name AS emp_name,
+            st2.staff_id AS staff_id,
+            tp.status,
+            tp.emp_id,
+            tp.updated_at
+        ');
+        $this->db->from('transfer_posting tp');
+        $this->db->join('staff_designation des', 'tp.designation_id = des.id', 'left');
+        $this->db->join('staff_department dep', 'tp.new_dep_id = dep.id', 'left');
+        $this->db->join('branch ins', 'tp.new_branch_id = ins.id', 'left');
+        $this->db->join('staff st', 'tp.created_by = st.id', 'left');
+        $this->db->join('staff st1', 'tp.action_by = st1.id', 'left');
+        $this->db->join('staff st2', 'tp.emp_id = st2.id', 'left');
+        $this->db->where('tp.emp_id', $id);
+        $this->db->where('tp.deleted_at', null);
+        $this->db->order_by('updated_at', 'DESC');
+        $temp = $this->db->get()->result_array();
+        // dd($query);
+        for ($i = 0; $i < (count($temp) - 1); $i++) {
+            $current_effective_from = $temp[$i]['effective_from'];
+            $next_effective_from = $temp[$i + 1]['effective_from'];
+
+            $current_date = new DateTime($current_effective_from);
+            $next_date = new DateTime($next_effective_from);
+
+            $interval = $next_date->diff($current_date);
+
+            $temp[$i]['tenure'] = $this->tenure($interval);
+        }
+        $today = new DateTime(date('Y-m-d'));
+        $last_effective_from = $temp[count($temp) - 1]['effective_from'];
+        $temp[count($temp) - 1]['tenure'] = $this->tenure($today->diff(new DateTime($last_effective_from)));
+        // dd($temp);
     }
 }

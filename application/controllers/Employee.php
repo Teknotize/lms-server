@@ -125,19 +125,19 @@ class Employee extends Admin_Controller
         $this->form_validation->set_rules('total_child', translate('total_child'), 'trim|required');
         $this->form_validation->set_rules('dependent_child',  translate('dependent_child'), 'trim|required');
     }
-     /* job status form validation rules */
-     protected function job_status_validation()
-     {
-         $this->form_validation->set_rules('type', translate('type'), 'trim|required');
-         $this->form_validation->set_rules('status_date', translate('occupation'), 'trim|required');
-         $this->form_validation->set_rules('comment', translate('total_child'), 'trim|required'); 
-     }
+    /* job status form validation rules */
+    protected function job_status_validation()
+    {
+        $this->form_validation->set_rules('type', translate('type'), 'trim|required');
+        $this->form_validation->set_rules('status_date', translate('occupation'), 'trim|required');
+        $this->form_validation->set_rules('comment', translate('total_child'), 'trim|required');
+    }
 
-     /* job status form validation rules */
-     protected function performance_validation()
-     { 
-         $this->form_validation->set_rules('year_id', translate('year_id'), 'trim|required'); 
-     }
+    /* job status form validation rules */
+    protected function performance_validation()
+    {
+        $this->form_validation->set_rules('year_id', translate('year_id'), 'trim|required');
+    }
     /* employees all information are prepared and stored in the database here */
     public function add()
     {
@@ -226,6 +226,8 @@ class Employee extends Admin_Controller
                 $this->session->set_flashdata('profile_tab', 1);
             }
         }
+        // $this->data['tenure_tracking'] = $this->employee_model->get_emp_tenure($id);
+
         $this->data['categorylist'] = $this->app_lib->get_document_category();
         $this->data['staff'] = $this->employee_model->getSingleStaff($id);
         $this->data['institutes'] = $this->app_lib->getSelectList('branch');
@@ -235,11 +237,6 @@ class Employee extends Admin_Controller
         $this->data['transfer_posting_requests'] = $this->transfer_posting_model->get_transfer_request($this->data['staff']['id']);
 
         $this->data['staff_promotions'] = $this->staff_promotions_model->get_data($this->data['staff']['id']);
-
-        // echo ('<pre>');
-        // print_r($this->data['staff_promotions']);
-        // echo ('</pre>');
-        // exit;
         $this->data['payscales'] = $this->app_lib->getSelectList('salary_template');
 
         $this->data['ratings'] = array(
@@ -251,7 +248,10 @@ class Employee extends Admin_Controller
             5 => translate('5_star'),
         );
 
-
+        // echo ('<pre>');
+        // print_r($this->data);
+        // echo ('</pre>');
+        // exit;
 
         $this->data['title'] = translate('employee_profile');
         $this->data['sub_page'] = 'employee/profile';
@@ -554,7 +554,7 @@ class Employee extends Admin_Controller
             $error = $this->form_validation->error_array();
             echo json_encode(array('status' => 'fail', 'error' => $error));
         }
-    } 
+    }
     // employee job status details are update here / ajax
     public function job_status_update()
     {
@@ -610,7 +610,7 @@ class Employee extends Admin_Controller
             $error = $this->form_validation->error_array();
             echo json_encode(array('status' => 'fail', 'error' => $error));
         }
-    } 
+    }
     // employee performance details are update here / ajax
     public function performance_update()
     {

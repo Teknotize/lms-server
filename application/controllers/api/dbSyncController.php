@@ -7,6 +7,7 @@ class dbSyncController extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('transfer_posting_model');
     }
 
     public function insertUpdateData($table_name, $data, $branch_id)
@@ -91,6 +92,28 @@ class dbSyncController extends CI_Controller
         }
     }
 
+    public function checkStaffIDsForTransfernPosting($staff)
+    {
+        // also add else -> upsert function for emp that are new and haven't been transfered
+        foreach ($staff as $item) {
+            $response = array();
+            $staff_id = $item->staff_id;
+            $branch_id = $item->branch_id;
+            $emp = $this->db->select(['id', 'branch_id'])->where('staff_id', $staff_id)->limit(1)->get('staff')->row_array();
+            // print_r($emp);
+            // exit();
+            $emp_id = $emp['id'];
+            $emp_branch_id = $emp['branch_id'];
+            if ($emp_id && ($emp_branch_id === $branch_id)) {
+                $transfer_id = $this->db->where('emp_id', $emp_id)->where('status', 'approved')->order_by('created_at', 'DESC')->limit(1)->get('transfer_posting')->row_array();
+                $res = $this->transfer_posting_model->transfer_employee($transfer_id);
+                if ($res)
+                    $response[$item->id] = $emp_id;
+            }
+        }
+        exit;
+    }
+
     public function handleTableUpsert($table_name, $id = null)
     {
         // $this->output
@@ -99,7 +122,11 @@ class dbSyncController extends CI_Controller
         //     ->set_output(json_encode($table_name . " - " . $id));
         if ($this->checkPostRequest()) {
             $data = $this->checkJsonData($this->input->raw_input_stream);
-            $response = $this->insertUpdateData($table_name, $data, $id);
+            $response = null;
+            if ($table_name === 'staff')
+                $response = $this->checkStaffIDsForTransfernPosting($data);
+            else
+                $response = $this->insertUpdateData($table_name, $data, $id);
             $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)

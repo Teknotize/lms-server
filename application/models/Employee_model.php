@@ -231,22 +231,22 @@ class Employee_model extends MY_Model
 
     public function performanceSave($data)
     {
-        $inser_data = array( 
+        $inser_data = array(
             'staff_id'              => $data['staff_id'],
             'year_id'               => $data['year_id'],
             'role'                  => $data['role'],
-            'comment'               => isset($data['comment'])?$data['comment']:NULL,
-            'verification_date'     => isset($data['verification_date'])?$data['verification_date']:'', 
-            'academic_achievement'  => isset($data['academic_achievement'])?$data['academic_achievement']:NULL, 
-            'attendance'            => isset($data['attendance'])?$data['attendance']:NULL, 
-            'lesson_planning'       => isset($data['lesson_planning'])?$data['lesson_planning']:NULL, 
-            'personality'           => isset($data['personality'])?$data['personality']:NULL, 
-            'school_contribution'   => isset($data['school_contribution'])?$data['school_contribution']:NULL, 
-            'documentation'         => isset($data['documentation'])?$data['documentation']:NULL, 
-            'created_by'            => isset($data['created_by'])?$data['created_by']:NULL, 
-            'action_by'             => isset($data['action_by'])?$data['action_by']:NULL, 
-            'evaluation_date'       => date('Y-m-d H:i:s'),  
-            'status'                => isset($data['status'])?$data['status']:'pending', 
+            'comment'               => isset($data['comment']) ? $data['comment'] : NULL,
+            'verification_date'     => isset($data['verification_date']) ? $data['verification_date'] : '',
+            'academic_achievement'  => isset($data['academic_achievement']) ? $data['academic_achievement'] : NULL,
+            'attendance'            => isset($data['attendance']) ? $data['attendance'] : NULL,
+            'lesson_planning'       => isset($data['lesson_planning']) ? $data['lesson_planning'] : NULL,
+            'personality'           => isset($data['personality']) ? $data['personality'] : NULL,
+            'school_contribution'   => isset($data['school_contribution']) ? $data['school_contribution'] : NULL,
+            'documentation'         => isset($data['documentation']) ? $data['documentation'] : NULL,
+            'created_by'            => isset($data['created_by']) ? $data['created_by'] : NULL,
+            'action_by'             => isset($data['action_by']) ? $data['action_by'] : NULL,
+            'evaluation_date'       => date('Y-m-d H:i:s'),
+            'status'                => isset($data['status']) ? $data['status'] : 'pending',
         );
         // print_r($inser_data);exit;
         if (isset($data['staff_performance_id'])) {
@@ -255,7 +255,6 @@ class Employee_model extends MY_Model
         } else {
             $this->db->insert('staff_performance', $inser_data);
         }
-        
     }
 
     public function csvImport($row, $branchID, $userRole, $designationID, $departmentID)
@@ -345,7 +344,7 @@ class Employee_model extends MY_Model
         //     //     ->get()
         //     //     ->result_array(),
         // ));
-        // $temp = $this->db->where('emp_id', $id)->order_by('updated_at', 'DESC')->get('transfer_posting')->result_array();
+        // $result = $this->db->where('emp_id', $id)->order_by('updated_at', 'DESC')->get('transfer_posting')->result_array();
         $this->db->select('
             tp.id,
             tp.designation_id,
@@ -374,24 +373,25 @@ class Employee_model extends MY_Model
         $this->db->join('staff st1', 'tp.action_by = st1.id', 'left');
         $this->db->join('staff st2', 'tp.emp_id = st2.id', 'left');
         $this->db->where('tp.emp_id', $id);
+        $this->db->where('tp.status', 'approved');
         $this->db->where('tp.deleted_at', null);
         $this->db->order_by('updated_at', 'DESC');
-        $temp = $this->db->get()->result_array();
+        $result = $this->db->get()->result_array();
         // dd($query);
-        for ($i = 0; $i < (count($temp) - 1); $i++) {
-            $current_effective_from = $temp[$i]['effective_from'];
-            $next_effective_from = $temp[$i + 1]['effective_from'];
+        for ($i = 0; $i < (count($result) - 1); $i++) {
+            $current_effective_from = $result[$i]['effective_from'];
+            $next_effective_from = $result[$i + 1]['effective_from'];
 
             $current_date = new DateTime($current_effective_from);
             $next_date = new DateTime($next_effective_from);
 
             $interval = $next_date->diff($current_date);
 
-            $temp[$i]['tenure'] = $this->tenure($interval);
+            $result[$i]['tenure'] = $this->tenure($interval);
         }
         $today = new DateTime(date('Y-m-d'));
-        $last_effective_from = $temp[count($temp) - 1]['effective_from'];
-        $temp[count($temp) - 1]['tenure'] = $this->tenure($today->diff(new DateTime($last_effective_from)));
-        // dd($temp);
+        $last_effective_from = $result[count($result) - 1]['effective_from'];
+        $result[count($result) - 1]['tenure'] = $this->tenure($today->diff(new DateTime($last_effective_from)));
+        return $result;
     }
 }

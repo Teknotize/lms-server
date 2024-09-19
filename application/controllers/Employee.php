@@ -226,7 +226,8 @@ class Employee extends Admin_Controller
                 $this->session->set_flashdata('profile_tab', 1);
             }
         }
-        // $this->data['tenure_tracking'] = $this->employee_model->get_emp_tenure($id);
+        $this->data['tenure_tracking'] = $this->employee_model->get_emp_tenure($id);
+        dd($this->data['tenure_tracking']);
 
         $this->data['categorylist'] = $this->app_lib->get_document_category();
         $this->data['staff'] = $this->employee_model->getSingleStaff($id);

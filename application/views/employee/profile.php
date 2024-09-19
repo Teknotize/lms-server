@@ -815,7 +815,6 @@
 				</div>
 			</div>
 
-
 			<div class="panel panel-accordion">
 				<div class="panel-heading">
 					<h4 class="panel-title">

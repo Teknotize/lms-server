@@ -22,7 +22,7 @@ class job_posting_model extends CI_Model
             'title' => $data['title'],
             'qualification' => $data['qualification'],
             'experience' => $data['experience'],
-            'location' => $data['location'],
+            // 'location' => $data['location'],
             'contract_type' => $data['contract_type'],
             'no_of_posts' => $data['no_of_posts'],
             'description' => $data['description'],

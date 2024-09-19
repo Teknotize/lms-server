@@ -26,7 +26,6 @@
 							<th><?= translate('qualification') ?></th>
 							<th><?= translate('experience') ?></th>
 							<th><?= translate('contract_type') ?></th>
-							<th><?= translate('location') ?></th>
 							<th><?= translate('posts') ?></th>
 							<th><?= translate('due_date') ?></th>
 							<th><?= translate('description') ?></th>
@@ -48,7 +47,6 @@
 								<td><?= $row['qualification'] ? $row['qualification'] : '---' ?></td>
 								<td><?= $row['experience'] ? $row['experience'] : '---' ?></td>
 								<td><?= $row['contract_type'] ? translate($row['contract_type']) : '---' ?></td>
-								<td><?= $row['location'] ? translate($row['location']) : '---' ?></td>
 								<td><?= $row['no_of_posts'] ? $row['no_of_posts'] : '---' ?></td>
 								<td><?= $row['due_date'] ? $row['due_date'] : '---' ?></td>
 								<td><?= $row['description'] ? $row['description'] : '---' ?></td>
@@ -111,13 +109,6 @@
 						<div class="col-md-6">
 							<?= form_input(['type' => 'text', 'name' => 'experience'], null, 'class="form-control" requried') ?>
 							<span class="error"><?= form_error('experience') ?></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-md-3 control-label"><?= translate('location') ?> <span class="required">*</span></label>
-						<div class="col-md-6">
-							<?= form_input(['type' => 'text', 'name' => 'location'], null, 'class="form-control" requried') ?>
-							<span class="error"><?= form_error('location') ?></span>
 						</div>
 					</div>
 					<div class="form-group mt-sm">

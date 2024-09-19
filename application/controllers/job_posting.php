@@ -17,7 +17,6 @@ class job_posting extends CI_Controller
         $this->form_validation->set_rules('title', translate('title'), 'trim|required');
         $this->form_validation->set_rules('qualification', translate('qualification'), 'trim|required');
         $this->form_validation->set_rules('experience', translate('experience'), 'trim|required');
-        $this->form_validation->set_rules('location', translate('location'), 'trim|required');
         $this->form_validation->set_rules('contract_type', translate('contract_type'), 'trim|required');
         $this->form_validation->set_rules('no_of_posts', translate('no_of_posts'), 'trim|required|numeric');
         $this->form_validation->set_rules('description', translate('description'), 'trim|required');

@@ -1091,6 +1091,7 @@
 											<th><?= translate('effective_from') ?></th>
 											<th><?= translate('status') ?></th>
 											<th><?= translate('requested_by') ?></th>
+											<th><?= translate('action_at') ?></th>
 											<th><?= translate('action_by') ?></th>
 											<?php
 											if (get_permission('transfer_posting', 'is_edit') || $row['emp_id'] === get_loggedin_user_id()) {
@@ -1123,6 +1124,8 @@
 														<?php endif; ?>
 													</td>
 													<td><?= ($row['created_by'] === '0' || $row['created_by'] === null) ? '---' : $row['created_by_name'] ?></td>
+													<td><?= ($row['action_at'] === null) ? '---' : explode(" ", $row['action_at'])[0] ?>
+													</td>
 													<td><?= ($row['action_by'] === '0' || $row['action_by'] === null) ? '---' : $row['action_by_name'] ?></td>
 													<td class="min-w-c">
 														<?php

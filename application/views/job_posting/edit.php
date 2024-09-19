@@ -42,13 +42,6 @@
 						<span class="error"><?= form_error('experience') ?></span>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-md-3 control-label"><?= translate('location') ?> <span class="required">*</span></label>
-					<div class="col-md-6">
-						<?= form_input(['type' => 'text', 'name' => 'location'], $job_post['location'], 'class="form-control" requried') ?>
-						<span class="error"><?= form_error('location') ?></span>
-					</div>
-				</div>
 				<div class="form-group mt-sm">
 					<label class="col-md-3 control-label"><?php echo translate('contract_type'); ?></label>
 					<div class="col-md-6">

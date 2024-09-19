@@ -54,6 +54,10 @@
                 "constraint":["pending","approved","rejected"],
                 "null":false
             },
+            "approved_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            },
             "created_at":{
                 "type":"TIMESTAMP",
                 "null":false
@@ -333,10 +337,6 @@
                 "type":"ENUM",
                 "constraint":["full_time","part_time","contract"],
                 "null":"false"
-            },
-            "location":{
-                "type":"VARCHAR(255)",
-                "null":false
             },
             "branch_id":{
                 "type":"INT",

@@ -97,6 +97,12 @@ class transfer_posting_model extends CI_Model
                 $this->db->where('id', $id);
                 $this->db->update('transfer_posting', ['status' => $status, 'action_by' => get_loggedin_user_id(), 'updated_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time()))]);
                 if ($this->db->affected_rows() > 0) {
+                    // Transfer emp only if the new branch_id is null and it gets approved
+                    if (!$transfer_request['new_branch_id'] && $status === 'approved') {
+                        $response = $this->transfer_employee($transfer_request['id']);
+                        return $response;
+                    }
+
                     // Uncomment this if you want to transfer the employee the moment request is approved
                     // if ($status === 'approved') {
                     //     $response = $this->transfer_employee($transfer_request['id']);
@@ -112,6 +118,7 @@ class transfer_posting_model extends CI_Model
 
     public function transfer_employee($request_id)
     {
+        // dd($request_id);
         $request = $this->db->where('id', $request_id)->get('transfer_posting')->result_array()[0];
         // $emp = $this->db->where('id', $emp_id)->get('staff')->result_array()[0];
         $changes = array();

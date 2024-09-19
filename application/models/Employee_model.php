@@ -375,7 +375,7 @@ class Employee_model extends MY_Model
         $this->db->where('tp.emp_id', $id);
         $this->db->where('tp.status', 'approved');
         $this->db->where('tp.deleted_at', null);
-        $this->db->order_by('updated_at', 'DESC');
+        $this->db->order_by('updated_at', 'ASC');
         $result = $this->db->get()->result_array();
         // dd($query);
         for ($i = 0; $i < (count($result) - 1); $i++) {

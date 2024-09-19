@@ -1001,6 +1001,59 @@
 				</div>
 			<?php endif; ?>
 
+			<div class="panel panel-accordion">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#tenure_tracking">
+							<i class="fas fa-dna"></i> <?= translate('tenure_tracking') ?>
+						</a>
+					</h4>
+				</div>
+				<div id="tenure_tracking" class="accordion-body collapse <?= ($this->session->flashdata('tenure_tracking_tab') == 1 ? 'in' : ''); ?>">
+					<div class="panel-body">
+						<div class="table-responsive mb-sm mt-xs">
+
+							<table class="table table-bordered table-hover table-condensed mb-md mt-sm">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= translate('Institution') ?></th>
+										<th><?= translate('Department') ?></th>
+										<th><?= translate('Role') ?></th>
+										<th><?= translate('effective_from') ?></th>
+										<th><?= translate('tenure') ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$count = 1;
+									if (count($tenure_tracking) > 0) {
+										foreach ($tenure_tracking as $row):
+									?>
+											<tr>
+												<td><?= $count ?></td>
+												<td><?= ($row['branch'] === null) ? '---' : $row['branch'] ?></td>
+												<td><?= ($row['department'] === null) ? '---' : $row['department'] ?></td>
+												<td><?= ($row['designation'] === null) ? '---' : $row['designation'] ?></td>
+												<td><?= $row['effective_from'] ?></td>
+												<td><?= $row['tenure'] ?></td>
+											</tr>
+										<?php
+											$count++;
+										endforeach;
+										?>
+									<?php
+									} else {
+										echo "<tr><td colspan='5'><h5 class='text-danger text-center'>" . translate('no_information_available') . "</h5></td></tr>";
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<?php
 			if (get_permission('transfer_posting', 'is_view')) {
 			?>

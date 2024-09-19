@@ -14,6 +14,7 @@ class dbSyncController extends CI_Controller
     {
         $response = array();
         foreach ($data as $object) {
+            // dd($object);
             $toUpdate = False;
 
             if ($object->master_id)
@@ -92,26 +93,35 @@ class dbSyncController extends CI_Controller
         }
     }
 
-    public function checkStaffIDsForTransfernPosting($staff)
+    public function checkStaffIDsForTransfernPosting($staff, $param_branch_id)
     {
         // also add else -> upsert function for emp that are new and haven't been transfered
+        $nonTransferEmp = array();
+        $response = array();
         foreach ($staff as $item) {
-            $response = array();
             $staff_id = $item->staff_id;
             $branch_id = $item->branch_id;
             $emp = $this->db->select(['id', 'branch_id'])->where('staff_id', $staff_id)->limit(1)->get('staff')->row_array();
-            // print_r($emp);
-            // exit();
             $emp_id = $emp['id'];
             $emp_branch_id = $emp['branch_id'];
-            if ($emp_id && ($emp_branch_id === $branch_id)) {
+            if ($emp_id && ($emp_branch_id !== $branch_id)) {
                 $transfer_id = $this->db->where('emp_id', $emp_id)->where('status', 'approved')->order_by('created_at', 'DESC')->limit(1)->get('transfer_posting')->row_array();
-                $res = $this->transfer_posting_model->transfer_employee($transfer_id);
+                $res = $this->transfer_posting_model->transfer_employee($transfer_id['id']);
                 if ($res)
                     $response[$item->id] = $emp_id;
-            }
+            } else
+                array_push($nonTransferEmp, $item);
         }
-        exit;
+        if (!empty($nonTransferEmp) && !empty($response)) {
+            $nonTransferEmp_res = $this->insertUpdateData('staff', $nonTransferEmp, $param_branch_id);
+            return array_merge($nonTransferEmp_res, $response);
+        } elseif (!empty($nonTransferEmp)) {
+            return $this->insertUpdateData('staff', $nonTransferEmp, $param_branch_id);
+        } elseif (!empty($response)) {
+            return $response;
+        } else {
+            return array();
+        }
     }
 
     public function handleTableUpsert($table_name, $id = null)
@@ -124,7 +134,7 @@ class dbSyncController extends CI_Controller
             $data = $this->checkJsonData($this->input->raw_input_stream);
             $response = null;
             if ($table_name === 'staff')
-                $response = $this->checkStaffIDsForTransfernPosting($data);
+                $response = $this->checkStaffIDsForTransfernPosting($data, $id);
             else
                 $response = $this->insertUpdateData($table_name, $data, $id);
             $this->output

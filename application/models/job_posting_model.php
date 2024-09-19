@@ -70,13 +70,14 @@ class job_posting_model extends CI_Model
         }
     }
 
-    public function get_data_filter($branch_id, $start_date, $end_date)
+    public function get_data_filter($branch_id = null, $start_date, $end_date)
     {
         $this->db->select('jp.*,ins.name AS branch_name, st.name AS created_by_name, st1.name AS action_by_name');
         $this->db->where('jp.deleted_at', null);
         $this->db->where('jp.created_at >=', $start_date);
         $this->db->where('jp.created_at <=', $end_date);
-        $this->db->where('jp.branch_id', $branch_id);
+        if ($branch_id)
+            $this->db->where('jp.branch_id', $branch_id);
         $this->db->from('job_postings jp');
         $this->db->join('branch ins', 'jp.branch_id = ins.id', 'left');
         $this->db->join('staff st', 'jp.created_by = st.id', 'left');

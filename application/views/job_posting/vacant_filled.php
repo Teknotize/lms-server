@@ -8,11 +8,10 @@
         <div class="row mb-sm">
             <div class="col-md-4 mb-sm">
                 <div class="form-group">
-                    <label class="control-label"><?= translate('institution') ?> <span class="required">*</span></label>
+                    <label class="control-label"><?= translate('institution') ?></label>
                     <?php
                     $arrayBranch = $this->app_lib->getSelectList('branch');
-                    echo form_dropdown("branch_id", $arrayBranch, set_value('branch_id'), "class='form-control' required onchange='getClassByBranch(this.value)'
-						data-width='100%' data-plugin-selectTwo data-minimum-results-for-search='Infinity'");
+                    echo form_dropdown("branch_id", $arrayBranch, set_value('branch_id'), "class='form-control' data-width='100%' data-plugin-selectTwo data-minimum-results-for-search='Infinity'");
                     ?>
                 </div>
             </div>
@@ -107,83 +106,6 @@
                         </tbody>
                     </table>
                 </div>
-                <?php if (get_permission('job_posting', 'is_add')) { ?>
-                    <div class="tab-pane" id="create">
-                        <?php echo form_open_multipart(base_url('job_posting/create'), array('class' => 'form-bordered form-horizontal frm-submit-data')); ?>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('institution') ?> <span class="required">*</span></label>
-                            <div class="col-md-6">
-                                <?php
-                                $arrayBranch = $this->app_lib->getSelectList('branch');
-                                echo form_dropdown("branch_id", $arrayBranch, "", "class='form-control' required data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
-                                ?>
-                                <span class="error"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('title') ?> <span class="required">*</span></label>
-                            <div class="col-md-6">
-                                <?= form_input(['type' => 'text', 'name' => 'title'], null, 'class="form-control" requried') ?>
-                                <span class="error"><?= form_error('title') ?></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('qualification') ?> <span class="required">*</span></label>
-                            <div class="col-md-6">
-                                <?= form_input(['type' => 'text', 'name' => 'qualification'], null, 'class="form-control" requried') ?>
-                                <span class="error"><?= form_error('qualification') ?></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('experience') ?> <span class="required">*</span></label>
-                            <div class="col-md-6">
-                                <?= form_input(['type' => 'text', 'name' => 'experience'], null, 'class="form-control" requried') ?>
-                                <span class="error"><?= form_error('experience') ?></span>
-                            </div>
-                        </div>
-                        <div class="form-group mt-sm">
-                            <label class="col-md-3 control-label"><?php echo translate('contract_type'); ?></label>
-                            <div class="col-md-6">
-                                <?php
-                                echo form_dropdown("contract_type", get_contract_type(), null, "class='form-control' data-plugin-selectTwo
-							data-width='100%' data-minimum-results-for-search='Infinity'");
-                                ?>
-                                <span class="error"><?= form_error('contract_type') ?></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('no_of_posts') ?> <span class="required">*</span></label>
-                            <div class="col-md-6">
-                                <?= form_input(['type' => 'number', 'name' => 'no_of_posts'], null, 'class="form-control" requried') ?>
-                                <span class="error"><?= form_error('no_of_posts') ?></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('description') ?> <span class="required">*</span></label>
-                            <div class="col-md-6">
-                                <?= form_textarea(['name' => 'description'], null, 'class="form-control"') ?>
-                                <span class="error"><?= form_error('description') ?></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"><?= translate('due_date') ?> <span class="required">*</span></label>
-                            <div class="col-md-6 mb-md">
-                                <?= form_input(['type' => 'date', 'name' => 'due_date'], null, 'class="form-control" requried') ?>
-                                <span class="error"><?= form_error('due_date') ?></span>
-                            </div>
-                        </div>
-                        <footer class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-offset-3 col-md-2">
-                                    <button type="submit" class="btn btn-default btn-block" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing" name="submit" value="create">
-                                        <i class="fas fa-plus-circle"></i> <?= translate('save') ?>
-                                    </button>
-                                </div>
-                            </div>
-                        </footer>
-                        <?php echo form_close(); ?>
-                    </div>
-                <?php } ?>
             </div>
         </div>
     </section>

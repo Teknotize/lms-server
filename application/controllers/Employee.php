@@ -600,9 +600,9 @@ class Employee extends Admin_Controller
         }
         $this->performance_validation();
         if ($this->form_validation->run() !== false) {
-            $post = $this->input->post();
+            $post = $this->input->post(); 
             $this->employee_model->performanceSave($post);
-            exit;
+          
             set_alert('success', translate('information_has_been_saved_successfully'));
             $this->session->set_flashdata('performance_tab', 1);
             echo json_encode(array('status' => 'success'));
@@ -620,7 +620,7 @@ class Employee extends Admin_Controller
         }
         $this->performance_validation();
         if ($this->form_validation->run() !== false) {
-            $post = $this->input->post();
+            $post = $this->input->post(); 
             $this->employee_model->performanceSave($post);
             $this->session->set_flashdata('performance_tab', 1);
             set_alert('success', translate('information_has_been_updated_successfully'));
@@ -638,6 +638,17 @@ class Employee extends Admin_Controller
         $result = $query->row_array();
         echo json_encode($result);
     }
+
+    
+    public function admin_performance_details()
+    {
+        $id     = $this->input->post('id'); 
+        $result = $this->employee_model->getStaffPerformance($id);
+       if($result){
+        echo json_encode($result);
+       } 
+       
+    }
     // employee job status details are delete here
     public function performance_delete($id)
     {
@@ -646,6 +657,14 @@ class Employee extends Admin_Controller
             $this->db->delete('staff_performance');
             $this->session->set_flashdata('performance_tab', 1);
         }
+    }
+
+    public function performance_rating($id)
+    {
+        
+       $rating =   $this->employee_model->staff_latest_rating($id);
+       print_r($rating); exit;     
+         
     }
 
 

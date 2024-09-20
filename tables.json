@@ -186,6 +186,10 @@
                 "type": "CHAR(255)",
                 "null": true
             },
+            "phone": {
+                "type": "CHAR(255)",
+                "null": true
+            },
             "total_child": {
                 "type": "CHAR(255)",
                 "null": true

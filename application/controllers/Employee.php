@@ -230,7 +230,12 @@ class Employee extends Admin_Controller
 
         $this->data['categorylist'] = $this->app_lib->get_document_category();
         $this->data['staff'] = $this->employee_model->getSingleStaff($id);
+        $this->data['staff']['total_tenure'] = $this->employee_model->get_emp_total_tenure($id);
         $this->data['institutes'] = $this->app_lib->getSelectList('branch');
+        // dd(array(
+        //     $this->data['tenure_tracking'],
+        //     $this->data['staff']
+        // ));
 
         $this->data['departments'] = $this->app_lib->getDepartment($this->data['staff']['branch_id']);
 

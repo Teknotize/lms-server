@@ -36,6 +36,9 @@
 					<li>
 						<div class="icon-holder" data-toggle="tooltip" data-original-title="<?= translate('present_address') ?>"><i class="fas fa-home"></i></div> <?= (!empty($staff['present_address']) ? $staff['present_address'] : 'N/A'); ?>
 					</li>
+					<li>
+						<div class="icon-holder" data-toggle="tooltip" data-original-title="<?= translate('Total Tenure') ?>"><i class="fas fa-home"></i></div> <?= (!empty($staff['total_tenure']) ? $staff['total_tenure'] : 'N/A'); ?>
+					</li>
 				</ul>
 			</div>
 		</div>

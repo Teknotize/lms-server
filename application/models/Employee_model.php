@@ -394,4 +394,11 @@ class Employee_model extends MY_Model
         $result[count($result) - 1]['tenure'] = $this->tenure($today->diff(new DateTime($last_effective_from)));
         return $result;
     }
+
+    public function get_emp_total_tenure($id)
+    {
+        $emp_joining = $this->db->select('joining_date')->where('id', $id)->get('staff')->row_array()['joining_date'];
+        $today = new DateTime(date('Y-m-d'));
+        return $this->tenure($today->diff(new DateTime($emp_joining)));
+    }
 }

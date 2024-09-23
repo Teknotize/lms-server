@@ -49,6 +49,10 @@
                 "type":"INT",
                 "null":true
             },
+            "action_at":{
+                "type":"TIMESTAMP",
+                "null":true
+            },
             "status":{
                 "type":"ENUM",
                 "constraint":["pending","approved","rejected"],

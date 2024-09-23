@@ -247,7 +247,7 @@ class Employee extends Admin_Controller
 
         $this->data['ratings'] = round($this->employee_model->staff_latest_rating($this->data['staff']['id'])['totalScore']);
 
-        // dd($this->data['ratings']);
+        // dd($this->data);
 
         $this->data['title'] = translate('employee_profile');
         $this->data['sub_page'] = 'employee/profile';

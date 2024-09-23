@@ -26,7 +26,29 @@ class db_table_create extends CI_Controller
     {
         // Check if the table already exists
         if ($this->db->table_exists($table_name)) {
-            echo ("Table '" . $table_name . "' already exists.<br><br>");
+            echo ("Table '" . $table_name . "' already exists. Updating fields...<br><br>");
+
+            // Get existing columns
+            $existing_fields = $this->db->list_fields($table_name);
+
+            // Update the fields for the existing table
+            foreach ($fields as $field_name => $field_attributes) {
+                if ($this->db->field_exists($field_name, $table_name)) {
+                    // Modify the existing field
+                    $this->dbforge->modify_column($table_name, array($field_name => $field_attributes));
+                } else {
+                    // Add the new field
+                    $this->dbforge->add_column($table_name, array($field_name => $field_attributes));
+                }
+            }
+
+            // Delete columns that are not in the JSON
+            foreach ($existing_fields as $existing_field) {
+                if (!array_key_exists($existing_field, $fields)) {
+                    $this->dbforge->drop_column($table_name, $existing_field);
+                }
+            }
+
             return;
         }
 

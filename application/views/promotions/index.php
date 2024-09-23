@@ -16,7 +16,6 @@
                                 <th><?= translate('staff_id') ?></th>
                                 <th><?= translate('requested_department') ?></th>
                                 <th><?= translate('requested_scale') ?></th>
-                                <th><?= translate('rating') ?></th>
                                 <th><?= translate('effective_from') ?></th>
                                 <th><?= translate('status') ?></th>
                                 <th><?= translate('requested_by') ?></th>
@@ -46,7 +45,6 @@
                                         <td><?= $row['staff_id'] ?></td>
                                         <td><?= ($row['dep_id'] === '0') ? '---' : translate($row['department']) ?></td>
                                         <td><?= ($row['scale_id'] === '0') ? '---' : translate($row['scale']) ?></td>
-                                        <td><?= ($row['rating'] === '0') ? '---' : translate($row['rating'] . "_star") ?></td>
                                         <td><?= $row['effective_from'] ?></td>
                                         <td>
                                             <?php if ($row['status'] == 'approved'): ?>

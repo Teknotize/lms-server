@@ -15,7 +15,7 @@ class Promotions extends CI_Controller
         $this->form_validation->set_rules('emp_id', translate('emp_id'), 'trim|required|numeric|greater_than[0]');
         $this->form_validation->set_rules('new_dep_id', translate('new_dep_id'), 'trim|numeric|greater_than[0]');
         $this->form_validation->set_rules('promotion_scale', translate('promotion_scale'), 'trim|required|numeric|greater_than[0]');
-        $this->form_validation->set_rules('ratings', translate('ratings'), 'trim|required|numeric|greater_than[0]');
+        // $this->form_validation->set_rules('ratings', translate('ratings'), 'trim|required|numeric|greater_than[0]');
         $this->form_validation->set_rules('effective_from', translate('effective_from'), 'trim|required|date|callback_date_greater_than_today');
         $this->form_validation->set_rules('notes', translate('notes'), 'trim|max_length[500]');
     }

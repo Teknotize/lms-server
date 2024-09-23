@@ -72,7 +72,7 @@ class staff_promotions_model extends MY_Model
             'emp_id' => $data['emp_id'],
             'dep_id' => $data['new_dep_id'],
             'scale_id' => $data['promotion_scale'],
-            'rating' => $data['ratings'],
+            // 'rating' => $data['ratings'],
             'effective_from' => $data['effective_from'],
             'notes' => $data['notes'],
             "created_by" => get_loggedin_user_id() ? get_loggedin_user_id() : null,

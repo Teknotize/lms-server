@@ -245,19 +245,9 @@ class Employee extends Admin_Controller
         $this->data['staff_promotions'] = $this->staff_promotions_model->get_data($this->data['staff']['id']);
         $this->data['payscales'] = $this->app_lib->getSelectList('salary_template');
 
-        $this->data['ratings'] = array(
-            null => translate('select_rating'),
-            1 => translate('1_star'),
-            2 => translate('2_star'),
-            3 => translate('3_star'),
-            4 => translate('4_star'),
-            5 => translate('5_star'),
-        );
+        $this->data['ratings'] = round($this->employee_model->staff_latest_rating($this->data['staff']['id'])['totalScore']);
 
-        // echo ('<pre>');
-        // print_r($this->data);
-        // echo ('</pre>');
-        // exit;
+        // dd($this->data['ratings']);
 
         $this->data['title'] = translate('employee_profile');
         $this->data['sub_page'] = 'employee/profile';
@@ -606,9 +596,9 @@ class Employee extends Admin_Controller
         }
         $this->performance_validation();
         if ($this->form_validation->run() !== false) {
-            $post = $this->input->post(); 
+            $post = $this->input->post();
             $this->employee_model->performanceSave($post);
-          
+
             set_alert('success', translate('information_has_been_saved_successfully'));
             $this->session->set_flashdata('performance_tab', 1);
             echo json_encode(array('status' => 'success'));
@@ -626,7 +616,7 @@ class Employee extends Admin_Controller
         }
         $this->performance_validation();
         if ($this->form_validation->run() !== false) {
-            $post = $this->input->post(); 
+            $post = $this->input->post();
             $this->employee_model->performanceSave($post);
             $this->session->set_flashdata('performance_tab', 1);
             set_alert('success', translate('information_has_been_updated_successfully'));
@@ -645,15 +635,14 @@ class Employee extends Admin_Controller
         echo json_encode($result);
     }
 
-    
+
     public function admin_performance_details()
     {
-        $id     = $this->input->post('id'); 
+        $id     = $this->input->post('id');
         $result = $this->employee_model->getStaffPerformance($id);
-       if($result){
-        echo json_encode($result);
-       } 
-       
+        if ($result) {
+            echo json_encode($result);
+        }
     }
     // employee job status details are delete here
     public function performance_delete($id)
@@ -667,10 +656,10 @@ class Employee extends Admin_Controller
 
     public function performance_rating($id)
     {
-        
-       $rating =   $this->employee_model->staff_latest_rating($id);
-       print_r($rating); exit;     
-         
+
+        $rating =   $this->employee_model->staff_latest_rating($id);
+        print_r($rating);
+        exit;
     }
 
 

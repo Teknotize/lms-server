@@ -42,8 +42,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>
-
+	</div> 
 	<div class="col-md-12">
 		<div class="panel-group" id="accordion">
 			<div class="panel panel-accordion">
@@ -443,6 +442,7 @@
 									<?php
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
+									$this->db->order_by('id', 'DESC');
 									$educationResult = $this->db->get('staff_education')->result_array();
 									if (count($educationResult)) {
 										foreach ($educationResult as $education):
@@ -508,6 +508,7 @@
 									<?php
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
+									$this->db->order_by('id', 'DESC');
 									$educationResult = $this->db->get('staff_experience')->result_array();
 									if (count($educationResult)) {
 										foreach ($educationResult as $education):
@@ -561,6 +562,7 @@
 										<th>#</th>
 										<th><?= translate('name') ?></th>
 										<th><?= translate('occupation') ?></th>
+										<th><?= translate('contact no') ?></th>
 										<th><?= translate('No of child') ?></th>
 										<th><?= translate('dependent child') ?></th>
 										<th><?= translate('actions') ?></th>
@@ -570,6 +572,7 @@
 									<?php
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
+									$this->db->order_by('id', 'DESC');
 									$educationResult = $this->db->get('staff_spouse')->result_array();
 									if (count($educationResult)) {
 										foreach ($educationResult as $education):
@@ -578,6 +581,7 @@
 												<td><?php echo $count++ ?></td>
 												<td><?php echo $education['name']; ?></td>
 												<td><?php echo $education['occupation']; ?></td>
+												<td><?php echo $education['phone']; ?></td>
 												<td><?php echo $education['total_child']; ?></td>
 												<td><?php echo $education['dependent_child']; ?></td>
 												<td class="min-w-c">
@@ -622,10 +626,11 @@
 										<th><?= translate('name') ?></th>
 										<th><?= translate('employee_id') ?></th>
 										<th><?= translate('role') ?></th>
-										<th><?= translate('assigned School') ?></th>
-										<th><?= translate('date_of_joing') ?></th>
-										<th><?= translate('date_of_happening') ?></th>
-										<th><?= translate('comments') ?></th>
+										<th><?= translate('assigned School') ?></th> 
+										<th><?= translate('Status Type') ?></th> 
+										<th><?= translate('date_of_joing') ?></th> 
+										<th><?= translate('date_of_happening') ?></th> 
+										<th><?= translate('comments') ?></th> 
 										<th><?= translate('actions') ?></th>
 									</tr>
 								</thead>
@@ -636,6 +641,7 @@
 
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
+									$this->db->order_by('id', 'DESC');
 									$jobstatusResult = $this->db->get('staff_job_status')->result_array();
 									if (count($jobstatusResult)) {
 										foreach ($jobstatusResult as $jobs):
@@ -687,7 +693,7 @@
 				}
 
 				.star-rating label {
-					font-size: 24px;
+					font-size: 18px;
 					color: #ddd;
 					cursor: pointer;
 					transition: color 0.3s;
@@ -745,6 +751,7 @@
 
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
+									$this->db->order_by('id', 'DESC');
 									$performanceResult = $this->db->get('staff_performance')->result_array();
 									if (count($performanceResult)) {
 										$total_star = 0;
@@ -756,18 +763,21 @@
 												<?php
 												$staff_id   = $performance['staff_id']; // Assuming each job has a staff_id
 												$staff_data = $CI->Employee_model->getSingleStaff($staff_id);
-
+												$performance_rating =  $CI->Employee_model->staff_row_rating($performance['id']);
+                                                // $pr     = round($performance_rating ['totalScore']);
+                                                $pr     = $performance_rating ['totalScore'];
+                                                $p_star = $performance_rating ['totalPercentage'];
 												$this->db->where('id', $performance['year_id']);
 												$year      = $this->db->get('schoolyear')->row_array();
 												$getBranch  = $CI->Employee_model->getBranch($staff['branch_id']);
 
-												$total_star = $performance['academic_achievement'] + $performance['attendance'] + $performance['lesson_planning'] + $performance['personality'] + $performance['school_contribution'] + $performance['documentation'];
+												// $total_star = $performance['academic_achievement'] + $performance['attendance'] + $performance['lesson_planning'] + $performance['personality'] + $performance['school_contribution'] + $performance['documentation'];
 												// Example value, replace with your actual value
-												$p_star = ($total_star / 30) * 100;
+												 
 												$rp = round($p_star);
 												//   echo"yes"; print_r($p_star); exit;
 												?>
-												<td><?php echo $staff_data['staff_id']; ?></td>
+												<td><?php echo $staff_data['staff_id'];  ?></td>
 												<td>
 													<?php echo $staff_data['name']; ?> <br />
 													<?php echo $staff_data['role']; ?>
@@ -775,28 +785,54 @@
 												<td><?php echo $year['school_year']; ?></td>
 
 												<td>
-													<?php $flg = round(($total_star / 6)); ?>
-													<?php for ($i = $flg; $i >= 1; $i--): ?>
+												    
+													<?php for ($i = $pr; $i >= 1; $i--): ?>
 														<i class="fas fa-star star_color"></i>
 													<?php endfor; ?>
 
 													<?php
-													if ($rp > 90) {
+													if ($pr >= 4) {
 														echo "Excellent";
-													} elseif ($rp > 60) {
+													} elseif ($pr >= 3) {
 														echo "Good";
-													} elseif ($rp > 49) {
-														echo "satisfactory";
-													} elseif ($rp > 10) {
-														echo "Avg";
+													} elseif ($pr >= 2) {
+														echo "Satisfactory";
+													} elseif ($pr <= 1) {
+														echo "Need Improvement";
 													}
 
 													?>
-												</td>
-												<td><?php echo $rp . "%"; ?></td>
-												<td><?php echo $performance['evaluation_date']; ?></td>
-												<td><?php echo "ADmin" ?></td>
-												<td><?php echo "null" ?></td>
+												</td> 
+												<td><?php echo $rp."%"; ?></td> 
+												<?php 
+													$date_string    = $performance['evaluation_date'];  // Your input date string
+													$formatted_date = date('d M Y', strtotime($date_string));  // Format date to "12 Sep 2024"
+													
+												?>
+												<td><?php echo $formatted_date; ?></td>
+												<td>
+													<?php 
+													if($performance['action_by']){
+													    $staff_data = $CI->Employee_model->getSingleStaff($performance['action_by']);  
+													    echo $staff_data['name'];   echo "<br/>";
+													    echo $staff_data['role']; 
+													}else{
+														echo "Null";
+													}
+													?>
+											    </td>
+												<td>
+												<?php 
+													if($performance['verification_date']!=NULL){
+														$date_string    = $performance['verification_date'];  // Your input date string
+														$formatted_date = date('d M Y', strtotime($date_string));  // Format date to "12 Sep 2024"
+														echo $formatted_date; 
+													}else{
+														echo "Null";
+													}
+													
+												 ?>
+												 </td>
 												<td><?php echo $performance['status']; ?></td>
 												<td class="min-w-c">
 													<a href="javascript:void(0);" onclick="editPerformance('<?= $performance['id'] ?>')" class="btn btn-circle icon btn-default">
@@ -1548,8 +1584,7 @@ if (get_permission('promotions', 'is_add')) {
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div>
-
+</div> 
 <!-- Documents Details Edit Modal -->
 <div id="editDocModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -1602,8 +1637,7 @@ if (get_permission('promotions', 'is_add')) {
 		</footer>
 		<?php echo form_close(); ?>
 	</section>
-</div>
-
+</div> 
 <!-- Bank Details Add Modal -->
 <div id="addBankModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 	<section class="panel">
@@ -2029,6 +2063,13 @@ if (get_permission('promotions', 'is_add')) {
 				</div>
 			</div>
 			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('phone'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="phone" id="aphone" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('No Of') . " " . translate('child'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<input type="number" class="form-control" name="total_child" id="atotal_child" />
@@ -2078,6 +2119,13 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('occupation'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<input type="text" class="form-control" name="occupation" id="eoccupation" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('phone'); ?> </label>
+				<div class="col-md-9">
+					<input type="text" class="form-control" name="phone" id="ephone" value="" />
 					<span class="error"></span>
 				</div>
 			</div>
@@ -2145,7 +2193,8 @@ if (get_permission('promotions', 'is_add')) {
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('Assigned School'); ?></label>
 				<div class="col-md-9">
-					<input type="text" class="form-control" value="<?= $staff['name']; ?>" readonly />
+				<?php $getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); ?>
+					<input type="text" class="form-control"  value="<?=  $getBranch['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
@@ -2164,9 +2213,9 @@ if (get_permission('promotions', 'is_add')) {
 					$array = array(
 						""                 => translate('select'),
 						"In service death" => translate('In service death'),
-						"Mark Retired"     => translate('Mark Retired'),
 						"Employee Resigned " => translate('Employee Resigned'),
-						"Mark Terminate"   => translate('Mark Terminate')
+						"Retired"     => translate('Retired'),
+						"Terminated"   => translate('Terminate')
 					);
 					echo form_dropdown("type", $array, set_value('type'), "class='form-control' data-plugin-selectTwo
 							data-width='100%' data-minimum-results-for-search='Infinity'");
@@ -2235,8 +2284,9 @@ if (get_permission('promotions', 'is_add')) {
 			</div>
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('Assigned School'); ?></label>
+				<?php $getBranch  = $CI->Employee_model->getBranch($staff['branch_id']); ?>
 				<div class="col-md-9">
-					<input type="text" class="form-control" value="<?= $staff['name']; ?>" readonly />
+					<input type="text" class="form-control"  value="<?=  $getBranch['name']; ?>" readonly />
 					<span class="error"></span>
 				</div>
 			</div>
@@ -2253,11 +2303,11 @@ if (get_permission('promotions', 'is_add')) {
 				<div class="col-md-9">
 					<?php
 					$array = array(
-						""                 => translate('select'),
-						"In service death" => translate('In service death'),
-						"Mark Retired"     => translate('Mark Retired'),
+						""                   => translate('select'),
+						"In service death"   => translate('In service death'),
 						"Employee Resigned " => translate('Employee Resigned'),
-						"Mark Terminate"   => translate('Mark Terminate')
+						"Retired"            => translate('Retired'),
+						"Terminated"   => translate('Terminate')
 					);
 
 					echo form_dropdown(
@@ -2300,13 +2350,18 @@ if (get_permission('promotions', 'is_add')) {
 
 <!-- Staff performance Details Add Modal -->
 <div id="addPerformanceModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
-	<section class="panel">
-		<div class="panel-heading">
-			<h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?php echo translate('add') . " " . translate('job_status'); ?></h4>
-		</div>
-		<?php echo form_open('employee/performance_create', array('class' => 'form-horizontal frm-submit')); ?>
-		<div class="panel-body">
-			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+    <section class="panel">
+        <div class="panel-heading">
+            <h4 class="panel-title"><i class="fas fa-plus-circle"></i> <?php echo translate('add') . " " . translate('Performance'); ?></h4>
+        </div>
+        <?php echo form_open('employee/performance_create', array('class' => 'form-horizontal frm-submit')); ?>
+        <div class="panel-body">
+            <input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
+			<?php $user_id = get_loggedin_user_id(); $current_datetime = date('Y-m-d H:i:s'); ?>
+			<input type="hidden" name="created_by" value="<?php echo $user_id ; ?>"> 
+			<input type="hidden" name="evaluation_date" value="<?php echo $current_datetime ; ?>"> 
+
+			
 
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
@@ -2349,7 +2404,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('academic_achievement'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<input type="radio" id="academic_star5" name="academic_achievement" value="5" /><label for="academic_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						 
 						<input type="radio" id="academic_star4" name="academic_achievement" value="4" /><label for="academic_star4" title="4 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="academic_star3" name="academic_achievement" value="3" /><label for="academic_star3" title="3 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="academic_star2" name="academic_achievement" value="2" /><label for="academic_star2" title="2 stars"><i class="fas fa-star"></i></label>
@@ -2364,7 +2419,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('attendance'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<input type="radio" id="attendance_star5" name="attendance" value="5" /><label for="attendance_star5" title="5 stars"><i class="fas fa-star"></i></label>
+					 
 						<input type="radio" id="attendance_star4" name="attendance" value="4" /><label for="attendance_star4" title="4 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="attendance_star3" name="attendance" value="3" /><label for="attendance_star3" title="3 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="attendance_star2" name="attendance" value="2" /><label for="attendance_star2" title="2 stars"><i class="fas fa-star"></i></label>
@@ -2379,7 +2434,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('lesson_planning'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<input type="radio" id="lesson_star5" name="lesson_planning" value="5" /><label for="lesson_star5" title="5 stars"><i class="fas fa-star"></i></label>
+					 
 						<input type="radio" id="lesson_star4" name="lesson_planning" value="4" /><label for="lesson_star4" title="4 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="lesson_star3" name="lesson_planning" value="3" /><label for="lesson_star3" title="3 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="lesson_star2" name="lesson_planning" value="2" /><label for="lesson_star2" title="2 stars"><i class="fas fa-star"></i></label>
@@ -2394,7 +2449,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('personality'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<input type="radio" id="personality_star5" name="personality" value="5" /><label for="personality_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						 
 						<input type="radio" id="personality_star4" name="personality" value="4" /><label for="personality_star4" title="4 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="personality_star3" name="personality" value="3" /><label for="personality_star3" title="3 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="personality_star2" name="personality" value="2" /><label for="personality_star2" title="2 stars"><i class="fas fa-star"></i></label>
@@ -2409,7 +2464,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('school_contribution'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<input type="radio" id="contribution_star5" name="school_contribution" value="5" /><label for="contribution_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						 
 						<input type="radio" id="contribution_star4" name="school_contribution" value="4" /><label for="contribution_star4" title="4 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="contribution_star3" name="school_contribution" value="3" /><label for="contribution_star3" title="3 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="contribution_star2" name="school_contribution" value="2" /><label for="contribution_star2" title="2 stars"><i class="fas fa-star"></i></label>
@@ -2424,7 +2479,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('documentation'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<input type="radio" id="documentation_star5" name="rating_documentation" value="5" /><label for="documentation_star5" title="5 stars"><i class="fas fa-star"></i></label>
+						 
 						<input type="radio" id="documentation_star4" name="rating_documentation" value="4" /><label for="documentation_star4" title="4 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="documentation_star3" name="rating_documentation" value="3" /><label for="documentation_star3" title="3 stars"><i class="fas fa-star"></i></label>
 						<input type="radio" id="documentation_star2" name="rating_documentation" value="2" /><label for="documentation_star2" title="2 stars"><i class="fas fa-star"></i></label>
@@ -2456,9 +2511,11 @@ if (get_permission('promotions', 'is_add')) {
 		</header>
 		<?php echo form_open('employee/performance_update', array('class' => 'form-horizontal frm-submit')); ?>
 		<div class="panel-body">
-			<input type="hidden" name="staff_performance_id" id="estaff_performance_id" value="">
-			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>">
-
+			<input type="hidden" name="staff_performance_id" id="estaff_performance_id" value=""> 
+			<input type="hidden" name="staff_id" value="<?php echo $staff['id']; ?>"> 
+			<?php $user_id  = get_loggedin_user_id();  $current_datetime = date('Y-m-d H:i:s'); ?>
+			<input type="hidden" name="action_by" value="<?php echo $user_id ; ?>"> 
+			<input type="hidden" name="verification_date" value="<?php echo $current_datetime ; ?>"> 
 			<!-- Staff Name -->
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('name'); ?> <span class="required">*</span></label>
@@ -2501,13 +2558,36 @@ if (get_permission('promotions', 'is_add')) {
 					<span class="error"></span>
 				</div>
 			</div>
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('status'); ?></label>
+				<div class="col-md-9">
+					<?php
+						// Define the options for the status dropdown
+						$statusOptions = array(
+							"" => translate('select'),  // Default 'select' option
+							"pending" => translate('pending'),
+							"approved" => translate('approved'),
+							"rejected" => translate('rejected')
+						);
+
+						// Use form_dropdown to generate the select field
+						echo form_dropdown(
+							"status",                    // Name attribute
+							$statusOptions,              // Options array
+							set_value('status', $status), // Preselected value
+							"class='form-control' id='epstatus' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'"
+						);
+					?>
+					<span class="error"></span>
+				</div>
+			</div>
 
 			<!-- Academic Achievement -->
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('academic_achievement'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<?php for ($i = 5; $i >= 1; $i--): ?>
+						<?php for ($i = 4; $i >= 1; $i--): ?>
 							<input type="radio" id="academic_star<?= $i; ?>_edit" name="academic_achievement" value="<?= $i; ?>" />
 							<label for="academic_star<?= $i; ?>_edit" title="<?= $i; ?> stars"><i class="fas fa-star"></i></label>
 						<?php endfor; ?>
@@ -2521,7 +2601,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('attendance'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<?php for ($i = 5; $i >= 1; $i--): ?>
+						<?php for ($i = 4; $i >= 1; $i--): ?>
 							<input type="radio" id="attendance_star<?= $i; ?>_edit" name="attendance" value="<?= $i; ?>" />
 							<label for="attendance_star<?= $i; ?>_edit" title="<?= $i; ?> stars"><i class="fas fa-star"></i></label>
 						<?php endfor; ?>
@@ -2535,7 +2615,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('lesson_planning'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<?php for ($i = 5; $i >= 1; $i--): ?>
+						<?php for ($i = 4; $i >= 1; $i--): ?>
 							<input type="radio" id="lesson_star<?= $i; ?>_edit" name="lesson_planning" value="<?= $i; ?>" />
 							<label for="lesson_star<?= $i; ?>_edit" title="<?= $i; ?> stars"><i class="fas fa-star"></i></label>
 						<?php endfor; ?>
@@ -2549,7 +2629,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('personality'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<?php for ($i = 5; $i >= 1; $i--): ?>
+						<?php for ($i = 4; $i >= 1; $i--): ?>
 							<input type="radio" id="personality_star<?= $i; ?>_edit" name="personality" value="<?= $i; ?>" />
 							<label for="personality_star<?= $i; ?>_edit" title="<?= $i; ?> stars"><i class="fas fa-star"></i></label>
 						<?php endfor; ?>
@@ -2563,7 +2643,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('school_contribution'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<?php for ($i = 5; $i >= 1; $i--): ?>
+						<?php for ($i = 4; $i >= 1; $i--): ?>
 							<input type="radio" id="contribution_star<?= $i; ?>_edit" name="school_contribution" value="<?= $i; ?>" />
 							<label for="contribution_star<?= $i; ?>_edit" title="<?= $i; ?> stars"><i class="fas fa-star"></i></label>
 						<?php endfor; ?>
@@ -2577,7 +2657,7 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('documentation'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
 					<div class="star-rating">
-						<?php for ($i = 5; $i >= 1; $i--): ?>
+						<?php for ($i = 4; $i >= 1; $i--): ?>
 							<input type="radio" id="documentation_star<?= $i; ?>_edit" name="documentation" value="<?= $i; ?>" />
 							<label for="documentation_star<?= $i; ?>_edit" title="<?= $i; ?> stars"><i class="fas fa-star"></i></label>
 						<?php endfor; ?>

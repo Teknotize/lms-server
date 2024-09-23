@@ -743,6 +743,7 @@ function editspouse(id) {
             $('#estaff_spouse_id').val(res.id);
             $('#ename').val(res.name);
             $('#eoccupation').val(res.occupation);
+            $('#ephone').val(res.phone);
             $('#etotal_child').val(res.total_child);
             $('#edependent_child').val(res.dependent_child); 
             mfp_modal('#editStaffSpouseModal');
@@ -768,6 +769,72 @@ function editJobStatusg(id) {
     });
 }
 
+// admin staff performance  edit modal show
+function adminEditPerformance(id) {
+    $.ajax({
+        url: base_url + "employee/admin_performance_details", // Your API endpoint
+        type: 'POST',
+        data: {'id': id},
+        dataType: 'json',
+        success: function (res) {
+            // Ensure response is valid before proceeding
+            if (res && res.id) {
+                // Populate the modal fields with the fetched data
+                var $modal = $('#editPerformanceModal'); // Get the modal element
+                
+                $modal.find('#estaff_role').val(res.role); 
+                $modal.find('#updatestaff_id').val(res.staff_id); 
+                $modal.find('#estaff_id').val(res.staff_id_name); 
+                $modal.find('#estaff_name').val(res.staff_name); 
+                $modal.find('#estaff_performance_id').val(res.id); 
+                $modal.find('#peacademic_year_id').val(res.year_id).trigger('change'); // Set dropdown value and trigger change event 
+                $modal.find('#epstatus').val(res.status).trigger('change'); // Set dropdown value and trigger change event 
+              
+ 
+                var academic_achievement = res.academic_achievement;  
+                if (academic_achievement) { 
+                    $modal.find('input[name="academic_achievement"][value="' + academic_achievement + '"]').prop('checked', true);
+                }
+
+                var lesson_planning = res.lesson_planning;  
+                if (lesson_planning) { 
+                    $modal.find('input[name="lesson_planning"][value="' + lesson_planning + '"]').prop('checked', true);
+                }
+
+                var personality = res.personality;  
+                if (personality) { 
+                    $modal.find('input[name="personality"][value="' + personality + '"]').prop('checked', true);
+                }
+
+                var school_contribution = res.school_contribution;  
+                if (school_contribution) { 
+                    $modal.find('input[name="school_contribution"][value="' + school_contribution + '"]').prop('checked', true);
+                }
+
+                var documentation = res.documentation;  
+                if (documentation) { 
+                    $modal.find('input[name="documentation"][value="' + documentation + '"]').prop('checked', true);
+                }
+
+                var attendanceRating = res.attendance;  
+                if (attendanceRating) { 
+                    $modal.find('input[name="attendance"][value="' + attendanceRating + '"]').prop('checked', true);
+                }
+
+
+                // Show the modal
+                mfp_modal('#editPerformanceModal');
+            } else {
+                console.error('Invalid response received:', res);
+                alert('Failed to load performance details. Please try again.');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            alert('An error occurred while fetching the performance details.');
+        }
+    });
+}
 // staff performance  edit modal show
 function editPerformance(id) {
     $.ajax({
@@ -783,8 +850,8 @@ function editPerformance(id) {
                 
                 $modal.find('#estaff_performance_id').val(res.id); 
                 $modal.find('#peacademic_year_id').val(res.year_id).trigger('change'); // Set dropdown value and trigger change event 
-                $modal.find('#ecomment').val(res.comment); 
-                $modal.find('#estatus').val(res.status);
+                $modal.find('#epstatus').val(res.status).trigger('change'); // Set dropdown value and trigger change event 
+              
  
                 var academic_achievement = res.academic_achievement;  
                 if (academic_achievement) { 

@@ -76,6 +76,52 @@ class Employee_model extends MY_Model
         }
     }
 
+    public function getSingleBranch($id = '')
+    {
+        $this->db->select('name');
+        $this->db->from('branch');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    public function getStaffPerformance($id = '')
+    {
+
+        $this->db->select('staff_performance.*, 
+                           staff.name as staff_name, 
+                           staff.staff_id as staff_id_name, 
+                           staff_designation.name as designation_name, 
+                           login_credential.role as role_id, 
+                           login_credential.active, 
+                           login_credential.username, 
+                           roles.name as role');
+        $this->db->from('staff_performance');
+
+        // Join the staff table
+        $this->db->join('staff', 'staff.id = staff_performance.staff_id', 'left');
+
+        // Join the login_credential table
+        $this->db->join('login_credential', 'login_credential.user_id = staff.id', 'inner');
+
+        // Join the staff_designation table
+        $this->db->join('staff_designation', 'staff_designation.id = staff.designation', 'left');
+
+        // Join the roles table
+        $this->db->join('roles', 'roles.id = login_credential.role', 'left');
+
+        // Add the where condition
+        $this->db->where('staff_performance.id', $id);
+
+
+        // Execute the query
+        $query = $this->db->get();
+
+        // Handle the case where no results are found
+
+
+        return $query->row_array();
+    }
 
     // GET SINGLE EMPLOYEE DETAILS
     public function getSingleStaff($id = '')
@@ -199,9 +245,10 @@ class Employee_model extends MY_Model
     public function spouseSave($data)
     {
         $inser_data = array(
-            'staff_id'       => $data['staff_id'],
-            'name'          => $data['name'],
-            'occupation'     => $data['occupation'],
+            'staff_id'        => $data['staff_id'],
+            'name'            => $data['name'],
+            'occupation'      => $data['occupation'],
+            'phone'           => $data['phone'],
             'total_child'     => $data['total_child'],
             'dependent_child' => $data['dependent_child'],
         );
@@ -236,7 +283,7 @@ class Employee_model extends MY_Model
             'year_id'               => $data['year_id'],
             'role'                  => $data['role'],
             'comment'               => isset($data['comment']) ? $data['comment'] : NULL,
-            'verification_date'     => isset($data['verification_date']) ? $data['verification_date'] : '',
+            // 'verification_date'     => isset($data['verification_date'])?$data['verification_date']:'', 
             'academic_achievement'  => isset($data['academic_achievement']) ? $data['academic_achievement'] : NULL,
             'attendance'            => isset($data['attendance']) ? $data['attendance'] : NULL,
             'lesson_planning'       => isset($data['lesson_planning']) ? $data['lesson_planning'] : NULL,
@@ -245,9 +292,19 @@ class Employee_model extends MY_Model
             'documentation'         => isset($data['documentation']) ? $data['documentation'] : NULL,
             'created_by'            => isset($data['created_by']) ? $data['created_by'] : NULL,
             'action_by'             => isset($data['action_by']) ? $data['action_by'] : NULL,
-            'evaluation_date'       => date('Y-m-d H:i:s'),
             'status'                => isset($data['status']) ? $data['status'] : 'pending',
         );
+
+
+
+        if (isset($data['evaluation_date'])) {
+            $inser_data['evaluation_date'] = $data['evaluation_date'];
+        }
+
+        if (isset($data['verification_date'])) {
+            $inser_data['verification_date'] = $data['verification_date'];
+        }
+
         // print_r($inser_data);exit;
         if (isset($data['staff_performance_id'])) {
             $this->db->where('id', $data['staff_performance_id']);
@@ -256,6 +313,84 @@ class Employee_model extends MY_Model
             $this->db->insert('staff_performance', $inser_data);
         }
     }
+
+    public function staff_latest_rating($staff_id)
+    {
+
+        $this->db->select('*');
+        $this->db->from('staff_performance');
+        $this->db->where('staff_id', $staff_id);
+        $this->db->where('status', 'approved');
+        $this->db->order_by('created_at', 'DESC');
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $rating_data = $query->row_array();
+            return  $this->calculate_rating($rating_data);
+        } else {
+            return $rating_data = 0;
+        }
+    }
+
+    public function staff_row_rating($id)
+    {
+        // Fetch the staff rating data
+        $this->db->select('*');
+        $this->db->from('staff_performance');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+
+        // If record is found, calculate rating
+        if ($query->num_rows() > 0) {
+            $rating_data = $query->row_array();
+            return $this->calculate_rating($rating_data);
+        } else {
+            return 0;
+        }
+    }
+
+    public function calculate_rating($rating_data)
+    {
+        if ($rating_data) {
+            // Define weights for each attribute
+            $weights = [
+                'academic_achievement' => 0.40, // 40%
+                'attendance'           => 0.15, // 15%
+                'lesson_planning'      => 0.15, // 15%
+                'personality'          => 0.10, // 10%
+                'school_contribution'  => 0.10, // 10%
+                'documentation'        => 0.10  // 10%
+            ];
+
+            // Calculate the weighted sum using the actual rating values (assuming max 4 for each)
+            $totalScore = (
+                ($rating_data['academic_achievement'] ?? 0) * $weights['academic_achievement'] +
+                ($rating_data['attendance'] ?? 0) * $weights['attendance'] +
+                ($rating_data['lesson_planning'] ?? 0) * $weights['lesson_planning'] +
+                ($rating_data['personality'] ?? 0) * $weights['personality'] +
+                ($rating_data['school_contribution'] ?? 0) * $weights['school_contribution'] +
+                ($rating_data['documentation'] ?? 0) * $weights['documentation']
+            );
+
+            // The maximum possible score is 4 (if each category is rated out of 4)
+            $maxScore = 4;
+
+            // Calculate total percentage score (based on the 4-star system)
+            $totalPercentage = ($totalScore / $maxScore) * 100;
+
+            // Return both total score and percentage
+            return [
+                'totalScore' => round($totalScore, 2),  // Raw weighted score rounded to 2 decimal places
+                'totalPercentage' => round($totalPercentage, 2) // Percentage rounded to 2 decimal places
+            ];
+        } else {
+            return 0;
+        }
+    }
+
+
 
     public function csvImport($row, $branchID, $userRole, $designationID, $departmentID)
     {

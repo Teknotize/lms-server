@@ -13317,3 +13317,11 @@ html.sidebar-light:not(.dark) .page-header h2 {
 .badge-warning {
 	background-color: #ffc107;
 }
+
+.zoom img{
+  transition: transform 0.2s;
+  &:hover{
+    transform: scale(2);
+	cursor: pointer;
+  }
+}

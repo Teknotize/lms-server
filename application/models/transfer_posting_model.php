@@ -90,13 +90,24 @@ class transfer_posting_model extends CI_Model
         return $query->result_array();
     }
 
-    public function status_change($id, $status)
+    public function status_change($id, $status, $notes = null)
     {
         if (!empty($id) && ($status === 'approved' || $status === 'rejected')) {
             $transfer_request = $this->db->where('id', $id)->get('transfer_posting')->result_array()[0];
             if ($transfer_request['status'] === 'pending') {
                 $this->db->where('id', $id);
-                $this->db->update('transfer_posting', ['status' => $status, 'action_by' => get_loggedin_user_id(), 'action_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time())), 'updated_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time()))]);
+                $update_data = [
+                    'status' => $status,
+                    'action_by' => get_loggedin_user_id(),
+                    'action_at' => date("Y-m-d H:i:s", time()),
+                    'updated_at' => date("Y-m-d H:i:s", time())
+                ];
+
+                if ($notes) {
+                    $update_data['notes'] = $notes;
+                }
+
+                $this->db->update('transfer_posting', $update_data);
                 if ($this->db->affected_rows() > 0) {
                     // Transfer emp only if the new branch_id is null and it gets approved
                     if (!$transfer_request['new_branch_id'] && $status === 'approved') {

@@ -112,8 +112,8 @@
 				});
 			}
 
-			function approve_reject_model(url, title, text, successText) {
-				swal({
+			function approve_reject_model(url, title, text, successText, notes = false) {
+				let swalConfig = {
 					title: title,
 					text: text,
 					type: "warning",
@@ -123,12 +123,28 @@
 					confirmButtonText: "Yes Continue",
 					cancelButtonText: "Cancel",
 					buttonsStyling: false,
-					footer: false,
-				}).then((result) => {
+					footer: false
+				};
+
+				if (notes) {
+					swalConfig.input = 'textarea';
+					swalConfig.inputPlaceholder = 'Notes';
+					swalConfig.inputAttributes = {
+						'aria-label': 'Type your notes here',
+						'name': 'notes'
+					};
+				}
+
+				swal(swalConfig).then((result) => {
 					if (result.value) {
+						let data = {};
+						if (notes) {
+							data.notes = result.value;
+						}
 						$.ajax({
 							url: url,
 							type: "POST",
+							data: data,
 							success: function(data) {
 								console.log(data.status);
 								if (data.status === "success") {

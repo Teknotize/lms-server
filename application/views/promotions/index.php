@@ -69,7 +69,7 @@
                                             if ($row['status'] === 'pending') {
                                             ?>
                                                 <button class='btn btn-success icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/approved') ?>','Are you sure?','Do you want to approve this request','Promotion Request Approved.')"><i class='fas fa-check'></i></button>
-                                                <button class='btn btn-danger icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/rejected') ?>','Are you sure?','Do you want to reject this request','Promotion Request Rejected.')"><i class='fas fa-times'></i></button>
+                                                <button class='btn btn-danger icon btn-circle' onclick="approve_reject_model('<?= base_url('promotions/approve_reject/' . $row['id'] . '/rejected') ?>','Are you sure?','Do you want to reject this request','Promotion Request Rejected.',true)"><i class='fas fa-times'></i></button>
                                             <?php
                                                 // if ($row['emp_id'] === get_loggedin_user_id()) {
                                                 // 	echo btn_delete('promotion/delete/' . $row['id']);

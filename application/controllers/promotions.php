@@ -99,14 +99,15 @@ class Promotions extends CI_Controller
             }
         }
 
-        $this->db->select('emp_id');
+        $this->db->select('*');
         $this->db->from('staff_promotions');
         $this->db->where('id', $id);
         $query = $this->db->get();
         $emp_id = $query->row_array()['emp_id'];
         $staff = $this->db->select('*')->where('id', $emp_id)->get('staff')->row_array();
 
-        $this->data['promotions'] = $this->staff_promotions_model->get_data($emp_id)[0];
+        $this->data['promotions'] = $this->staff_promotions_model->get_data_by_id($id)[0];
+        // dd($this->data['promotions']);
 
         $this->data['departments'] = $this->app_lib->getDepartment($staff['department']);
 
@@ -135,7 +136,7 @@ class Promotions extends CI_Controller
         $response = array('status' => 'failed');
 
         if ($status === 'approved' || $status === 'rejected') {
-            $db_response = $this->staff_promotions_model->status_change($id, $status);
+            $db_response = $this->staff_promotions_model->status_change($id, $status, $this->input->post('notes') ? $this->input->post('notes') : null);
             if ($db_response) $response['status'] = 'success';
         }
         $this->output

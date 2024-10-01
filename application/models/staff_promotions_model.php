@@ -65,6 +65,34 @@ class staff_promotions_model extends MY_Model
         return $query->result_array();
     }
 
+    public function get_data_by_id($id)
+    {
+        $this->db->select('
+        sp.*, 
+        emp.name AS name,
+        emp.mobileno AS mobileno,
+        emp.qualification AS qualification,
+        emp.total_experience AS total_experience,
+        emp.staff_id AS staff_id,
+        emp.department AS current_department,
+        emp.salary_template_id AS current_scale,
+        dep.name AS department,
+        ps.name AS scale,
+        emp1.name AS created_by_name,
+        emp2.name AS action_by_name
+        ');
+
+        $this->db->from('staff_promotions sp');
+        $this->db->join('staff emp', 'emp.id = sp.emp_id', 'left');
+        $this->db->join('staff_department dep', 'dep.id = sp.dep_id', 'left');
+        $this->db->join('salary_template ps', 'ps.id = sp.scale_id', 'left');
+        $this->db->join('staff emp1', 'emp1.id = sp.created_by', 'left');
+        $this->db->join('staff emp2', 'emp2.id = sp.action_by', 'left');
+        $this->db->where('sp.id', $id);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
 
     public function save($data, $id = null)
     {
@@ -96,7 +124,7 @@ class staff_promotions_model extends MY_Model
         }
     }
 
-    public function status_change($id, $status)
+    public function status_change($id, $status, $notes = null)
     {
         if (!empty($id) && ($status === 'approved' || $status === 'rejected')) {
             $promotions_request = $this->db->where('id', $id)->get('staff_promotions')->row_array();
@@ -106,7 +134,7 @@ class staff_promotions_model extends MY_Model
                     if ($response) return $this->status_change_db($id, $status);
                     return $response;
                 } else {
-                    return $this->status_change_db($id, $status);
+                    return $this->status_change_db($id, $status, $notes ? $notes : null);
                 }
             }
             return false;
@@ -114,10 +142,12 @@ class staff_promotions_model extends MY_Model
         return false;
     }
 
-    public function status_change_db($id, $status)
+    public function status_change_db($id, $status, $notes = null)
     {
         $this->db->where('id', $id);
-        $this->db->update('staff_promotions', ['status' => $status, 'action_by' => get_loggedin_user_id(), 'updated_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time()))]);
+        $arr = ['status' => $status, 'action_by' => get_loggedin_user_id(), 'updated_at' => (date("Y-m-d", time()) . " " . date("H:i:s", time()))];
+        if ($notes) $arr['notes'] = $notes;
+        $this->db->update('staff_promotions', $arr);
         if ($this->db->affected_rows() > 0) {
             return true;
         }

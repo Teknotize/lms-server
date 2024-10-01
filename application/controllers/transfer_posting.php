@@ -126,7 +126,7 @@ class transfer_posting extends CI_Controller
         $response = array('status' => 'failed');
 
         if ($status === 'approved' || $status === 'rejected') {
-            $db_response = $this->transfer_posting_model->status_change($id, $status);
+            $db_response = $this->transfer_posting_model->status_change($id, $status, $this->input->post('notes') ? $this->input->post('notes') : null);
             if ($db_response) $response['status'] = 'success';
         }
 

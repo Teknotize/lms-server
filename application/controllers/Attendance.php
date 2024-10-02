@@ -371,7 +371,18 @@ class Attendance extends Admin_Controller
         if (!get_permission('student_attendance', 'is_add')) {
             access_denied();
         }
-        $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters();
+
+        if ($_POST) {
+            $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters(
+                $this->input->post('branch_id'),
+                $this->input->post('class_id'),
+                $this->input->post('section_id'),
+                $this->input->post('date')
+            );
+        } else {
+            $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters();
+        }
+
         $this->data['title'] = translate('student_attendance');
         $this->data['sub_page'] = 'attendance/student_all';
         $this->data['main_menu'] = 'attendance';

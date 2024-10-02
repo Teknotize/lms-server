@@ -1,11 +1,7 @@
 <?php $widget = (is_superadmin_loggedin() ? 3 : 4); ?>
 <section class="panel">
-	<header class="panel-heading panel-heading-with-button">
+	<header class="panel-heading">
 		<h4 class="panel-title"><?= translate('select_ground') ?></h4>
-		<div class="text-right mb-sm">
-			<a href="<?= base_url('attendance/all/student') ?>" class="btn btn-circle btn-default mb-sm">
-				<i class="fas fa-plus-circle"></i> All Attendance </a>
-		</div>
 	</header>
 	<?php echo form_open($this->uri->uri_string()); ?>
 	<div class="panel-body">

@@ -165,6 +165,28 @@ class Attendance_model extends MY_Model
                     LEFT JOIN `branch` ON `branch`.`id` = `enroll`.`branch_id`
                     LEFT JOIN `class` ON `class`.`id` = `enroll`.`class_id`
                     LEFT JOIN `section` ON `section`.`id` = `enroll`.`section_id`";
+
+        $conditions = [];
+
+        if ($branch_id) {
+            $conditions[] = "`enroll`.`branch_id` = " . $branch_id;
+        }
+        if ($class_id) {
+            $conditions[] = "`enroll`.`class_id` = " . $class_id;
+        }
+        if ($section) {
+            $conditions[] = "`enroll`.`section_id` = " . $section;
+        }
+        if ($date) {
+            $conditions[] = "`student_attendance`.`date` = '" . $date . "'";
+        }
+
+        if (count($conditions) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        // dd($sql);
+
         return $this->db->query($sql)->result_array();
     }
 

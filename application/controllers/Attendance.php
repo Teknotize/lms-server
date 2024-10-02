@@ -54,6 +54,7 @@ class Attendance extends Admin_Controller
                 $date = $this->input->post('date');
                 $this->data['date'] = $date;
                 $this->data['attendencelist'] = $this->attendance_model->getStudentAttendence($classID, $sectionID, $date, $branchID);
+                // dd($this->data);
             }
         }
         $this->data['getWeekends'] = $this->application_model->getWeekends($branchID);
@@ -93,7 +94,7 @@ class Attendance extends Admin_Controller
         $this->load->view('layout/index', $this->data);
     }
 
-    
+
     public function getWeekendsHolidays()
     {
         if (!get_permission('student_attendance', 'is_add')) {
@@ -103,7 +104,7 @@ class Attendance extends Admin_Controller
             $branchID = $this->input->post('branch_id');
             $getWeekends = $this->application_model->getWeekends($branchID);
             $getHolidays = $this->attendance_model->getHolidays($branchID);
-            echo json_encode(['getWeekends' => $getWeekends, 'getHolidays' => '["' . $getHolidays . '"]' ]);
+            echo json_encode(['getWeekends' => $getWeekends, 'getHolidays' => '["' . $getHolidays . '"]']);
         }
     }
 
@@ -330,14 +331,15 @@ class Attendance extends Admin_Controller
         }
     }
 
-    public function check_holiday($date) {
+    public function check_holiday($date)
+    {
         $branchID = $this->application_model->get_branch_id();
         $getHolidays = $this->attendance_model->getHolidays($branchID);
         $getHolidaysArray = explode('","', $getHolidays);
 
-        if(!empty($getHolidaysArray)) {
-            if(in_array($date, $getHolidaysArray)) {
-                $this->form_validation->set_message('check_holiday','You have selected a holiday.');
+        if (!empty($getHolidaysArray)) {
+            if (in_array($date, $getHolidaysArray)) {
+                $this->form_validation->set_message('check_holiday', 'You have selected a holiday.');
                 return FALSE;
             } else {
                 return TRUE;
@@ -345,11 +347,12 @@ class Attendance extends Admin_Controller
         }
     }
 
-    public function check_weekendday($date) {
+    public function check_weekendday($date)
+    {
         $branchID = $this->application_model->get_branch_id();
         $getWeekendDays = $this->attendance_model->getWeekendDaysSession($branchID);
-        if(!empty($getWeekendDays)) {
-            if(in_array($date, $getWeekendDays)) {
+        if (!empty($getWeekendDays)) {
+            if (in_array($date, $getWeekendDays)) {
                 $this->form_validation->set_message('check_weekendday', "You have selected a weekend date.");
                 return FALSE;
             } else {
@@ -357,5 +360,22 @@ class Attendance extends Admin_Controller
             }
         }
         return TRUE;
+    }
+
+    public function all($type)
+    {
+        if ($type != 'student' && $type != 'teacher') {
+            redirect(base_url('/attendance/student_entry'));
+        }
+
+        if (!get_permission('student_attendance', 'is_add')) {
+            access_denied();
+        }
+        $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters();
+        $this->data['title'] = translate('student_attendance');
+        $this->data['sub_page'] = 'attendance/student_all';
+        $this->data['main_menu'] = 'attendance';
+        // dd($this->data);
+        $this->load->view('layout/index', $this->data);
     }
 }

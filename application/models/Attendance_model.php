@@ -28,9 +28,9 @@ class Attendance_model extends MY_Model
         $sql = "SELECT enroll.student_id,enroll.roll,student.first_name,student.last_name,student.register_no,exam_attendance.id as `atten_id`,
         exam_attendance.status as `att_status`,exam_attendance.remark as `att_remark` FROM `enroll` LEFT JOIN student ON
         student.id = enroll.student_id LEFT JOIN exam_attendance ON exam_attendance.student_id = student.id AND exam_attendance.exam_id = " .
-        $this->db->escape($examID) . " AND exam_attendance.subject_id = " . $this->db->escape($subjectID) .
-        " WHERE enroll.class_id = " . $this->db->escape($classID) . " AND enroll.section_id = " . $this->db->escape($sectionID) .
-        " AND enroll.branch_id = " . $this->db->escape($branchID) . " AND enroll.session_id = " . $this->db->escape(get_session_id());
+            $this->db->escape($examID) . " AND exam_attendance.subject_id = " . $this->db->escape($subjectID) .
+            " WHERE enroll.class_id = " . $this->db->escape($classID) . " AND enroll.section_id = " . $this->db->escape($sectionID) .
+            " AND enroll.branch_id = " . $this->db->escape($branchID) . " AND enroll.session_id = " . $this->db->escape(get_session_id());
         return $this->db->query($sql)->result_array();
     }
 
@@ -141,4 +141,33 @@ class Attendance_model extends MY_Model
         $count_studentattendance = $query->result();
         return $count_studentattendance;
     }
+
+    public function getStudentAttendenceAllWithFilters($branch_id = null, $class_id = null, $section = null, $date = null)
+    {
+        $sql = "SELECT 
+                    `enroll`.`id` AS `enroll_id`,
+                    `enroll`.`roll`,
+                    `student`.`first_name`,
+                    `student`.`last_name`,
+                    `student`.`id` AS `student_id`,
+                    `student`.`register_no`,
+                    `student_attendance`.`id` AS `att_id`,
+                    `student_attendance`.`date` AS `date`,
+                    `student_attendance`.`status` AS `att_status`,
+                    `student_attendance`.`remark` AS `att_remark`,
+                    `branch`.`name` AS `branch`,
+                    `class`.`name` AS `class`,
+                    `section`.`name` AS `section`
+                FROM 
+                    `enroll`
+                    LEFT JOIN `student` ON `student`.`id` = `enroll`.`student_id`
+                    INNER JOIN `student_attendance` ON `student_attendance`.`enroll_id` = `enroll`.`id`
+                    LEFT JOIN `branch` ON `branch`.`id` = `enroll`.`branch_id`
+                    LEFT JOIN `class` ON `class`.`id` = `enroll`.`class_id`
+                    LEFT JOIN `section` ON `section`.`id` = `enroll`.`section_id`";
+        return $this->db->query($sql)->result_array();
+    }
+
+
+    // SELECT `enroll`.`id` as `enroll_id`,`enroll`.`roll`,`student`.`first_name`,`student`.`last_name`,`student`.`id` as `student_id`,`student`.`register_no`,`student_attendance`.`id` as `att_id`,`student_attendance`.`status` as `att_status`,`student_attendance`.`remark` as `att_remark` FROM `enroll` LEFT JOIN `student` ON `student`.`id` = `enroll`.`student_id` LEFT JOIN `student_attendance` ON `student_attendance`.`enroll_id` = `enroll`.`id` AND `student_attendance`.`date` = "2024-05-24" WHERE `enroll`.`class_id` = 4 AND `enroll`.`section_id` = 1 AND `enroll`.`branch_id` = 1;
 }

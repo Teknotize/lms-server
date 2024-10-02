@@ -13325,3 +13325,12 @@ html.sidebar-light:not(.dark) .page-header h2 {
 	cursor: pointer;
   }
 }
+
+.panel-heading-with-button{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	div,a{
+		margin: 0 !important;
+	}
+}

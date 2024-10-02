@@ -364,29 +364,44 @@ class Attendance extends Admin_Controller
 
     public function all($type)
     {
-        if ($type != 'student' && $type != 'teacher') {
-            redirect(base_url('/attendance/student_entry'));
-        }
 
         if (!get_permission('student_attendance', 'is_add')) {
             access_denied();
         }
+        if ($type === 'student') {
+            if ($_POST) {
+                $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters(
+                    $this->input->post('branch_id'),
+                    $this->input->post('class_id'),
+                    $this->input->post('section_id'),
+                    $this->input->post('date')
+                );
+            } else {
+                $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters();
+            }
 
-        if ($_POST) {
-            $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters(
-                $this->input->post('branch_id'),
-                $this->input->post('class_id'),
-                $this->input->post('section_id'),
-                $this->input->post('date')
-            );
+            $this->data['title'] = translate('student_attendance');
+            $this->data['sub_page'] = 'attendance/student_all';
+            $this->data['main_menu'] = 'attendance';
+            $this->load->view('layout/index', $this->data);
+        } else if ($type === 'teacher') {
+            if ($_POST) {
+                // dd($this->input->post());
+                $this->data['attendance_list'] = $this->attendance_model->getEmployeeAttendanceAllWithFilters(
+                    $this->input->post('branch_id'),
+                    $this->input->post('staff_role'),
+                    $this->input->post('date')
+                );
+            } else {
+                $this->data['attendance_list'] = $this->attendance_model->getEmployeeAttendanceAllWithFilters();
+            }
+
+            $this->data['title'] = translate('teacher_attendance');
+            $this->data['sub_page'] = 'attendance/teacher_all';
+            $this->data['main_menu'] = 'attendance';
+            $this->load->view('layout/index', $this->data);
         } else {
-            $this->data['attendance_list'] = $this->attendance_model->getStudentAttendenceAllWithFilters();
+            redirect(base_url('/attendance/student_entry'));
         }
-
-        $this->data['title'] = translate('student_attendance');
-        $this->data['sub_page'] = 'attendance/student_all';
-        $this->data['main_menu'] = 'attendance';
-        // dd($this->data);
-        $this->load->view('layout/index', $this->data);
     }
 }

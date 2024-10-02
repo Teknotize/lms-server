@@ -189,6 +189,90 @@ class Attendance_model extends MY_Model
 
         return $this->db->query($sql)->result_array();
     }
+    public function getEmployeeAttendanceAllWithFilters($branch = null, $role = null, $date = null)
+    {
+        $sql = "SELECT 
+                `staff`.*,
+                `lc`.`role`,
+                `sa`.`id` AS `atten_id`,
+                IFNULL(`sa`.`status`, 0) AS `att_status`,
+                `sa`.`remark` AS `att_remark`,
+                `sa`.`date` AS `att_date`,
+                `role`.`name` AS `role_name`,
+                `br`.`name` AS `branch_name`,
+                `sd`.`name` AS `department_name`
+            FROM 
+                `staff`
+            LEFT JOIN 
+                `login_credential` AS `lc`
+                ON `lc`.`user_id` = `staff`.`id`
+                AND `lc`.`role` != '6'
+                AND `lc`.`role` != '7'
+            INNER JOIN 
+                `staff_attendance` AS `sa`
+                ON `sa`.`staff_id` = `staff`.`id`
+                AND `lc`.`active` = '1'
+            LEFT JOIN 
+                `roles` AS `role`
+                ON `role`.`id` = `lc`.`role`
+            LEFT JOIN 
+                `branch` AS `br`
+                ON `br`.`id` = `staff`.`branch_id`
+            LEFT JOIN 
+                `staff_department` AS `sd`
+                ON `sd`.`id` = `staff`.`department`";
+
+        $conditions = [];
+
+        if ($branch) {
+            $conditions[] = "`br`.`id` = " . $branch;
+        }
+        if ($role) {
+            $conditions[] = "`role`.`id` = " . $role;
+        }
+        if ($date) {
+            $conditions[] = "`sa`.`date` = '" . $date . "'";
+        }
+
+        if (count($conditions) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $sql .= " ORDER BY `staff`.`id` ASC;";
+
+        return $this->db->query($sql)->result_array();
+    }
+
+    //     public function getEmployeeAttendanceAllWithFilters($branch = null, $role = null, $date = null)
+    //     {
+    //         $sql = "SELECT `staff`.*,
+    //        `lc`.`role`,
+    //        `sa`.`id`                AS `atten_id`,
+    //        Ifnull(`sa`.`status`, 0) AS `att_status`,
+    //        `sa`.`remark`            AS `att_remark`,
+    //        `sa`.`date`            AS `att_date`,
+    //        `role`.`name`            AS `role_name`,
+    //        `br`.`name`              AS `branch_name`,
+    //        `sd`.`name`              AS `deparment_name`
+    // FROM   `staff`
+    //        LEFT JOIN `login_credential` AS `lc`
+    //               ON `lc`.`user_id` = `staff`.`id`
+    //                  AND `lc`.`role` != '6'
+    //                  AND `lc`.`role` != '7'
+    //        INNER JOIN `staff_attendance` AS `sa`
+    //                ON `sa`.`staff_id` = `staff`.`id`
+    //                   AND `lc`.`active` = '1'
+    //        LEFT JOIN `roles` AS `role`
+    //               ON `role`.`id` = `lc`.`role`
+    //        LEFT JOIN `branch` AS `br`
+    //               ON `br`.`id` = `staff`.`branch_id`
+    //        LEFT JOIN `staff_department` AS `sd`
+    //               ON `sd`.`id` = `staff`.`department`
+    // ORDER  BY `staff`.`id` ASC; ";
+
+
+    //         dd($this->db->query($sql)->result_array());
+    //     }
 
 
     // SELECT `enroll`.`id` as `enroll_id`,`enroll`.`roll`,`student`.`first_name`,`student`.`last_name`,`student`.`id` as `student_id`,`student`.`register_no`,`student_attendance`.`id` as `att_id`,`student_attendance`.`status` as `att_status`,`student_attendance`.`remark` as `att_remark` FROM `enroll` LEFT JOIN `student` ON `student`.`id` = `enroll`.`student_id` LEFT JOIN `student_attendance` ON `student_attendance`.`enroll_id` = `enroll`.`id` AND `student_attendance`.`date` = "2024-05-24" WHERE `enroll`.`class_id` = 4 AND `enroll`.`section_id` = 1 AND `enroll`.`branch_id` = 1;

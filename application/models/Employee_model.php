@@ -318,18 +318,31 @@ class Employee_model extends MY_Model
     public function staff_latest_rating($staff_id)
     {
 
-        $this->db->select('*');
-        $this->db->from('staff_performance');
-        $this->db->where('staff_id', $staff_id);
-        $this->db->where('status', 'approved');
-        $this->db->order_by('created_at', 'DESC');
+        // $this->db->select('*');
+        // $this->db->from('staff_performance');
+        // $this->db->where('staff_id', $staff_id);
+        // $this->db->where('status', 'approved');
+        // $this->db->order_by('created_at', 'DESC');
+        // $this->db->limit(1);
+        // $this->db->join('schoolyear', 'staff_performance.year_id = schoolyear.id', 'left');
+
+        // $query = $this->db->get();
+
+        $this->db->select('sp.*, sy.school_year');
+        $this->db->from('staff_performance AS sp');
+        $this->db->join('schoolyear AS sy', 'sp.year_id = sy.id', 'left');
+        $this->db->where('sp.staff_id', $staff_id);
+        $this->db->where('sp.status', 'approved');
+        $this->db->order_by('sp.created_at', 'ASC');
         $this->db->limit(1);
 
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
             $rating_data = $query->row_array();
-            return  $this->calculate_rating($rating_data);
+            $calculated_rating = $this->calculate_rating($rating_data);
+            $calculated_rating['school_year'] = $rating_data['school_year'];
+            return $calculated_rating;
         } else {
             return $rating_data = 0;
         }

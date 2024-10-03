@@ -1499,7 +1499,7 @@ if (get_permission('promotions', 'is_add')) {
 						<?php
 						$rating_value = 'N/A';
 						if ($ratings)
-							$rating_value = $ratings . ' Star';
+							$rating_value = round($ratings['totalScore']) . ' Star - ' . $ratings['totalPercentage'] . '% - ' . $ratings['school_year'];
 						?>
 						<?= form_input(['type' => 'text', 'name' => 'ratings'], $rating_value, 'class="form-control" disabled') ?>
 						<span class="error"><?= form_error('ratings') ?></span>
@@ -2086,7 +2086,7 @@ if (get_permission('promotions', 'is_add')) {
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('child_detail_with_name_and _age'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-				<textarea class="form-control" name="detail" id="detail" rows="5" placeholder="e.g. name = Kamran, age = 25; name = Imrane, age = 12"></textarea>
+					<textarea class="form-control" name="detail" id="detail" rows="5" placeholder="e.g. name = Kamran, age = 25; name = Imrane, age = 12"></textarea>
 					<span class="error"></span>
 				</div>
 			</div>
@@ -2157,11 +2157,11 @@ if (get_permission('promotions', 'is_add')) {
 					<span class="error"></span>
 				</div>
 			</div>
-			
+
 			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('child_detail_with_name_and _age'); ?> <span class="required">*</span></label>
 				<div class="col-md-9">
-				<textarea class="form-control" name="detail" id="edetail" rows="5" placeholder="e.g. name = Kamran, age = 25; name = Imrane, age = 12"></textarea>
+					<textarea class="form-control" name="detail" id="edetail" rows="5" placeholder="e.g. name = Kamran, age = 25; name = Imrane, age = 12"></textarea>
 					<span class="error"></span>
 				</div>
 			</div>
@@ -2329,7 +2329,7 @@ if (get_permission('promotions', 'is_add')) {
 						"In service death"   => translate('In service death'),
 						"Resigned " => translate('Resigned'),
 						"Retired"   => translate('Retired'),
-						"Terminated"=> translate('Terminate')
+						"Terminated" => translate('Terminate')
 					);
 
 					echo form_dropdown(

@@ -244,8 +244,8 @@ class Employee extends Admin_Controller
 
         $this->data['staff_promotions'] = $this->staff_promotions_model->get_data($this->data['staff']['id']);
         $this->data['payscales'] = $this->app_lib->getSelectList('salary_template');
-
-        $this->data['ratings'] = round($this->employee_model->staff_latest_rating($this->data['staff']['id'])['totalScore']);
+        // dd($this->employee_model->staff_latest_rating($this->data['staff']['id']));
+        $this->data['ratings'] = $this->employee_model->staff_latest_rating($this->data['staff']['id']);
 
         // dd($this->data);
 

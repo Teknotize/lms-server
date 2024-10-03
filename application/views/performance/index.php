@@ -104,7 +104,7 @@
                                     echo "Good";
                                 } elseif ($pr >= 2) {
                                     echo "Satisfactory";
-                                } elseif ($pr <= 1) {
+                                } elseif ($pr >= 0) {
                                     echo "Need Improvement";
                                 }
 

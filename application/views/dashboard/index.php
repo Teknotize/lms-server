@@ -179,6 +179,199 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 		</div>
 	</div>
 <?php } ?>
+
+<!-- attendence widget -->
+ 
+<?php if ($widget1 > 0) { ?>
+	<div class="row">
+		<div class="col-md-12 col-lg-12 col-sm-12">
+			<div class="panel">
+				<h1>Attendence</h1>
+				<div class="row widget-row-in">
+				<?php if (get_permission('employee_count_widget', 'is_view')) { ?>
+                    <div class="col-lg-4 col-sm-6 ">
+					<div class="panel-body">
+						<div class="widget-col-in row">
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<i class="fas fa-users"></i>
+								<h5 class="text-muted"><?php echo translate('employee'); ?></h5>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<h3 class="counter text-right mt-md text-primary"><?php
+									$staff = $this->dashboard_model->getstaffcounter('', $school_id);
+									echo $staff['snumber'];
+								?></h3>
+							</div>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="box-top-line line-color-primary">
+									<span class="text-muted text-uppercase"><?php echo translate('total_strength'); ?></span>
+								</div>
+							</div>
+
+							<!-- Employee Attendance Status -->
+							<?php
+								$attendanceData = $this->dashboard_model->getEmployeeAttendanceStatus($school_id); 
+								$total = $attendanceData['total'];
+								$presentPercentage = ($total > 0) ? ($attendanceData['present'] / $total) * 100 : 0; 
+								$absentPercentage = ($total > 0) ? ($attendanceData['absent'] / $total) * 100 : 0; 
+								$latePercentage = ($total > 0) ? ($attendanceData['late'] / $total) * 100 : 0; 
+								$holidayPercentage = ($total > 0) ? ($attendanceData['holiday'] / $total) * 100 : 0;
+							?> 
+							<!-- Present -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('present'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success" role="progressbar" style="width: <?php echo $presentPercentage; ?>%;">
+										<?php echo round($presentPercentage, 2); ?>%
+									</div>
+								</div>
+							</div> 
+							<!-- Absent -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('absent'); ?></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?php echo $absentPercentage; ?>%;">
+										<?php echo round($absentPercentage, 2); ?>%
+									</div>
+								</div>
+							</div> 
+							<!-- Late -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('late'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?php echo $latePercentage; ?>%;">
+										<?php echo round($latePercentage, 2); ?>%
+									</div>
+								</div>
+							</div>  
+						</div>
+					</div>
+				</div>
+ 
+				<?php } ?>
+				<?php if (get_permission('student_count_widget', 'is_view')) { ?>
+					<div class="col-lg-4 col-sm-6">
+						<div class="panel-body">
+							<div class="widget-col-in row">
+								<div class="col-md-6 col-sm-6 col-xs-6"> <i class="fas fa-user-graduate"></i>
+									<h5 class="text-muted"><?php echo translate('students'); ?></h5> </div>
+								<div class="col-md-6 col-sm-6 col-xs-6">
+									<h3 class="counter text-right mt-md text-primary"><?=$get_total_student?></h3>
+								</div>
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="box-top-line line-color-primary">
+											<span class="text-muted text-uppercase"><?php echo translate('total_strength'); ?></span>
+									</div>
+								</div>
+								
+
+							<!-- Employee Attendance Status -->
+							<?php
+								$attendanceData = $this->dashboard_model->getStudentAttendanceStatus($school_id); 
+								$total = $attendanceData['total'];
+								$presentPercentage = ($total > 0) ? ($attendanceData['present'] / $total) * 100 : 0; 
+								$absentPercentage = ($total > 0) ? ($attendanceData['absent'] / $total) * 100 : 0; 
+								$latePercentage = ($total > 0) ? ($attendanceData['late'] / $total) * 100 : 0; 
+								$holidayPercentage = ($total > 0) ? ($attendanceData['holiday'] / $total) * 100 : 0;
+							?> 
+							<!-- Present -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('present'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success" role="progressbar" style="width: <?php echo $attendanceData['present_percentage']; ?>%;">
+										<?php echo round($attendanceData['present_percentage'], 2); ?>%
+									</div>
+								</div>
+							</div> 
+							<!-- Absent -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('absent'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?php echo $attendanceData['absent_percentage']; ?>%;">
+										<?php echo round($attendanceData['absent_percentage'], 2); ?>%
+									</div>
+								</div>
+							</div> 
+							<!-- Late -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('late'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?php echo $attendanceData['late_percentage']; ?>%;">
+										<?php echo round($attendanceData['late_percentage'], 2); ?>%
+									</div>
+								</div>
+							</div>  
+							</div>
+						</div>
+					</div>
+				<?php } ?> 
+				<?php if (get_permission('teacher_count_widget', 'is_view')) { ?>
+					<div class="col-lg-4 col-sm-6 ">
+						<div class="panel-body">
+							<div class="widget-col-in row">
+								<div class="col-md-6 col-sm-6 col-xs-6"> <i class="fas fa-chalkboard-teacher" ></i>
+									<h5 class="text-muted"><?php echo translate('teachers'); ?></h5></div>
+								<div class="col-md-6 col-sm-6 col-xs-6">
+									<h3 class="counter text-right mt-md text-primary"><?php
+									$staff = $this->dashboard_model->getstaffcounter(3, $school_id);
+									echo $staff['snumber'];
+									?></h3>
+								</div>
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="box-top-line line-color-primary">
+										<span class="text-muted text-uppercase"><?=translate('total_strength')?></span>
+									</div>
+								</div>
+								
+
+							<!-- Employee Attendance Status -->
+							<?php
+								$attendanceData = $this->dashboard_model->getEmployeeAttendanceStatus(3,$school_id); 
+								$total = $attendanceData['total'];
+								$presentPercentage = ($total > 0) ? ($attendanceData['present'] / $total) * 100 : 0; 
+								$absentPercentage = ($total > 0) ? ($attendanceData['absent'] / $total) * 100 : 0; 
+								$latePercentage = ($total > 0) ? ($attendanceData['late'] / $total) * 100 : 0; 
+								$holidayPercentage = ($total > 0) ? ($attendanceData['holiday'] / $total) * 100 : 0;
+							?> 
+							<!-- Present -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('present'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success" role="progressbar" style="width: <?php echo $presentPercentage; ?>%;">
+										<?php echo round($presentPercentage, 2); ?>%
+									</div>
+								</div>
+							</div> 
+							<!-- Absent -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('absent'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-danger" role="progressbar" style="width: <?php echo $absentPercentage; ?>%;">
+										<?php echo round($absentPercentage, 2); ?>%
+									</div>
+								</div>
+							</div> 
+							<!-- Late -->
+							<div class="col-md-12 col-sm-12 col-xs-12 mt-10">
+								<span class="text-muted"><?php echo translate('late'); ?> </span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-warning" role="progressbar" style="width: <?php echo $latePercentage; ?>%;">
+										<?php echo round($latePercentage, 2); ?>%
+									</div>
+								</div>
+							</div>  
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php } ?>
+
+ 
+
 	<!-- student quantity chart -->
 	<div class="row">
 <?php if (get_permission('student_quantity_pie_chart', 'is_view')) { ?>

@@ -565,6 +565,7 @@
 										<th><?= translate('contact no') ?></th>
 										<th><?= translate('No of child') ?></th>
 										<th><?= translate('dependent child') ?></th>
+										<th><?= translate('Detail') ?></th>
 										<th><?= translate('actions') ?></th>
 									</tr>
 								</thead>
@@ -573,22 +574,23 @@
 									$count = 1;
 									$this->db->where('staff_id', $staff['id']);
 									$this->db->order_by('id', 'DESC');
-									$educationResult = $this->db->get('staff_spouse')->result_array();
-									if (count($educationResult)) {
-										foreach ($educationResult as $education):
+									$spousResult = $this->db->get('staff_spouse')->result_array();
+									if (count($spousResult)) {
+										foreach ($spousResult as $spouse):
 									?>
 											<tr>
 												<td><?php echo $count++ ?></td>
-												<td><?php echo $education['name']; ?></td>
-												<td><?php echo $education['occupation']; ?></td>
-												<td><?php echo $education['phone']; ?></td>
-												<td><?php echo $education['total_child']; ?></td>
-												<td><?php echo $education['dependent_child']; ?></td>
+												<td><?php echo $spouse['name']; ?></td>
+												<td><?php echo $spouse['occupation']; ?></td>
+												<td><?php echo $spouse['phone']; ?></td>
+												<td><?php echo $spouse['total_child']; ?></td>
+												<td><?php echo $spouse['dependent_child']; ?></td>
+												<td><?php echo $spouse['detail']; ?></td>
 												<td class="min-w-c">
-													<a href="javascript:void(0);" onclick="editspouse('<?= $education['id'] ?>')" class="btn btn-circle icon btn-default">
+													<a href="javascript:void(0);" onclick="editspouse('<?= $spouse['id'] ?>')" class="btn btn-circle icon btn-default">
 														<i class="fas fa-pen-nib"></i>
 													</a>
-													<?php echo btn_delete('employee/spouse_delete/' . $education['id']); ?>
+													<?php echo btn_delete('employee/spouse_delete/' . $spouse['id']); ?>
 												</td>
 											</tr>
 									<?php
@@ -797,7 +799,7 @@
 														echo "Good";
 													} elseif ($pr >= 2) {
 														echo "Satisfactory";
-													} elseif ($pr <= 1) {
+													} elseif ($pr >= 0) {
 														echo "Need Improvement";
 													}
 
@@ -2082,6 +2084,13 @@ if (get_permission('promotions', 'is_add')) {
 				</div>
 			</div>
 			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('child_detail_with_name_and _age'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+				<textarea class="form-control" name="detail" id="detail" rows="5" placeholder="e.g. name = Kamran, age = 25; name = Imrane, age = 12"></textarea>
+					<span class="error"></span>
+				</div>
+			</div>
+			<div class="form-group mt-sm">
 				<label class="col-md-3 control-label"><?php echo translate('No Of dependent'); ?></label>
 				<div class="col-md-9">
 					<input type="number" class="form-control" name="dependent_child" id="adependent_child" />
@@ -2145,6 +2154,14 @@ if (get_permission('promotions', 'is_add')) {
 				<label class="col-md-3 control-label"><?php echo translate('No of Dependent'); ?></label>
 				<div class="col-md-9">
 					<input type="text" class="form-control" name="dependent_child" id="edependent_child" value="" />
+					<span class="error"></span>
+				</div>
+			</div>
+			
+			<div class="form-group mt-sm">
+				<label class="col-md-3 control-label"><?php echo translate('child_detail_with_name_and _age'); ?> <span class="required">*</span></label>
+				<div class="col-md-9">
+				<textarea class="form-control" name="detail" id="edetail" rows="5" placeholder="e.g. name = Kamran, age = 25; name = Imrane, age = 12"></textarea>
 					<span class="error"></span>
 				</div>
 			</div>
@@ -2218,7 +2235,7 @@ if (get_permission('promotions', 'is_add')) {
 					$array = array(
 						""                 => translate('select'),
 						"In service death" => translate('In service death'),
-						"Employee Resigned " => translate('Employee Resigned'),
+						"Resigned " => translate('Resigned'),
 						"Retired"     => translate('Retired'),
 						"Terminated"   => translate('Terminate')
 					);
@@ -2310,9 +2327,9 @@ if (get_permission('promotions', 'is_add')) {
 					$array = array(
 						""                   => translate('select'),
 						"In service death"   => translate('In service death'),
-						"Employee Resigned " => translate('Employee Resigned'),
-						"Retired"            => translate('Retired'),
-						"Terminated"   => translate('Terminate')
+						"Resigned " => translate('Resigned'),
+						"Retired"   => translate('Retired'),
+						"Terminated"=> translate('Terminate')
 					);
 
 					echo form_dropdown(

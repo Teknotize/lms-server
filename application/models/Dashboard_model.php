@@ -8,7 +8,7 @@ class Dashboard_model extends CI_Model
     public function __construct()
     {
         parent::__construct();
-    }
+    } 
 
     public function getMonthlyBookIssued($id = '')
     {
@@ -259,4 +259,162 @@ class Dashboard_model extends CI_Model
         );
         return empty($codes[$lang]) ? '' : $codes[$lang];
     }
+
+    public function getEmployeeAttendanceStatus($role = '', $school_id = '') {
+        // Initialize attendance data array
+        $attendanceData = [
+            'present' => 0,
+            'absent' => 0,
+            'late' => 0,
+            'holiday' => 0,
+            'total' => 0
+        ];
+    
+        // Add role filter if needed
+        if (!empty($role)) {
+            $this->db->join('login_credential', 'login_credential.user_id = staff_attendance.staff_id', 'inner');
+            $this->db->where('login_credential.role', $role);
+        } else {
+            // Exclude certain roles if needed (same logic as in getStaffCounter)
+            $this->db->join('login_credential', 'login_credential.user_id = staff_attendance.staff_id', 'inner');
+            $this->db->where_not_in('login_credential.role', array(1, 3, 6, 7));
+        }
+    
+        // Query to count present employees (status = 'P')
+        $this->db->select('COUNT(*) as present');
+        $this->db->where('staff_attendance.status', 'P');
+        if (!empty($school_id)) {
+            $this->db->where('staff_attendance.branch_id', $school_id);
+        }
+        $query = $this->db->get('staff_attendance');
+        $result = $query->row_array();
+        $attendanceData['present'] = $result['present'];
+    
+        // Query to count absent employees (status = 'A')
+        $this->db->select('COUNT(*) as absent');
+        $this->db->where('staff_attendance.status', 'A');
+        if (!empty($school_id)) {
+            $this->db->where('staff_attendance.branch_id', $school_id);
+        }
+        $query = $this->db->get('staff_attendance');
+        $result = $query->row_array();
+        $attendanceData['absent'] = $result['absent'];
+    
+        // Query to count late employees (status = 'L')
+        $this->db->select('COUNT(*) as late');
+        $this->db->where('staff_attendance.status', 'L');
+        if (!empty($school_id)) {
+            $this->db->where('staff_attendance.branch_id', $school_id);
+        }
+        $query = $this->db->get('staff_attendance');
+        $result = $query->row_array();
+        $attendanceData['late'] = $result['late'];
+    
+        // Query to count holiday (status = 'H') (if needed)
+        $this->db->select('COUNT(*) as holiday');
+        $this->db->where('staff_attendance.status', 'H');
+        if (!empty($school_id)) {
+            $this->db->where('staff_attendance.branch_id', $school_id);
+        }
+        $query = $this->db->get('staff_attendance');
+        $result = $query->row_array();
+        $attendanceData['holiday'] = $result['holiday'];
+    
+        // Calculate total employees (excluding holidays if necessary)
+        $attendanceData['total'] = $attendanceData['present'] + $attendanceData['absent'] + $attendanceData['late'];
+    
+        return $attendanceData;
+    }
+
+    public function getStudentAttendanceStatus($school_id = '') {
+        // Initialize attendance data array
+        $attendanceData = [
+            'present' => 0,
+            'absent' => 0,
+            'late' => 0,
+            'holiday' => 0,
+            'total_days' => 0,
+            'total_students' => 0,
+            'present_percentage' => 0,
+            'absent_percentage' => 0,
+            'late_percentage' => 0,
+            'holiday_percentage' => 0
+        ]; 
+    
+        // Step 1: Get total distinct students
+        $this->db->select('COUNT(DISTINCT enroll_id) as total_students');
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        $query = $this->db->get('student_attendance');
+        $result = $query->row_array();
+        $totalStudents = $result['total_students'];
+        $attendanceData['total_students'] = $totalStudents;
+    
+        // Step 2: Get total number of attendance days (assuming you are counting by date)
+        $this->db->select('COUNT(DISTINCT date) as total_days');
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        $query = $this->db->get('student_attendance');
+        $result = $query->row_array();
+        $totalDays = $result['total_days'];
+        $attendanceData['total_days'] = $totalDays;
+    
+        // Step 3: Count attendance status across all students and days
+        $this->db->select('COUNT(*) as present');
+        $this->db->where('status', 'P');
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        $query = $this->db->get('student_attendance');
+        $result = $query->row_array();
+        $attendanceData['present'] = $result['present'];
+    
+        $this->db->select('COUNT(*) as absent');
+        $this->db->where('status', 'A');
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        $query = $this->db->get('student_attendance');
+        $result = $query->row_array();
+        $attendanceData['absent'] = $result['absent'];
+    
+        $this->db->select('COUNT(*) as late');
+        $this->db->where('status', 'L');
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        $query = $this->db->get('student_attendance');
+        $result = $query->row_array();
+        $attendanceData['late'] = $result['late'];
+    
+        $this->db->select('COUNT(*) as holiday');
+        $this->db->where('status', 'H');
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        $query = $this->db->get('student_attendance');
+        $result = $query->row_array();
+        $attendanceData['holiday'] = $result['holiday'];
+    
+        // Step 4: Calculate total attendance records (all statuses)
+        $totalAttendanceRecords = $attendanceData['present'] + $attendanceData['absent'] + $attendanceData['late'] + $attendanceData['holiday'];
+    
+        // Step 5: Calculate percentages based on total possible attendance slots
+        // Total slots = total students * total days
+        $totalSlots = $totalStudents * $totalDays;
+    
+        if ($totalSlots > 0) {
+            $attendanceData['present_percentage'] = ($attendanceData['present'] / $totalSlots) * 100;
+            $attendanceData['absent_percentage'] = ($attendanceData['absent'] / $totalSlots) * 100;
+            $attendanceData['late_percentage'] = ($attendanceData['late'] / $totalSlots) * 100;
+            $attendanceData['holiday_percentage'] = ($attendanceData['holiday'] / $totalSlots) * 100;
+        }
+    
+        return $attendanceData;
+    }
+    
+    
+    
 }

@@ -743,6 +743,7 @@ function editspouse(id) {
             $('#estaff_spouse_id').val(res.id);
             $('#ename').val(res.name);
             $('#eoccupation').val(res.occupation);
+            $('#edetail').val(res.detail);
             $('#ephone').val(res.phone);
             $('#etotal_child').val(res.total_child);
             $('#edependent_child').val(res.dependent_child); 

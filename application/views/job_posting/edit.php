@@ -53,10 +53,17 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-3 control-label"><?= translate('no_of_posts') ?> <span class="required">*</span></label>
+					<label class="col-md-3 control-label"><?= translate('no_of_posts') ?></label>
 					<div class="col-md-6">
-						<?= form_input(['type' => 'number', 'name' => 'no_of_posts'], $job_post['no_of_posts'], 'class="form-control" requried') ?>
-						<span class="error"><?= form_error('no_of_posts') ?></span>
+						<?= form_input(['type' => 'number', 'name' => ''], $job_post['no_of_posts'], 'class="form-control" disabled') ?>
+						<?= form_input(['type' => 'hidden', 'name' => 'no_of_posts'], $job_post['no_of_posts'], 'class="form-control"') ?>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label"><?= translate('no_of_filled_posts') ?> <span class="required">*</span></label>
+					<div class="col-md-6">
+						<?= form_input(['type' => 'number', 'name' => 'no_of_filled_posts', 'min' => '0', 'max' => $job_post['no_of_posts']], $job_post['no_of_filled_posts'], 'class="form-control" required') ?>
+						<span class="error"><?= form_error('no_of_filled_posts') ?></span>
 					</div>
 				</div>
 				<div class="form-group">

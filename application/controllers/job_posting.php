@@ -11,6 +11,23 @@ class job_posting extends CI_Controller
         // Load any required models, libraries, etc.
     }
 
+    public function validate_no_of_filled_posts($no_of_filled_posts)
+    {
+        $no_of_posts = $this->input->post('no_of_posts');
+
+        if ($no_of_filled_posts < 0) {
+            $this->form_validation->set_message('validate_no_of_filled_posts', 'The {field} field cannot be negative.');
+            return FALSE;
+        }
+
+        if ($no_of_filled_posts > $no_of_posts) {
+            $this->form_validation->set_message('validate_no_of_filled_posts', 'The {field} field cannot be greater than the number of posts.');
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
     protected function custom_validation_rules()
     {
         $this->form_validation->set_rules('branch_id', translate('title'), 'trim|numeric|required');
@@ -18,7 +35,8 @@ class job_posting extends CI_Controller
         $this->form_validation->set_rules('qualification', translate('qualification'), 'trim|required');
         $this->form_validation->set_rules('experience', translate('experience'), 'trim|required');
         $this->form_validation->set_rules('contract_type', translate('contract_type'), 'trim|required');
-        $this->form_validation->set_rules('no_of_posts', translate('no_of_posts'), 'trim|required|numeric');
+        $this->form_validation->set_rules('no_of_posts', translate('no_of_posts'), 'trim|numeric');
+        $this->form_validation->set_rules('no_of_filled_posts', translate('no_of_filled_posts'), 'trim|numeric|callback_validate_no_of_filled_posts');
         $this->form_validation->set_rules('description', translate('description'), 'trim|required');
         $this->form_validation->set_rules('due_date', translate('due_date'), 'trim|required|date');
     }
@@ -59,7 +77,6 @@ class job_posting extends CI_Controller
 
     public function edit($id)
     {
-
         if (!get_permission('job_posting', 'is_edit')) {
             access_denied();
         }

@@ -47,7 +47,7 @@
 								<td><?= $row['qualification'] ? $row['qualification'] : '---' ?></td>
 								<td><?= $row['experience'] ? $row['experience'] : '---' ?></td>
 								<td><?= $row['contract_type'] ? translate($row['contract_type']) : '---' ?></td>
-								<td><?= $row['no_of_posts'] ? $row['no_of_posts'] : '---' ?></td>
+								<td><?= $row['no_of_posts'] ? $row['no_of_filled_posts'] . "/" . $row['no_of_posts'] : '---' ?></td>
 								<td><?= $row['due_date'] ? $row['due_date'] : '---' ?></td>
 								<td><?= $row['description'] ? $row['description'] : '---' ?></td>
 								<td>
@@ -125,6 +125,7 @@
 						<label class="col-md-3 control-label"><?= translate('no_of_posts') ?> <span class="required">*</span></label>
 						<div class="col-md-6">
 							<?= form_input(['type' => 'number', 'name' => 'no_of_posts'], null, 'class="form-control" requried') ?>
+							<?= form_input(['type' => 'hidden', 'name' => 'no_of_filled_posts'], 0, 'class="form-control" requried') ?>
 							<span class="error"><?= form_error('no_of_posts') ?></span>
 						</div>
 					</div>

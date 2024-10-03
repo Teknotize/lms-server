@@ -22,9 +22,9 @@ class job_posting_model extends CI_Model
             'title' => $data['title'],
             'qualification' => $data['qualification'],
             'experience' => $data['experience'],
-            // 'location' => $data['location'],
             'contract_type' => $data['contract_type'],
             'no_of_posts' => $data['no_of_posts'],
+            'no_of_filled_posts' => $data['no_of_filled_posts'],
             'description' => $data['description'],
             'due_date' => $data['due_date'],
             'status' => $data['status'] ? $data['status'] : 'vacant',
@@ -34,6 +34,10 @@ class job_posting_model extends CI_Model
             "updated_at" => $data['updated_at'] ? $data['updated_at'] : (date("Y-m-d", time()) . " " . date("H:i:s", time())),
             "deleted_at" => $data['deleted_at'] ? $data['deleted_at'] : null
         );
+
+        if ($array['status'] == 'filled') {
+            $array['no_of_filled_posts'] = $array['no_of_posts'];
+        }
 
         if (!isset($id)) {
             $this->db->insert('job_postings', $array);

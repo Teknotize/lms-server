@@ -249,6 +249,7 @@ class Employee_model extends MY_Model
             'name'            => $data['name'],
             'occupation'      => $data['occupation'],
             'phone'           => $data['phone'],
+            'detail'          => $data['detail'],
             'total_child'     => $data['total_child'],
             'dependent_child' => $data['dependent_child'],
         );

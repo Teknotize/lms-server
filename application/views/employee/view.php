@@ -32,6 +32,7 @@
 							<th><?php echo translate('department'); ?></th>
 							<th><?php echo translate('email'); ?></th>
 							<th><?php echo translate('mobile_no'); ?></th>
+							<th><?php echo translate('job_status'); ?></th>
 						<?php
 						if (!is_superadmin_loggedin()){
 							$show_custom_fields = custom_form_table('employee', get_loggedin_branch_id());
@@ -57,6 +58,34 @@
 							<td><?php echo $row->department_name; ?></td>
 							<td><?php echo $row->email; ?></td>
 							<td><?php echo $row->mobileno; ?></td>
+							<?php 
+							        $color='';
+									$this->db->where('staff_id', $row->id);
+									$this->db->order_by('id', 'DESC');
+									$jobstatusResult = $this->db->get('staff_job_status')->row_array();
+
+									$this->db->where('user_id', $row->id);
+									$this->db->order_by('id', 'DESC');
+									$login_res = $this->db->get('login_credential')->row_array();
+									if ($login_res['active']==1) {
+										$status = "Active";
+									}else{
+										$status ="Deactive";
+										$color ="red";
+									}
+
+									if ($jobstatusResult) {
+										$status = $jobstatusResult['type'];
+										$color ="red";
+									}else{
+										$status = $status.'';
+									}
+									 
+
+							?>
+							<td style="color: <?php echo $color;?>;">
+								<?php echo $status; ?>
+							</td>
 						<?php
 						if (!is_superadmin_loggedin()){
 							if (count($show_custom_fields)) {

@@ -476,5 +476,90 @@
         "null": true
       }
     }
+  },
+  {
+    "table_name": "tickets",
+    "primary_key": "id",
+    "fields": {
+      "id": {
+        "type": "INT",
+        "unsigned": true,
+        "auto_increment": true,
+        "null": false
+      },
+      "user_id": {
+        "type": "INT",
+        "null": false
+      },
+      "branch_id": {
+        "type": "INT",
+        "null": false
+      }, 
+      "subject": {
+        "type": "TEXT",
+        "null": true
+      },
+      "message": {
+        "type": "TEXT",
+        "null": true
+      }, 
+      "attachment": {
+        "type": "TEXT",
+        "null": true
+      },  
+      "status": {
+        "type": "ENUM",
+        "constraint": ["open", "closed"],
+        "null": false
+      },
+      "created_at": {
+        "type": "TIMESTAMP",
+        "null": false
+      },
+      "updated_at": {
+        "type": "TIMESTAMP",
+        "null": true
+      }
+    }
+  },
+  {
+    "table_name": "ticket_replies",
+    "primary_key": "id",
+    "fields": {
+      "id": {
+        "type": "INT",
+        "unsigned": true,
+        "auto_increment": true,
+        "null": false
+      },
+      "user_id": {
+        "type": "INT",
+        "null": true   
+      },
+      "agent_id": {
+        "type": "INT",
+        "null": true
+      }, 
+      "ticket_id": {
+        "type": "INT",
+        "null": false
+      }, 
+      "message": {
+        "type": "TEXT",
+        "null": true
+      }, 
+      "attachment": {
+        "type": "TEXT",
+        "null": true
+      } ,
+      "created_at": {
+        "type": "TIMESTAMP",
+        "null": false
+      },
+      "updated_at": {
+        "type": "TIMESTAMP",
+        "null": true
+      }
+    }
   }
 ]

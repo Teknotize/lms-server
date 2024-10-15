@@ -415,6 +415,75 @@ class Dashboard_model extends CI_Model
         return $attendanceData;
     }
     
+    public function getJobPosting($contract_type = '', $branchID = '')
+    {
+        // Selecting the SUM of no_of_posts and no_of_filled_posts
+        $this->db->select('SUM(job_postings.no_of_posts) as total_no_of_posts, SUM(job_postings.no_of_filled_posts) as total_no_of_filled_posts');
+        $this->db->from('job_postings'); 
+        
+        if (!empty($branchID)) {
+            $this->db->where('branch_id', $branchID);
+        }
     
+        if (!empty($contract_type)) {
+            $this->db->where('contract_type', $contract_type);
+        }
+    
+        // Fetching the result
+        $result = $this->db->get()->row_array();
+    
+        // Calculating the progress percentage based on total number of posts and filled posts
+        $total_no_of_posts = $result['total_no_of_posts'];
+        $total_no_of_filled_posts = $result['total_no_of_filled_posts'];
+    
+        $progress_percentage = 0; // Default to 0 in case of division by zero
+        $empty_progress_percentage = 0;
+    
+        // Ensuring no division by zero and calculating progress
+        if ($total_no_of_posts > 0) {
+            $progress_percentage = ($total_no_of_filled_posts / $total_no_of_posts) * 100;
+            $empty_progress_percentage = 100 - $progress_percentage; // Empty percentage is the remaining part
+        }
+    
+        // Returning the data along with the calculated progress percentage
+        return [
+            'snumber' => $total_no_of_posts,
+            'no_of_filled_posts' => $progress_percentage,
+            'no_of_empty_posts' => $empty_progress_percentage, 
+        ];
+    }
+    
+    
+    public function get_ticket_status($school_id = '') {
+        // Initialize status data array
+        $ticketData = [
+            'open' => 0,
+            'closed' => 0, 
+            'total_tickets' => 0
+        ];
+    
+        // Step 1: Count ticket status using a single query with conditional aggregation
+        $this->db->select("
+            COUNT(CASE WHEN status = 'open' THEN 1 END) as open,
+            COUNT(CASE WHEN status = 'closed' THEN 1 END) as closed, 
+            COUNT(*) as total_tickets
+        ");
+        
+        // Optional: Apply branch/school filtering if provided
+        if (!empty($school_id)) {
+            $this->db->where('branch_id', $school_id);
+        }
+        
+        // Execute the query
+        $query = $this->db->get('tickets');
+        $result = $query->row_array();
+    
+        // Step 2: Populate ticket data with results
+        $ticketData['open'] = $result['open'] ?? 0;
+        $ticketData['closed'] = $result['closed'] ?? 0; 
+        $ticketData['total_tickets'] = $result['total_tickets'] ?? 0;
+    
+        return $ticketData;
+    }
     
 }

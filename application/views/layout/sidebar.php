@@ -1474,6 +1474,62 @@
                             </li>
                     <?php }
                     } ?>
+                    
+                    <?php
+                    if (moduleIsEnabled('events')) {
+                        if (
+                            get_permission('event', 'is_view') ||
+                            get_permission('event_type', 'is_view')
+                        ) {
+                    ?>
+                            <!-- envant -->
+                            <li class="nav-parent <?php if ($main_menu == 'event') echo 'nav-expanded nav-active'; ?>">
+                                <a>
+                                    <i class="icons icon-speech"></i><span><?= translate('discussions') ?></span>
+                                </a>
+                                <ul class="nav nav-children">
+                                    <?php if (get_permission('event_type', 'is_view')) { ?>
+                                        <li class="<?php if ($sub_page == 'discussion/types') echo 'nav-active'; ?>">
+                                            <a href="<?= base_url('discussion/types') ?>">
+                                                <span><i class="fas fa-caret-right"></i><?= translate('discussion_type') ?></span>
+                                            </a>
+                                        </li>
+                                    <?php }
+                                    if (get_permission('event', 'is_view')) {  ?>
+                                        <li class="<?php if ($sub_page == 'event/index') echo 'nav-active'; ?>">
+                                            <a href="<?= base_url('event') ?>">
+                                                <span><i class="fas fa-caret-right"></i><?= translate('discussion') ?></span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </li>
+                    <?php }
+                    } ?>
+                           <?php
+                    if (moduleIsEnabled('events')) {
+                        if (
+                            get_permission('event', 'is_view') ||
+                            get_permission('event_type', 'is_view')
+                        ) {
+                    ?>
+                            <!-- envant -->
+                            <li class="nav-parent <?php if ($main_menu == 'event') echo 'nav-expanded nav-active'; ?>">
+                                <a>
+                                    <i class="icons icon-speech"></i><span><?= translate('tickets') ?></span>
+                                </a>
+                                <ul class="nav nav-children"> 
+                                    <?php   if (get_permission('event', 'is_view')) {  ?>
+                                        <li class="<?php if ($sub_page == 'ticket/index') echo 'nav-active'; ?>">
+                                            <a href="<?= base_url('ticket/index') ?>">
+                                                <span><i class="fas fa-caret-right"></i><?= translate('tickets') ?></span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </li>
+                    <?php }
+                    } ?>
                     <?php
                     if (moduleIsEnabled('bulk_sms_and_email')) {
                         if (
